@@ -1,26 +1,26 @@
-CXX = g++
-CXX_FLAGS = -g -Wall -std=c++11 
+GCC = g++
+FLAGS= -g -Wall -std=c++11
 
-TARGET = keychain
 BUILD = build 
 
 SOURCES = src/main.cpp
 OBJECTS = $(patsubst srcs/%.cpp, $(BUILD)/%.o, $(SOURCES))
-
-all: $(TARGET)
+EXEC = keychain
+all:  $(EXEC)
 
 clean: 
-	rm -rf $(TARGET) $(BUILD)
+	rm -rf $(EXEC) $(BUILD)
 	clear
 
 run: 
 	./keychain
 
-$(TARGET): $(OBJECTS)
-	$(CXX) $(CXX_FLAGS) $(OBJECTS) -o $(TARGET)
+$(EXEC): $(OBJECTS)
+	$(GCC) $(FLAGS) $(OBJECTS) -o $(EXEC)
 
-build/%.o: src/%.cpp | $(BUILD)
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+main.o: main.cpp | build	
+	@echo "creating object files"
+	$(GCC) $(FLAGS) -c main.cpp -o main.o
 
 $(BUILD): 
 	mkdir -p $(BUILD)
