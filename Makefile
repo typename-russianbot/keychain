@@ -5,7 +5,7 @@ TARGET = keychain
 BUILD = build 
 
 SOURCES = src/main.cpp
-OBJECTS = $(patsubst srcs/%.cpp, build/%.o, $(SOURCES))
+OBJECTS = $(patsubst srcs/%.cpp, $(BUILD)/%.o, $(SOURCES))
 
 all: $(TARGET)
 
@@ -19,7 +19,7 @@ run:
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXX_FLAGS) $(OBJECTS) -o $(TARGET)
 
-build/%.o: src/%.cpp | build
+build/%.o: src/%.cpp | $(BUILD)
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 $(BUILD): 
