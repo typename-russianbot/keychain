@@ -1,7 +1,7 @@
 #pragma once
 #include "keynode.h"
 
-//^ 3. CLASS -- keychain
+//^ <class: keychain>
 class keychain {
 private:            //^ -- MEMBERS --
   int m_KeyCounter; //* # of keys in the keychain

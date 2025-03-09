@@ -11,6 +11,8 @@ using namespace std;
 #define _off false     //* _off
 #define _null "{null}" //* _null
 
+extern bool debugger; 
+
 //& |--- ENUMERATIONS ---|
 //^  1. ENUM -- STRENGTH
 enum strength {
@@ -23,31 +25,8 @@ enum strength {
 
 //& |--- GLOBAL FUNCTIONS ---|
 //^  1. operator<< (overload for password strength levels)
-ostream &operator<<(ostream &output, const strength &object) {
-  switch (object) {
-  default:
-    output << "{null}";
-    break;
-  case 1:
-    output << "poor";
-    break;
-  case 2:
-    output << "weak";
-    break;
-  case 3:
-    output << "strong";
-    break;
-  case 4:
-    output << "excellent";
-    break;
-  }
+ostream &operator<<(ostream &output, const strength &object); 
 
-  return output;
-}
-
-//& |--- GLOBAL VARIABLES ---|
-//^  1. BOOL -- debugger
-bool debugger = _off;
 
 
 //^  1. CLASS -- key
@@ -58,69 +37,32 @@ private:                 //^ -- MEMBERS --
   string keyEmail;       //? 3. key_email -- email for this key
   string keyPassword;    //? 4. key_password -- password for this key
   strength keyIntegrity; //? 5. key_integrity -- strength of this key's password
-  unsigned int
-      keyAccess; //? 6. key_accessed -- number of times this key has been
+  unsigned int keyAccess; //? 6. key_accessed -- number of times this key has been
 
 public: //^ -- OPERATIONS --
   //* - CONSTRUCTOR -
   key(string destination = _null, string username = _null, string email = _null,
-      string password = _null, strength integrity = empty, int access = 0)
-      : keyDestination(destination), keyUsername(username), keyEmail(email),
-        keyPassword(password), keyIntegrity(integrity), keyAccess(access) {}
+      string password = _null, strength integrity = empty, int access = 0);
 
   //* - FUNCTIONS -
   //? -- 1. setters
-  void set_keyDestination(const string &nDestination) {
-    this->keyDestination = nDestination;
-  }
-  void set_mUsername(const string &nUsername) { this->keyUsername = nUsername; }
-  void set_mEmail(const string &nEmail) { this->keyEmail = nEmail; }
-  void set_mPassword(const string &nPassword) { this->keyPassword = nPassword; }
-  void set_mIntegrity(const strength &nIntegrity) {
-    this->keyIntegrity = nIntegrity;
-  }
+  void set_keyDestination(const string &nDestination);
+  void set_mUsername(const string &nUsername);
+  void set_mEmail(const string &nEmail);
+  void set_mPassword(const string &nPassword);
+  void set_mIntegrity(const strength &nIntegrity);
+
   //? -- 2. getters
-  const string get_keyDestination(void) { return this->keyDestination; }
-  const string get_keyUsername(void) { return this->keyUsername; }
-  const string get_keyEmail(void) { return this->keyEmail; }
-  const string get_keyPassword(void) { return this->keyPassword; }
-  const strength get_keyIntegrity(void) { return this->keyIntegrity; }
+  const string get_keyDestination(void);
+  const string get_keyUsername(void);
+  const string get_keyEmail(void);
+  const string get_keyPassword(void);
+  const strength get_keyIntegrity(void);
+
   //? -- 3. is_null (empty)
-  bool is_null(void) {
-    //*
-    if (this->keyDestination == _null && this->keyUsername == _null &&
-        this->keyEmail == _null && this->keyPassword == _null &&
-        this->keyIntegrity == empty && this->keyAccess == 0)
-      return true;
-
-    //*
-    return false;
-  }
-
-  //? -- 4. operator= (hard copy)
-  key &operator=(const key &object) {
-    this->keyDestination = object.keyDestination;
-    this->keyUsername = object.keyUsername;
-    this->keyEmail = object.keyEmail;
-    this->keyPassword = object.keyPassword;
-    this->keyAccess = object.keyAccess;
-    return *this;
-  }
-
-  //? -- 5. operator<< (console out)
-  friend ostream &operator<<(ostream &output, const key &object) {
-    output << "<" << object.keyDestination << " Key>" << endl
-           << "\t- Username:\t" << object.keyUsername << endl
-           << "\t-    Email:\t" << object.keyEmail << endl
-           << "\t- Password:\t" << object.keyPassword << endl
-           << "\t- Strength:\t" << object.keyIntegrity << endl;
-
-    return output;
-  }
-
+  bool is_null(void);
+  key &operator=(const key &object);
+  friend ostream &operator<<(ostream &output, const key &object);
   //* - DESTRUCTOR -
-  ~key() {
-    if (debugger == _on)
-      cout << "<" << this->keyDestination << " key>: destroyed" << endl;
-  }
+  ~key(); 
 };
