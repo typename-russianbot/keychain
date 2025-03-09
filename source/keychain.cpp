@@ -1,5 +1,14 @@
 #include "../include/Keychain/keychain.h"
 
-keychain::keychain()  : m_KeyCounter(0), m_Start(nullptr), m_End(nullptr) {}
+keychain::keychain()
+    : cCounter(0), cStart(nullptr), cEnd(nullptr) //^^ -construct
+{
+    cStart->setPrev(cEnd); 
+    cStart->setNext(nullptr); 
 
-keychain::~keychain() {}
+
+    cout << cStart->getNext();
+}
+
+keychain::~keychain() //^^ -destruct
+{}

@@ -2,22 +2,23 @@
 #pragma once
 #include "keynode.h"
 class keychain {
-  //!! -Attributes-
-private:
-  int m_KeyCounter; //^^ 
-  keynode *m_Start; //^^
-  keynode *m_End;   //^^
+private:           //!! -Attributes-
+  int cCounter;    //^^
+  keynode *cStart; //^^
+  keynode *cEnd;   //^^
 
-  //!! -Functions-
-public:
-  //^^ -constructor
+public: //!! -Functions-
+  //^^ -construct
   keychain();
 
   //^^ -class_functions
-  //? 1. display()
-  //? 2. is_empty()
-  //? 3.
+  bool is_empty();
+  void add_key();
+  void remove_key();
 
-  //^^ -destructor
+  //^^ -overloads
+  friend ostream &operator<<(ostream &out, const keychain &object);
+
+  //^^ -destruct
   ~keychain();
 };

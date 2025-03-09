@@ -2,26 +2,26 @@
 #pragma once
 #include "key.h"
 class keynode {
-  //!! -Attributes-
-private:
-  key m_Data;      //^^ 1. mData -- key data for current key in chain
-  keynode *m_Next; //^^ 2. mNext -- next key in the chain
-  keynode *m_Prev; //^^ 3. mPrev -- previous key in the chain
 
-  //!! -Functions-
-public:
+private:          //!! -Attributes-
+  key cKey;       //^^ 1. cKey -- key data for current key in chain
+  keynode *cNext; //^^ 2. cNext -- next key in the chain
+  keynode *cPrev; //^^ 3. cPrev -- previous key in the chain
+
+public: //!! -Functions-
   //^^ -constructor
-  keynode(const key &nKey);
+  keynode(key *nKey);
+  keynode(void);
 
   //^^ -get
-  key get_mData(void);
-  keynode *get_mNext(void);
-  keynode *get_mPrev(void);
+  key* getKey(void);
+  keynode *getNext(void);
+  keynode *getPrev(void);
 
   //^^ -set
-  void set_mData(const key &nData);
-  void set_mNext(keynode *&nNode);
-  void set_mPrev(keynode *&nNode);
+  void setKey(key *nData);
+  void setNext(keynode *nNode);
+  void setPrev(keynode *nNode);
 
   //^^ -destructor
   ~keynode(void);

@@ -3,32 +3,21 @@
 #include "../include/Keychain/keychain.h"
 #include "../include/Keychain/keynode.h"
 
-//&& <main-functions>
-void testingbay(void) {
-  //* test keys
-  key key1, key2;
+void testingbay(void) // TODO <testing-bay>
+{
 
-  //* test nodes
-  keynode *keynode2 = new keynode(key2);
-  keynode *keynode1 = new keynode(key1);
+  cout << endl << "Test Function" << endl << endl;
 
-  //* testing bay
-  keynode1->set_mNext(keynode2);
-
-  cout << "Keynode1 Data: " << endl;
-  cout << keynode1->get_mData() << endl;
-  cout << endl;
-
-  keynode1 = keynode1->get_mNext();
-  cout << "mNext() data: " << endl;
-  cout << keynode1->get_mData() << endl;
+  keychain t1; 
+  
 }
 
-int main(void) {
+int main(void) // TODO <main>
+{
   cout << "||==== Keychain ====||==== {v.0.0.1.1} ====||" << endl; //* v0.0.1
 
   testingbay(); //* testing function
 
-  cout << "||=======================================||" << endl;
+  cout << "||=========================================||" << endl;
   return 0;
 }

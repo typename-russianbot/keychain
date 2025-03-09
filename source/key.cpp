@@ -28,60 +28,65 @@ ostream &operator<<(ostream &output, const strength &object) {
 //^  1. BOOL -- debugger
 bool debugger = _off;
 
+//^^ -constructor
 key::key(string destination, string username, string email, string password,
          strength integrity, int access)
-    : keyDestination(destination), keyUsername(username), keyEmail(email),
-      keyPassword(password), keyIntegrity(integrity), keyAccess(access) {}
+    : cDestination(destination), cUsername(username), cEmail(email),
+      cPassword(password), cIntegrity(integrity), cAccess(access) {}
 
-//?? 2. setters:
-void key::set_keyDestination(const string &nDestination) {
-  this->keyDestination = nDestination;
+//^^ -set
+void key::setDest(const string &nDestination) {
+  this->cDestination = nDestination;
 }
-void key::set_mEmail(const string &nEmail) { this->keyEmail = nEmail; }
-void key::set_mUsername(const string &nUsername) {
-  this->keyUsername = nUsername;
+void key::setEmail(const string &nEmail) { this->cEmail = nEmail; }
+void key::setUsername(const string &nUsername) {
+  this->cUsername = nUsername;
 }
-void key::set_mPassword(const string &nPassword) {
-  this->keyPassword = nPassword;
+void key::setPassword(const string &nPassword) {
+  this->cPassword = nPassword;
 }
-void key::set_mIntegrity(const strength &nIntegrity) {
-  this->keyIntegrity = nIntegrity;
+void key::setIntegrity(const strength &nIntegrity) {
+  this->cIntegrity = nIntegrity;
 }
 
-//?? getters:
-const string key::get_keyDestination(void) { return this->keyDestination; }
-const string key::get_keyUsername(void) { return this->keyUsername; }
-const string key::get_keyEmail(void) { return this->keyEmail; }
-const string key::get_keyPassword(void) { return this->keyPassword; }
-const strength key::get_keyIntegrity(void) { return this->keyIntegrity; }
+//^^ -get
+const string key::getDest(void) { return this->cDestination; }
+const string key::getUsername(void) { return this->cUsername; }
+const string key::getEmail(void) { return this->cEmail; }
+const string key::getPassword(void) { return this->cPassword; }
+const strength key::getIntegrity(void) { return this->cIntegrity; }
 
-//? key functions:
-ostream &operator<<(ostream &output, const key &object) {
-  output << "<" << object.keyDestination << " Key>" << endl
-         << "\t- Username:\t" << object.keyUsername << endl
-         << "\t-    Email:\t" << object.keyEmail << endl
-         << "\t- Password:\t" << object.keyPassword << endl
-         << "\t- Strength:\t" << object.keyIntegrity << endl;
-
-  return output;
-}
+//^^ -key_functions
 bool key::is_null(void) {
-  if (this->keyDestination == _null && this->keyUsername == _null &&
-      this->keyEmail == _null && this->keyPassword == _null &&
-      this->keyIntegrity == empty && this->keyAccess == 0)
+  if (this->cDestination == _null && this->cUsername == _null &&
+      this->cEmail == _null && this->cPassword == _null &&
+      this->cIntegrity == empty && this->cAccess == 0)
     return true;
 
   return false;
 }
+
+//^^ -overloads
+ostream &operator<<(ostream &output, const key &object) {
+  output << "<" << object.cDestination << " Key>" << endl
+         << "\t- Username:\t" << object.cUsername << endl
+         << "\t-    Email:\t" << object.cEmail << endl
+         << "\t- Password:\t" << object.cPassword << endl
+         << "\t- Strength:\t" << object.cIntegrity << endl;
+
+  return output;
+}
 key &key::operator=(const key &object) {
-  this->keyDestination = object.keyDestination;
-  this->keyUsername = object.keyUsername;
-  this->keyEmail = object.keyEmail;
-  this->keyPassword = object.keyPassword;
-  this->keyAccess = object.keyAccess;
+  this->cDestination = object.cDestination;
+  this->cUsername = object.cUsername;
+  this->cEmail = object.cEmail;
+  this->cPassword = object.cPassword;
+  this->cAccess = object.cAccess;
   return *this;
 }
+
+//^^ -destructor
 key::~key() {
   if (debugger == _on)
-    cout << "<" << this->keyDestination << " key>: destroyed" << endl;
+    cout << "<" << this->cDestination << " key>: destroyed" << endl;
 }
