@@ -1,5 +1,3 @@
 #pragma once
-using namespace std; 
+#include "../master.h"
 
-#include <iostream> 
-#include <unistd.h>

@@ -28,7 +28,7 @@ int main(void) {
 
   cout << "||==== Keychain ====||==== {v.0.0.1} ====||" << endl; //* v0.0.1
   
-  testingbay(); 
+  testingbay(); //* testing function
 
   cout << "||=======================================||" //* END OF PROGRAM
        << endl;                                         //* end of keychain

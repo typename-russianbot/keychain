@@ -1,21 +1,23 @@
+// TODO: class=<keychain>
 #pragma once
 #include "keynode.h"
-
-//^ <class: keychain>
 class keychain {
-private:            //^ -- MEMBERS --
-  int m_KeyCounter; //* # of keys in the keychain
-  keynode *m_Start; //* start of keychain
-  keynode *m_End;   //* end of keychain
+  //!! -Attributes-
+private:
+  int m_KeyCounter; //^^ 
+  keynode *m_Start; //^^
+  keynode *m_End;   //^^
 
-public: //^ -- OPERATIONS --
-  //* - CONSTRUCTOR -
-  keychain() : m_KeyCounter(0), m_Start(nullptr), m_End(nullptr) {}
+  //!! -Functions-
+public:
+  //^^ -constructor
+  keychain();
 
-  //* - FUNCTIONS -
+  //^^ -class_functions
   //? 1. display()
   //? 2. is_empty()
   //? 3.
 
-  //* - DESTRUCTOR -
+  //^^ -destructor
+  ~keychain();
 };
