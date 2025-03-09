@@ -1,5 +1,5 @@
 #pragma once
-#include "../master.h"
+#include "keynode.h"
 
 //^ 3. CLASS -- keychain
 class keychain {

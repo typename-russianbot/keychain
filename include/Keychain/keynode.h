@@ -1,5 +1,5 @@
 #pragma once
-#include "../master.h"
+#include "key.h"
 
 //^  2. CLASS -- keynode
 class keynode {
