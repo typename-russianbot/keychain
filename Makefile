@@ -1,35 +1,38 @@
 #TODO: | -MAKEFILE PASSWORD KEYCHAIN- |
 
 #?? | -C++ Flags- | 
-CXX = g++
-CXX_FLAGS = -g -Wall -std=c++11
 
-BUILD = build 
-SOURCES = source/main.cpp source/source.cpp
-OBJECTS = $(patsubst source/%.cpp, build/%.o, $(SOURCES))
-TARGET = keychain
+CXX = g++ #?? 1. gdb compiler
+CXX_FLAGS = -g -Wall -std=c++11 #?? C++ flags
+
+BUILD = build #?? build directory
+SOURCES = source/main.cpp source/source.cpp #?? source files
+OBJECTS = $(patsubst source/%.cpp, build/%.o, $(SOURCES)) #?? objects files
+TARGET = keychain #?? target executable
+
+#?? | ----------- | 
 
 #&& | -Makefile Operations- |
 
-#&& all - 
-all:  $(TARGET)
+all:  $(TARGET) #&& 1. all - create all object & executable files
+	clear
 
-#&& clean - 
-clean: 
+clean: #&& 2. clean - remove object files & executables
 	rm -rf $(TARGET) $(BUILD)
 	clear
 
-#&& run -
-run: $(TARGET)
+run: $(TARGET) #&& 3. run - start program
 	./keychain
+	
+#&& | --------------------- |
 
 #^^ | -Compiling & Linking- |
 
-#^^ 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) #^^ 1. link all files
 	$(CXX) $(CXX_FLAGS) $(OBJECTS) -o $(TARGET)
 
-#^^ Compile source files into object files
-build/%.o: source/%.cpp 
+build/%.o: source/%.cpp #^^ 2. compile source code
 	mkdir -p $(BUILD)  # Move directory creation here
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
+
+#^^ | --------------------- |
