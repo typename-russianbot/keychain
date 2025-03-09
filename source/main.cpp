@@ -25,11 +25,10 @@ void testingbay(void) {
 }
 
 int main(void) {
-  cout << "||==== Keychain ====||==== {v.0.0.1} ====||" << endl; //* v0.0.1
+  cout << "||==== Keychain ====||==== {v.0.0.1.1} ====||" << endl; //* v0.0.1
 
   testingbay(); //* testing function
 
-  cout << "||=======================================||" //* END OF PROGRAM
-       << endl;                                         //* end of keychain
+  cout << "||=======================================||" << endl;
   return 0;
 }
