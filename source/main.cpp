@@ -1,8 +1,9 @@
+// TODO class=<main>
 #include "../include/Keychain/key.h"
-#include "../include/Keychain/keynode.h"
 #include "../include/Keychain/keychain.h"
+#include "../include/Keychain/keynode.h"
 
-//& TEST CASES
+//&& <main-functions>
 void testingbay(void) {
   //* test keys
   key key1, key2;
@@ -23,11 +24,9 @@ void testingbay(void) {
   cout << keynode1->get_mData() << endl;
 }
 
-//& |--- MAIN ---|
 int main(void) {
-
   cout << "||==== Keychain ====||==== {v.0.0.1} ====||" << endl; //* v0.0.1
-  
+
   testingbay(); //* testing function
 
   cout << "||=======================================||" //* END OF PROGRAM
