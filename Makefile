@@ -2,7 +2,7 @@
 
 #?? | -C++ Flags- |
 CXX = g++
-CXX_FLAGS = -g -Wall -std=c++11 -I./include
+CXX_FLAGS = -g -Wall -std=c++11
 
 #?? | -Source, Build, Target Files- |
 BUILD = build 
@@ -21,13 +21,11 @@ run: $(TARGET)
 	./keychain
 
 #^^ | -Compiling & Linking- |
+# link all files together
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXX_FLAGS) $(OBJECTS) -o $(TARGET)
 
 # Compile source files into object files
-build/%.o: source/%.cpp | $(BUILD)
+build/%.o: source/%.cpp 
 	mkdir -p $(BUILD)  # Move directory creation here
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
-
-$(BUILD):
-	mkdir -p $(BUILD)
