@@ -1,25 +1,23 @@
 {
-    "configurations": [
-        {
-            "name": "Linux",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "/usr/include/c++/12",
-                "/usr/include/x86_64-linux-gnu/c++/12"
-            ],
-            "defines": [],
-            "cStandard": "c17",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "linux-gcc-x64",
-            "configurationProvider": "ms-vscode.cmake-tools",
-            "browse": {
-                "path": [
-                    "/usr/include",
-                    "/usr/include/c++/12"
-                ]
-            },
-            "compilerPath": "/usr/bin/gcc"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "linux-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [],
+      "cStandard": "${default}",
+      "cppStandard": "${default}",
+      "intelliSenseMode": "linux-gcc-x64",
+      "configurationProvider": "ms-vscode.cmake-tools",
+      "browse": {
+        "path": [
+          "/usr/include",
+          "/usr/include/c++/12"
+        ]
+      },
+      "compilerPath": "/usr/bin/gcc"
+    }
+  ],
+  "version": 4
 }

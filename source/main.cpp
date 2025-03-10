@@ -1,23 +1,30 @@
-// TODO class=<main>
 #include "../include/Keychain/key.h"
 #include "../include/Keychain/keychain.h"
 #include "../include/Keychain/keynode.h"
 
-void testingbay(void) // TODO <testing-bay>
+void TEST_BENCH(void) // TODO <TEST-BENCH>
 {
 
-  cout << endl << "Test Function" << endl << endl;
+  key keyA;
+  if (keyA.is_null())
+  {
+    cout << "keyA={null}" << endl;
+  }
 
-  keychain t1; 
-  
+  key keyB("github", "typename-russianbot", "axix01@yahoo.com");
+
+  cout << "keyB=" << endl
+       << keyB << endl;
 }
 
 int main(void) // TODO <main>
 {
-  cout << "||==== Keychain ====||==== {v.0.0.1.1} ====||" << endl; //* v0.0.1
+  cout << "||==== Keychain ====||==== {v.0.0.1.1} ====||"
+       << endl; //^^ -v.0.0.1.1
 
-  testingbay(); //* testing function
+  TEST_BENCH(); //^^ -TESTING BENCH
 
-  cout << "||=========================================||" << endl;
+  cout << "||=========================================||"
+       << endl; //^^ -end_of_program
   return 0;
 }

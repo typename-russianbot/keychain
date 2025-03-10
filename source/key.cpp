@@ -2,8 +2,10 @@
 
 //& |--- GLOBAL FUNCTIONS ---|
 //^  1. operator<< (overload for password strength levels)
-ostream &operator<<(ostream &output, const strength &object) {
-  switch (object) {
+ostream &operator<<(ostream &output, const strength &object)
+{
+  switch (object)
+  {
   default:
     output << "{null}";
     break;
@@ -26,67 +28,77 @@ ostream &operator<<(ostream &output, const strength &object) {
 
 //& |--- GLOBAL VARIABLES ---|
 //^  1. BOOL -- debugger
-bool debugger = _off;
+bool debugger = _on;
 
 //^^ -constructor
 key::key(string destination, string username, string email, string password,
-         strength integrity, int access)
-    : cDestination(destination), cUsername(username), cEmail(email),
-      cPassword(password), cIntegrity(integrity), cAccess(access) {}
+         strength integrity)
+    : cKeyname(destination), cUsername(username), cEmail(email),
+      cPassword(password), cKeyintegrity(integrity) {}
 
 //^^ -set
-void key::setDest(const string &nDestination) {
-  this->cDestination = nDestination;
+void key::setKeyname(const string &nKeyname) //^^ 1.
+{
+  this->cKeyname = nKeyname;
 }
-void key::setEmail(const string &nEmail) { this->cEmail = nEmail; }
-void key::setUsername(const string &nUsername) {
+void key::setEmail(const string &nEmail) //^^ 2.
+{
+  this->cEmail = nEmail;
+}
+void key::setUsername(const string &nUsername) //^^ 3.
+{
   this->cUsername = nUsername;
 }
-void key::setPassword(const string &nPassword) {
+void key::setPassword(const string &nPassword) //^^ 4.
+{
   this->cPassword = nPassword;
 }
-void key::setIntegrity(const strength &nIntegrity) {
-  this->cIntegrity = nIntegrity;
+void key::setKeyintegrity(const strength &nIntegrity) //^^ 5.
+{
+  this->cKeyintegrity = nIntegrity;
 }
 
 //^^ -get
-const string key::getDest(void) { return this->cDestination; }
+const string key::getKeyname(void) { return this->cKeyname; }
 const string key::getUsername(void) { return this->cUsername; }
 const string key::getEmail(void) { return this->cEmail; }
 const string key::getPassword(void) { return this->cPassword; }
-const strength key::getIntegrity(void) { return this->cIntegrity; }
+const strength key::getKeyintegrity(void) { return this->cKeyintegrity; }
 
 //^^ -key_functions
-bool key::is_null(void) {
-  if (this->cDestination == _null && this->cUsername == _null &&
+bool key::is_null(void)
+{
+  if (this->cKeyname == _null && this->cUsername == _null &&
       this->cEmail == _null && this->cPassword == _null &&
-      this->cIntegrity == empty && this->cAccess == 0)
+      this->cKeyintegrity == empty)
     return true;
 
   return false;
 }
 
 //^^ -overloads
-ostream &operator<<(ostream &output, const key &object) {
-  output << "<" << object.cDestination << " Key>" << endl
-         << "\t- Username:\t" << object.cUsername << endl
+ostream &operator<<(ostream &output, const key &object)
+{
+  output << "<Keyname - " << object.cKeyname << ">" << endl
          << "\t-    Email:\t" << object.cEmail << endl
+         << "\t- Username:\t" << object.cUsername << endl
          << "\t- Password:\t" << object.cPassword << endl
-         << "\t- Strength:\t" << object.cIntegrity << endl;
+         << "\t- Strength:\t" << object.cKeyintegrity << endl;
 
   return output;
 }
-key &key::operator=(const key &object) {
-  this->cDestination = object.cDestination;
+key &key::operator=(const key &object)
+{
+  this->cKeyname = object.cKeyname;
   this->cUsername = object.cUsername;
   this->cEmail = object.cEmail;
   this->cPassword = object.cPassword;
-  this->cAccess = object.cAccess;
   return *this;
 }
 
 //^^ -destructor
-key::~key() {
+key::~key()
+{
   if (debugger == _on)
-    cout << "<" << this->cDestination << " key>: destroyed" << endl;
+    cout << "<" << this->cKeyname << " key>: destroyed" << endl;
 }
