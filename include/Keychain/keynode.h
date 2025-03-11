@@ -10,16 +10,15 @@ private:          //!! -Attributes-
 
 public: //!! -Functions-
   //^^ -constructor
-  keynode(key *nKey);
-  keynode(void);
+  keynode(key &nKey);
 
   //^^ -get
-  key* getKey(void);
+  key getKey(void);
   keynode *getNext(void);
   keynode *getPrev(void);
 
   //^^ -set
-  void setKey(key *nData);
+  void setKey(key &nData);
   void setNext(keynode *nNode);
   void setPrev(keynode *nNode);
 

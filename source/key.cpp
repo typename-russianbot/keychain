@@ -7,19 +7,19 @@ ostream &operator<<(ostream &output, const strength &object)
   switch (object)
   {
   default:
-    output << "{null}";
+    output << "<none>";
     break;
   case 1:
-    output << "poor";
+    output << "<poor>";
     break;
   case 2:
-    output << "weak";
+    output << "<weak>";
     break;
   case 3:
-    output << "strong";
+    output << "<strong>";
     break;
   case 4:
-    output << "excellent";
+    output << "<excellent>";
     break;
   }
 
@@ -28,7 +28,7 @@ ostream &operator<<(ostream &output, const strength &object)
 
 //& |--- GLOBAL VARIABLES ---|
 //^  1. BOOL -- debugger
-bool debugger = _on;
+bool _debugger;
 
 //^^ -constructor
 key::key(string destination, string username, string email, string password,
@@ -37,23 +37,23 @@ key::key(string destination, string username, string email, string password,
       cPassword(password), cKeyintegrity(integrity) {}
 
 //^^ -set
-void key::setKeyname(const string &nKeyname) //^^ 1.
+void key::setKeyname(const string &nKeyname)
 {
   this->cKeyname = nKeyname;
 }
-void key::setEmail(const string &nEmail) //^^ 2.
+void key::setEmail(const string &nEmail)
 {
   this->cEmail = nEmail;
 }
-void key::setUsername(const string &nUsername) //^^ 3.
+void key::setUsername(const string &nUsername)
 {
   this->cUsername = nUsername;
 }
-void key::setPassword(const string &nPassword) //^^ 4.
+void key::setPassword(const string &nPassword)
 {
   this->cPassword = nPassword;
 }
-void key::setKeyintegrity(const strength &nIntegrity) //^^ 5.
+void key::setKeyintegrity(const strength &nIntegrity)
 {
   this->cKeyintegrity = nIntegrity;
 }
@@ -66,12 +66,14 @@ const string key::getPassword(void) { return this->cPassword; }
 const strength key::getKeyintegrity(void) { return this->cKeyintegrity; }
 
 //^^ -key_functions
-bool key::is_null(void)
+bool key::is_empty(void) //^^ 1. is_empty
 {
-  if (this->cKeyname == _null && this->cUsername == _null &&
-      this->cEmail == _null && this->cPassword == _null &&
-      this->cKeyintegrity == empty)
+  if (this->cKeyname == "none" && this->cUsername == _none &&
+      this->cEmail == _none && this->cPassword == _none &&
+      this->cKeyintegrity == none)
+  {
     return true;
+  }
 
   return false;
 }
@@ -79,7 +81,7 @@ bool key::is_null(void)
 //^^ -overloads
 ostream &operator<<(ostream &output, const key &object)
 {
-  output << "<Keyname - " << object.cKeyname << ">" << endl
+  output << "<key - " << object.cKeyname << ">" << endl
          << "\t-    Email:\t" << object.cEmail << endl
          << "\t- Username:\t" << object.cUsername << endl
          << "\t- Password:\t" << object.cPassword << endl
@@ -99,6 +101,6 @@ key &key::operator=(const key &object)
 //^^ -destructor
 key::~key()
 {
-  if (debugger == _on)
+  if (_debugger == _on)
     cout << "<" << this->cKeyname << " key>: destroyed" << endl;
 }

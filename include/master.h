@@ -1,30 +1,30 @@
-//TODO |--- PROGRAM::KEYCHAIN ---|
+// TODO |--- PROGRAM::KEYCHAIN ---|
 #pragma once
+
+//!! -DEPENDENCIES-
+#include <iostream> //** iostream
+#include <string>   //** string
+#include <unistd.h> //** unistd.h
+#include <getopt.h> //** getopt.h
+
 using namespace std;
+//^^ -MACROS-
+#define _on true       //** _on
+#define _off false     //** _off
+#define _none "<none>" //** _none
 
-//!! |--- DEPENDENCIES ---|
-#include <iostream>
-#include <string>   //* string
-#include <unistd.h> //* unistd.h
-
-//~~ |--- MACROS ---|
-#define _on true       //* _on
-#define _off false     //* _off
-#define _null "{null}" //* _null
-
-//& |--- ENUMERATIONS ---|
-enum strength //& - strength
+//&& -ENUMS-
+enum strength
 {
-  empty,    //* -- represents _null in the case there's no current password
-  poor,     //* -- poor password protection
-  weak,     //* -- weak password protection
-  strong,   //* -- strong password protection
-  excellent //* -- excellent password protection
+  none,     //* <none>        -- no password
+  poor,     //* <poor>        -- poor password
+  weak,     //* <weak>        -- weak password
+  strong,   //* <strong>      -- strong password
+  excellent //* <excellent>   -- excellent password
 };
 
-//?? |--- GLOBAL VARIABLES ---|
-extern bool debugger;
+//** -GLOBAL FUNCTIONS-
+ostream &operator<<(ostream &output, const strength &object); //**  1. operator<< (overload for password strength levels)
 
-//** */ |--- GLOBAL FUNCTIONS ---|
-//^  1. operator<< (overload for password strength levels)
-ostream &operator<<(ostream &output, const strength &object);
+//?? -GLOBAL VARIABLES-
+extern bool _debugger; //** debugger

@@ -12,8 +12,8 @@ private:                  //!! -Attributes-
 
 public: //!! -Functions-
   //^^ -constructor
-  key(string keyname = _null, string username = _null, string email = _null,
-      string password = _null, strength integrity = empty);
+  key(string keyname = "none", string username = _none, string email = _none,
+      string password = _none, strength integrity = none);
 
   //^^ -set
   void setKeyname(const string &nKeyname);
@@ -30,7 +30,7 @@ public: //!! -Functions-
   const strength getKeyintegrity(void);
 
   //^^ -class_functions
-  bool is_null(void);
+  bool is_empty(void);
 
   //^ -overloads
   friend istream &operator>>(istream &input, key &object);        //^^ operator>>
