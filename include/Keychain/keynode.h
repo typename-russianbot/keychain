@@ -1,8 +1,8 @@
 // TODO: class=<keynode>
 #pragma once
 #include "key.h"
-class keynode {
-
+class keynode
+{
 private:          //!! -Attributes-
   key cKey;       //^^ 1. cKey -- key data for current key in chain
   keynode *cNext; //^^ 2. cNext -- next key in the chain
@@ -11,6 +11,9 @@ private:          //!! -Attributes-
 public: //!! -Functions-
   //^^ -constructor
   keynode(key &nKey);
+
+  //^^ -destructor
+  ~keynode(void);
 
   //^^ -get
   key getKey(void);
@@ -22,6 +25,6 @@ public: //!! -Functions-
   void setNext(keynode *nNode);
   void setPrev(keynode *nNode);
 
-  //^^ -destructor
-  ~keynode(void);
+  //^^ -overloads
+  friend ostream& operator<<(ostream& out, const keynode* object);
 };

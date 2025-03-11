@@ -8,29 +8,20 @@ void test_bench(void)
   if (_debugger)
     cout << "<debugger activated>" << endl;
 
-  key keyA;
-  keynode *keyNode = new keynode(keyA);
-
-  if (keyA.is_empty())
-    cout << "keyA=<null>" << endl;
-  else
-    cout << "keyA!=<null>" << endl;
-
-  cout << "<NODE KEY>" << endl
-       << keyNode->getKey() << endl
-       << endl;
-
-  if (keyNode->getPrev() == nullptr)
-    cout << "<nullptr>" << endl;
-
-  if (keyNode->getNext() == nullptr)
-    cout << "<nullptr>" << endl;
+  keychain tester;
+  cout << tester.add_key() << endl; 
 }
 
 // && <keychain>
 void keychain(void)
 {
-  cout << "keychain" << endl;
+  //&& -KEYCHAIN-
+  cout << "||==== Keychain ====||==== <v.0.0.2> ====||"
+       << endl
+       << endl;
+
+  cout << "||=======================================||"
+       << endl;
 }
 
 // TODO <main>
@@ -44,9 +35,10 @@ int main(int argc, char *argv[])
   //! -a || adds a new key to the chain
   //& -r: || removes a specified key from the chain
   //? -p: || prints a specified key to the command line
+  //~ -t || enter testing bench
 
   //!! -FLAG PARSER-
-  while ((flags = getopt(argc, argv, "d")) != -1)
+  while ((flags = getopt(argc, argv, "hdar:p:t")) != -1)
   {
     switch (flags) //!++ flag handling goes here
     {
@@ -80,20 +72,18 @@ int main(int argc, char *argv[])
         cout << "flag=DISPLAY" << endl;
       break;
 
+    //~~ 6. <TESTING> ||
+    case 't':
+      if (_debugger)
+        cout << "flag=TESTING" << endl;
+      test_bench();
+      break;
+
     default:
+      cout << "default=HELP" << endl;
       break;
     }
   }
-
-  //&& -KEYCHAIN-
-  cout << "||==== Keychain ====||==== <v.0.0.2> ====||"
-       << endl
-       << endl;
-
-  test_bench(); //^^ -TESTING BENCH
-
-  cout << "||=======================================||"
-       << endl;
 
   return 0;
 }

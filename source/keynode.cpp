@@ -1,14 +1,11 @@
 #include "../include/Keychain/keynode.h"
-
 //^^ constructor
-keynode::keynode(key &nKey)
+keynode::keynode(key &nKey) : cKey(nKey), cPrev(nullptr), cNext(nullptr)
 {
-  this->cKey = nKey; 
-  this->cPrev = this->cNext = nullptr; 
 }
 
 //^^ -destructor
-keynode::~keynode(void) 
+keynode::~keynode(void)
 {
   if (_debugger == _on)
     cout << "deleting node" << endl;
@@ -23,3 +20,13 @@ keynode *keynode::getPrev(void) { return this->cPrev; }
 void keynode::setKey(key &nData) { this->cKey = nData; }
 void keynode::setNext(keynode *nNode) { this->cNext = nNode; }
 void keynode::setPrev(keynode *nNode) { this->cPrev = nNode; }
+
+//^^ -overloads
+ostream &operator<<(ostream &out, const keynode *object)
+{
+  out << "\t" << object->cKey << endl
+      << "\tPrevious Key:\t" << object->cPrev << endl
+      << "\tNext Key:    \t" << object->cNext << endl;
+
+  return out;
+}

@@ -28,7 +28,7 @@ run: $(TARGET)
 
 #&& 4. test - start program w/ test flags
 test: $(TARGET) 
-	./keychain -v
+	./keychain -t -d
 	
 #&& | --------------------- |
 

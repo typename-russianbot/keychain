@@ -1,24 +1,25 @@
 // TODO: class=<keychain>
 #pragma once
 #include "keynode.h"
-class keychain {
-private:           //!! -Attributes-
-  int cCounter;    //^^
-  keynode *cStart; //^^
-  keynode *cEnd;   //^^
+class keychain
+{
+private:              //!! -Attributes-
+  unsigned int cKeys; //^^ 
+  keynode *cStart;    //^^
+  keynode *cEnd;      //^^
 
 public: //!! -Functions-
   //^^ -construct
   keychain();
 
+  //^^ -destruct
+  ~keychain();
+
   //^^ -class_functions
   bool is_empty();
-  void add_key();
+  keynode* add_key();
   void remove_key();
 
   //^^ -overloads
   friend ostream &operator<<(ostream &out, const keychain &object);
-
-  //^^ -destruct
-  ~keychain();
 };

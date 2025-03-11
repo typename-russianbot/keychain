@@ -1,14 +1,13 @@
 #include "../include/Keychain/keychain.h"
-
+//^^ -constructor
 keychain::keychain()
-    : cCounter(0), cStart(nullptr), cEnd(nullptr) //^^ -construct
+    : cKeys(0), cStart(nullptr), cEnd(nullptr)
 {
-    cStart->setPrev(cEnd); 
-    cStart->setNext(nullptr); 
-
-
-    cout << cStart->getNext();
 }
 
-keychain::~keychain() //^^ -destruct
-{}
+//^^ -destructor
+keychain::~keychain()
+{
+}
+
+keynode *keychain::add_key() { return cStart; }
