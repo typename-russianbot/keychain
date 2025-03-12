@@ -69,8 +69,8 @@ bool keychain::isRestricted()
 //^ returns true if access is permitted, false if denied
 bool keychain::requestAccess(string passkey)
 {
-    char input;       //? input character
-    int attempts = 3; //? 3 passkey attempts to start
+    char input;       //? -input    | input for attempt looping
+    int attempts = 3; //? -attempts | # of attempts
 
     if (passkey == cPasskey) //* parameter passed
     {
@@ -92,7 +92,7 @@ bool keychain::requestAccess(string passkey)
             //! mismatch encountered
             while (true)
             {
-                cout << "Remaining Attempts: "<< attempts << " | " << "Re-enter Passkey? [y/n]: ";
+                cout << "Remaining Attempts: " << attempts << " | " << "Re-enter Passkey? [y/n]: ";
                 cin >> input;
                 input = tolower(input);
 
