@@ -34,8 +34,10 @@ enum clearance //& -clearance
 //** -GLOBAL FUNCTIONS-
 ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
 ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
-void HideTerminal();                                           //* HideTerminal
-void ShowTerminal();                                           //* ShowTerminal
+void HideTerminal();                                           //* -HideTerminal | alters shell to hide input
+
+//* -ShowTerminal | returns shell to original state
+void ShowTerminal();                                           
 
 //?? -GLOBAL VARS-
 extern bool _debugger; //? -debugger

@@ -1,6 +1,31 @@
 #include "../include/Keychain/keychain.h"
+//! <protected functions>
+string keychain::inputPasskey()
+{
+    string input, verification;
+
+    HideTerminal();
+
+    cout << "Passkey: ";
+    cin >> input;
+    cout << endl;
+
+    cout << "Re-enter Passkey: ";
+    cin >> verification;
+    cout << endl;
+
+    ShowTerminal();
+
+    if (input == verification)
+        return input;
+    else
+        return _none;
+}
+
+//* <public functions>
 //^^ -constructor
 keychain::keychain(string passkey)
+
     : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
     if (cPasskey == "")
@@ -9,7 +34,6 @@ keychain::keychain(string passkey)
     if (cPasskey == _none)
         cAccess = permitted;
 }
-
 //^^ -destructor
 keychain::~keychain()
 {
@@ -36,23 +60,14 @@ bool keychain::isRestricted() //^ -isRestricted
 }
 bool keychain::requestAccess(string passkey) //^ -requestAccess
 {
-    if (passkey == cPasskey) //* if a passkey was passed
+    if (passkey == cPasskey) //* if a passkey was passed as a parameter
     {
         cAccess = permitted;
         return true;
     }
-    else //! no passkey was passed
+    else //! no parameter passed
     {
-        string input;
-
-        HideTerminal(); 
-
-        cout << "Password: ";
-        cin >> input;
-
-        ShowTerminal(); 
-
-        if (input == cPasskey)
+        if (cPasskey == inputPasskey())
         {
             cAccess = permitted;
             return true;
@@ -94,6 +109,19 @@ void keychain::add(const key &nKey) //^ -add
     }
 
     this->cKeys++; //* update the number of keys in this chain
+}
+bool keychain::remove(string keyident) //^ -remove
+{
+    if (keyident == _none)
+        return false;
+    else
+    {
+        //? search thru chain
+        //? 1. by keyname
+        //? 2. by email
+        //? 3. by username
+        return true; 
+    }
 }
 
 //^^ -overloads

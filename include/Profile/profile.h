@@ -3,11 +3,13 @@
 #include "../Keychain/keychain.h"
 class profile
 {
-private:                //!! -Attributes-
-    string mUsername;   //* mUsername   | profile's username
-    string mPasskey;    //* mPasskey    | profile's passkey
+private:              //!! -Attributes-
+    string mUsername; //* mUsername   | profile's username
+    string mPasskey;  //* mPasskey    | profile's passkey
 
-public:         //!! -Functions-
-    profile(string username = _none, string passkey = _none);  //^^ -constructor
-    ~profile(); //^^ -destructor
+protected:                                                    //!! -Protected Functions-
+
+public:                                                       //!! -Private Functions-
+    profile(string username = _none, string passkey = _none); //^^ -constructor
+    ~profile();                                               //^^ -destructor
 };
