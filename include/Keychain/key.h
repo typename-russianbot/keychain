@@ -4,39 +4,35 @@
 class key
 {
 private:                  //!! -Attributes-
-  string cKeyname;        //^^ cKeyname             -- what the key unlocks (accounts, servers, etc.)
-  string cUsername;       //^^ cUsername            -- username for any given key
-  string cEmail;          //^^ cEmail               -- email for any given key
-  string cPassword;       //^^ cPassword            -- password for any given key
-  strength cKeyintegrity; //^^ cKeyintegrity        -- password integrity for the current stored password
+  string cKeyname;        //* cKeyname             -- what the key unlocks (accounts, servers, etc.)
+  string cUsername;       //* cUsername            -- username for any given key
+  string cEmail;          //* cEmail               -- email for any given key
+  string cPassword;       //* cPassword            -- password for any given key
+  integrity cKeyintegrity; //* cKeyintegrity        -- password integrity for the current stored password
 
 public: //!! -Functions-
-  //^^ -constructor
   key(string keyname = "none", string username = _none, string email = _none,
-      string password = _none, strength integrity = none);
+      string password = _none, integrity integrity = none); //^^ -constructor
+  ~key();                                                  //^^ -destructor
 
   //^^ -set
-  void setKeyname(const string &nKeyname);
-  void setUsername(const string &nUsername);
-  void setEmail(const string &nEmail);
-  void setPassword(const string &nPassword);
-  void setKeyintegrity(const strength &nIntegrity);
+  void setKeyname(const string &nKeyname);          //& setKeyname
+  void setUsername(const string &nUsername);        //& setUsername
+  void setEmail(const string &nEmail);              //& setEmail
+  void setPassword(const string &nPassword);        //& setPassword
+  void setKeyintegrity(const integrity &nIntegrity); //& setKeyintegrity
 
   //^^ -get
-  const string getKeyname(void);
-  const string getUsername(void);
-  const string getEmail(void);
-  const string getPassword(void);
-  const strength getKeyintegrity(void);
+  const string getKeyname(void);        //& getKeyname
+  const string getUsername(void);       //& getUsername
+  const string getEmail(void);          //& getEmail
+  const string getPassword(void);       //& getPassword
+  const integrity getKeyintegrity(void); //& getKeyintegrity
 
-  //^^ -class_functions
-  bool is_empty(void);
+  //^^ -<key>_functions
 
   //^ -overloads
-  friend istream &operator>>(istream &input, key &object);        //^^ operator>>
-  friend ostream &operator<<(ostream &output, const key &object); //^^ operator<<
-  key &operator=(const key &object);                              //^^ operator=
-
-  //^^ -destructor
-  ~key();
+  friend istream &operator>>(istream &input, key &object);        //& operator>>
+  friend ostream &operator<<(ostream &output, const key &object); //& operator<<
+  key &operator=(const key &object);                              //& operator=
 };

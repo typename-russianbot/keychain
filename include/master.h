@@ -1,30 +1,38 @@
-// TODO |--- PROGRAM::KEYCHAIN ---|
+// TODO -PROGRAM <KEYCHAIN>
 #pragma once
 
 //!! -DEPENDENCIES-
-#include <iostream> //** iostream
-#include <string>   //** string
-#include <unistd.h> //** unistd.h
-#include <getopt.h> //** getopt.h
+#include <iostream> //! iostream
+#include <string>   //! string
+#include <unistd.h> //! unistd.h
+#include <getopt.h> //! getopt.h
 
+//~~ -NAMESPACES-
 using namespace std;
+
 //^^ -MACROS-
-#define _on true       //** _on
-#define _off false     //** _off
-#define _none "<none>" //** _none
+#define _on true       //^ -on
+#define _off false     //^ -off
+#define _none "<none>" //^ -none
 
 //&& -ENUMS-
-enum strength
+enum integrity //& -integrity
 {
-  none,     //* <none>        -- no password
-  poor,     //* <poor>        -- poor password
-  weak,     //* <weak>        -- weak password
-  strong,   //* <strong>      -- strong password
-  excellent //* <excellent>   -- excellent password
+  none,     //& <none>        -- no password
+  poor,     //& <poor>        -- poor password
+  weak,     //& <weak>        -- weak password
+  strong,   //& <strong>      -- strong password
+  excellent //& <excellent>   -- excellent password
+};
+enum clearance //& -clearance
+{
+  restricted,  //& <restricted>    -- all access restricted | default clearance state
+  unrestricted //& <unrestricted>  -- complete access | when password for account is given
 };
 
 //** -GLOBAL FUNCTIONS-
-ostream &operator<<(ostream &output, const strength &object); //**  1. operator<< (overload for password strength levels)
+ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
+ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
 
-//?? -GLOBAL VARIABLES-
-extern bool _debugger; //** debugger
+//?? -GLOBAL VARS-
+extern bool _debugger; //? -debugger

@@ -1,8 +1,7 @@
 #include "../include/Keychain/key.h"
-
-//& |--- GLOBAL FUNCTIONS ---|
-//^  1. operator<< (overload for password strength levels)
-ostream &operator<<(ostream &output, const strength &object)
+//!! <master>
+//** 1. operator<< (enum==STRENGTH)
+ostream &operator<<(ostream &output, const integrity &object)
 {
   switch (object)
   {
@@ -25,16 +24,39 @@ ostream &operator<<(ostream &output, const strength &object)
 
   return output;
 }
+//** 2. operator<< (enum==ACCESS)
+ostream &operator<<(ostream &out, const clearance &object)
+{
+  switch (object)
+  {
+  default: //* by default, access to most info should be restricted
+    cout << "<restricted>";
+    break;
 
-//& |--- GLOBAL VARIABLES ---|
-//^  1. BOOL -- debugger
-bool _debugger;
+  case 1:
+    cout << "<unrestricted>";
+    break;
+  }
 
+  return out;
+}
+
+//??  1. BOOL -- debugger
+bool _debugger = _off;
+
+//& <key>
 //^^ -constructor
 key::key(string destination, string username, string email, string password,
-         strength integrity)
+         integrity integrity)
     : cKeyname(destination), cUsername(username), cEmail(email),
       cPassword(password), cKeyintegrity(integrity) {}
+
+//^^ -destructor
+key::~key()
+{
+  if (_debugger == _on)
+    cout << "<" << this->cKeyname << " key>: destroyed" << endl;
+}
 
 //^^ -set
 void key::setKeyname(const string &nKeyname)
@@ -53,7 +75,7 @@ void key::setPassword(const string &nPassword)
 {
   this->cPassword = nPassword;
 }
-void key::setKeyintegrity(const strength &nIntegrity)
+void key::setKeyintegrity(const integrity &nIntegrity)
 {
   this->cKeyintegrity = nIntegrity;
 }
@@ -63,25 +85,14 @@ const string key::getKeyname(void) { return this->cKeyname; }
 const string key::getUsername(void) { return this->cUsername; }
 const string key::getEmail(void) { return this->cEmail; }
 const string key::getPassword(void) { return this->cPassword; }
-const strength key::getKeyintegrity(void) { return this->cKeyintegrity; }
+const integrity key::getKeyintegrity(void) { return this->cKeyintegrity; }
 
-//^^ -key_functions
-bool key::is_empty(void) //^^ 1. is_empty
-{
-  if (this->cKeyname == "none" && this->cUsername == _none &&
-      this->cEmail == _none && this->cPassword == _none &&
-      this->cKeyintegrity == none)
-  {
-    return true;
-  }
-
-  return false;
-}
+//^^ -<key>_functions
 
 //^^ -overloads
-ostream &operator<<(ostream &output, const key &object)
+ostream &operator<<(ostream &output, const key &object) //& -operator<<
 {
-  output << "<key - " << object.cKeyname << ">" << endl
+  output << "<" << object.cKeyname << ">" << endl
          << "\t-    Email:\t" << object.cEmail << endl
          << "\t- Username:\t" << object.cUsername << endl
          << "\t- Password:\t" << object.cPassword << endl
@@ -89,18 +100,11 @@ ostream &operator<<(ostream &output, const key &object)
 
   return output;
 }
-key &key::operator=(const key &object)
+key &key::operator=(const key &object) //& -operator=
 {
   this->cKeyname = object.cKeyname;
   this->cUsername = object.cUsername;
   this->cEmail = object.cEmail;
   this->cPassword = object.cPassword;
   return *this;
-}
-
-//^^ -destructor
-key::~key()
-{
-  if (_debugger == _on)
-    cout << "<" << this->cKeyname << " key>: destroyed" << endl;
 }

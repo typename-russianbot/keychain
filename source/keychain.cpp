@@ -1,7 +1,7 @@
 #include "../include/Keychain/keychain.h"
 //^^ -constructor
 keychain::keychain()
-    : cKeys(0), cHead(nullptr), cTail(nullptr)
+    : cKeys(0), cKeyaccess(restricted), cHead(nullptr), cTail(nullptr)
 {
 }
 
@@ -15,68 +15,66 @@ keychain::~keychain()
 }
 
 //^^ -keychain-functions
-bool keychain::is_empty()
+bool keychain::isEmpty() //^ -isEmpty
 {
-    if (cHead == nullptr && cTail == nullptr)
+    if (cHead == nullptr && cTail == nullptr) //! 
         return true;
 
     return false;
 }
-
 void keychain::add(const key &nKey)
 {
-    keynode *newNode = new keynode(nKey);
-    //** CONDITIONS */
-    //* 1. if both, start & end are empty, store key in start & keep end nullptr
-    if (cHead == nullptr && cTail == nullptr)
+    keynode *newNode = new keynode(nKey); //* allocate space for a new node
+
+    if (cHead == nullptr && cTail == nullptr) //! 1. if both, start & end are empty, store key in start & keep end nullptr
     {
         cHead = newNode;
+        cTail = newNode;
         cHead->setNext(cTail);
+        cHead->setPrev(cTail);
     }
-
-    //& 2. if a startings node exists, but end is empty, store key in end node
-    else if (cHead != nullptr && cTail == nullptr)
+    else if (cHead != nullptr && cTail == cHead) //! 2. if a startings node exists, but end is empty, store key in end node
     {
         cTail = newNode;
-        cTail->setNext(cHead);
-        cTail->setPrev(cHead);
 
         cHead->setPrev(cTail);
         cHead->setNext(cTail);
+        cTail->setNext(cHead);
+        cTail->setPrev(cHead);
     }
-    //? 3. if both start & end are occupied, store key between start & end, then link all keys
-    else if (cHead != nullptr && cTail != nullptr)
+    else //! 3. if both start & end are occupied, store key between start & end, then link all keys
     {
+        //* set next & prev to head & tail respectively
+        newNode->setNext(cHead);
+        newNode->setPrev(cTail);
+
+        cTail->setNext(newNode);
+        cHead->setPrev(newNode);
+
+        cTail = newNode;
     }
 
     this->cKeys++; //* update the number of keys in this chain
 }
 
+//^^ -overloads
 ostream &operator<<(ostream &out, const keychain &object)
 {
-    keynode *copy = object.cHead; //* copy of head node
+    keynode *copy = object.cHead; //! make a copy of cHead
 
     if (!copy) //! keychain is empty
     {
-        out << "<keychain>=EMPTY" << endl;
+        out << "-Keychain Empty-" << endl;
     }
-    else if (copy->getNext() == copy->getPrev()) //! only cHead && cTail exist
+    else
     {
         out << "-My Keys-" << endl
             << endl
             << copy->getKey() << endl;
 
-        copy->getNext();
-        out << copy->getKey() << endl;
-    }
-    else //! print Head Node, n Nodes between head & tail, then tail node
-    {
-        out << "-My Keys-" << endl
-            << endl
-            << object.cKeys
-            << endl;
+        copy = copy->getNext();
 
-        while (copy)
+        while (copy != object.cHead)
         {
             out << copy->getKey() << endl;
             copy = copy->getNext();

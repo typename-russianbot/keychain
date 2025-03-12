@@ -9,12 +9,8 @@ void test_bench(void)
 
   keychain tester;
 
-  //& test is empty
-  // if (tester.is_empty())
-  //   cout << tester << endl;
-
   //* create & add 4 keys to the chain
-  key key1, key2, key3, key4;
+  key key1("k1"), key2("k2"), key3("k3"), key4("k4");
   tester.add(key1);
   tester.add(key2);
   tester.add(key3);

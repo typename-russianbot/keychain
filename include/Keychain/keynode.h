@@ -4,28 +4,25 @@
 class keynode
 {
 private:          //!! -Attributes-
-  key cKey;       //^^ 1. cKey -- key data for current key in chain
-  keynode *cNext; //^^ 2. cNext -- next key in the chain
-  keynode *cPrev; //^^ 3. cPrev -- previous key in the chain
+  key cKey;       //* 1. cKey -- key data for current key in chain
+  keynode *cNext; //* 2. cNext -- next key in the chain
+  keynode *cPrev; //* 3. cPrev -- previous key in the chain
 
-public: //!! -Functions-
-  //^^ -constructor
-  keynode(const key &nKey);
-
-  //^^ -destructor
-  ~keynode(void);
+public:                     //!! -Functions-
+  keynode(const key &nKey); //^^ -constructor
+  ~keynode(void);           //^^ -destructor
 
   //^^ -get
-  key getKey(void);
-  keynode *getNext(void);
-  keynode *getPrev(void);
+  key getKey(void);       //& -getKey
+  keynode *getNext(void); //& -getNext
+  keynode *getPrev(void); //& -getPrev
 
   //^^ -set
-  void setKey(const key &nKey);
-  void setStart(keynode *nStart); 
-  void setNext(keynode *nNode);
-  void setPrev(keynode *nNode);
+  void setKey(const key &nKey);   //& -setKey
+  void setStart(keynode *nStart); //& -setStart
+  void setNext(keynode *nNode);   //& -setNext
+  void setPrev(keynode *nNode);   //& -setPrev
 
   //^^ -overloads
-  friend ostream& operator<<(ostream& out, const keynode* object);
+  friend ostream &operator<<(ostream &out, const keynode *object); //& operator<<
 };
