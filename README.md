@@ -1,10 +1,8 @@
-Program | Password.Keychain | by Matthew H.
+Password Keychain | by Matthew H.
 
-|--- Program Function ---| 
+| Program Function |
+  - a linked list of keys holding data for websites
 
-- {UP-TIME}: 
-	real    0m0.296s
-	user    0m0.183s	
-	sys     0m0.057s
-
+| How to Use | 
+  - 
         
