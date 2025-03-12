@@ -26,8 +26,8 @@ enum integrity //& -integrity
 };
 enum clearance //& -clearance
 {
-  restricted,  //& <restricted>    -- all access restricted | default clearance state
-  unrestricted //& <unrestricted>  -- complete access | when password for account is given
+  restricted, //& <restricted>    -- all access restricted | default clearance state
+  permitted   //& <permitted>     -- complete access | when password for account is given
 };
 
 //** -GLOBAL FUNCTIONS-

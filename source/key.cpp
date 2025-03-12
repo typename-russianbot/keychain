@@ -30,11 +30,11 @@ ostream &operator<<(ostream &out, const clearance &object)
   switch (object)
   {
   default: //* by default, access to most info should be restricted
-    cout << "<restricted>";
+    cout << "<Restricted>";
     break;
 
   case 1:
-    cout << "<unrestricted>";
+    cout << "<Granted>";
     break;
   }
 

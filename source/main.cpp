@@ -4,10 +4,11 @@
 // ^^ <test_bench>
 void test_bench(void)
 {
-  if (_debugger)
+  if (_debugger) //! debugger is on
     cout << "<debugger activated>" << endl;
 
-  keychain myKeychain;
+  //& myKeychain
+  keychain myKeychain("jimmy-johns");
 
   //* create & add 4 keys to the chain
   key key1("k1"), key2("k2"), key3("k3"), key4("k4");

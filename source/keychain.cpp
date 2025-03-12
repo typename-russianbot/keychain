@@ -1,8 +1,13 @@
 #include "../include/Keychain/keychain.h"
 //^^ -constructor
-keychain::keychain()
-    : cKeys(0), cAccess(restricted), cHead(nullptr), cTail(nullptr)
+keychain::keychain(string passkey)
+    : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
+    if (cPasskey == "")
+        cPasskey = _none;
+
+    if (cPasskey == _none)
+        cAccess = permitted;
 }
 
 //^^ -destructor
@@ -26,6 +31,18 @@ bool keychain::isRestricted() //^ -isRestricted
 {
     if (cAccess == restricted) //! if cAccess = restricted, return true
         return true;
+
+    return false;
+}
+bool keychain::requestAccess(const string &password) //^ -requestAccess
+{
+    string input;
+
+    //* prompt for password input
+    cout << "Password: ";
+    cin >> input;
+
+    //* compare to profile passkey in
 
     return false;
 }
@@ -70,26 +87,18 @@ ostream &operator<<(ostream &out, const keychain &object)
     //* create a copy of keychain
     keynode *copy = object.cHead;
 
-    //! keychain is empty
-    if (!copy)
-    {
-        out << "-Keychain Empty-" << endl;
-    }
-    else
-    {
-        //! check for permissions
-        if (object.cAccess == restricted)
-        {
-            out << "<Permission Restricted>" << endl;
-            return out;
-        }
-        
-        //* print keys if permissions were granted
-        out << "Keys Found: " << object.cKeys << endl
-            << "Access: " << object.cAccess << endl
-            << endl;
+    out << "| Keychain Access: " << object.cAccess << " | ";
 
-        out << "-My Keys-" << endl
+    if (object.cAccess == restricted) //! keychain access restricted
+        return out;
+
+    if (!copy) //! keychain is empty
+    {
+        out << "Keys Found: 0" << endl;
+    }
+    else //* print keys if access reqs. met or no passkey exists
+    {
+        out << "Keys Found: " << object.cKeys << " |"<< endl
             << endl
             << copy->getKey() << endl;
 
