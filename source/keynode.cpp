@@ -1,6 +1,6 @@
 #include "../include/Keychain/keynode.h"
 //^^ constructor
-keynode::keynode(key &nKey) : cKey(nKey), cPrev(nullptr), cNext(nullptr)
+keynode::keynode(const key &nKey) : cKey(nKey), cPrev(nullptr), cNext(nullptr)
 {
 }
 
@@ -17,7 +17,7 @@ keynode *keynode::getNext(void) { return this->cNext; }
 keynode *keynode::getPrev(void) { return this->cPrev; }
 
 //^^ -set
-void keynode::setKey(key &nData) { this->cKey = nData; }
+void keynode::setKey(const key &nKey) { this->cKey = nKey; }
 void keynode::setNext(keynode *nNode) { this->cNext = nNode; }
 void keynode::setPrev(keynode *nNode) { this->cPrev = nNode; }
 

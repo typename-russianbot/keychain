@@ -10,7 +10,7 @@ private:          //!! -Attributes-
 
 public: //!! -Functions-
   //^^ -constructor
-  keynode(key &nKey);
+  keynode(const key &nKey);
 
   //^^ -destructor
   ~keynode(void);
@@ -21,7 +21,8 @@ public: //!! -Functions-
   keynode *getPrev(void);
 
   //^^ -set
-  void setKey(key &nData);
+  void setKey(const key &nKey);
+  void setStart(keynode *nStart); 
   void setNext(keynode *nNode);
   void setPrev(keynode *nNode);
 

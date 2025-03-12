@@ -20,7 +20,7 @@ all:  $(TARGET)
 
 #&& 2. clean - remove object files & executables
 clean: 
-	rm -rf $(TARGET) $(BUILD) && clear
+	rm -rf $(TARGET) $(BUILD)
 
 #&& 3. run - start program
 run: $(TARGET) 

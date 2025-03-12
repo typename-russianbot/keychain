@@ -4,9 +4,11 @@
 class keychain
 {
 private:              //!! -Attributes-
-  unsigned int cKeys; //^^ 
-  keynode *cStart;    //^^
-  keynode *cEnd;      //^^
+  unsigned int cKeys; //^^  -cKeys
+  keynode *cHead;     //^^  -cHead
+  keynode *cTail;     //^^  -cTail
+
+  void getHead();
 
 public: //!! -Functions-
   //^^ -construct
@@ -15,10 +17,11 @@ public: //!! -Functions-
   //^^ -destruct
   ~keychain();
 
-  //^^ -class_functions
-  bool is_empty();
-  keynode* add_key();
-  void remove_key();
+  //^^ -<keychain>_functions
+
+  bool is_empty();           //^ -is_empty || returns true is 
+  void add(const key &nKey); //^ -add
+  void remove();             //^ -remove 
 
   //^^ -overloads
   friend ostream &operator<<(ostream &out, const keychain &object);

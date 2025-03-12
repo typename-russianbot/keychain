@@ -1,6 +1,5 @@
 #include "../include/Keychain/key.h"
 #include "../include/Keychain/keychain.h"
-#include "../include/Keychain/keynode.h"
 
 // ^^ <test_bench>
 void test_bench(void)
@@ -9,7 +8,16 @@ void test_bench(void)
     cout << "<debugger activated>" << endl;
 
   keychain tester;
-  cout << tester.add_key() << endl; 
+
+  //& test is empty
+  if (tester.is_empty())
+    cout << tester << endl; 
+
+  key key1("github", "typename-russianbot");
+  tester.add(key1); 
+
+  cout << tester << endl; 
+    
 }
 
 // && <keychain>
