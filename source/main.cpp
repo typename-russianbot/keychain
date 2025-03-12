@@ -10,14 +10,17 @@ void test_bench(void)
   keychain tester;
 
   //& test is empty
-  if (tester.is_empty())
-    cout << tester << endl; 
+  // if (tester.is_empty())
+  //   cout << tester << endl;
 
-  key key1("github", "typename-russianbot");
-  tester.add(key1); 
+  //* create & add 4 keys to the chain
+  key key1, key2, key3, key4;
+  tester.add(key1);
+  tester.add(key2);
+  tester.add(key3);
+  tester.add(key4);
 
-  cout << tester << endl; 
-    
+  cout << tester << endl;
 }
 
 // && <keychain>
