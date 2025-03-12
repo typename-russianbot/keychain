@@ -10,44 +10,21 @@ private:              //!! -Attributes-
   keynode *cHead;     //*  -cHead     | head of keychain
   keynode *cTail;     //*  -cTail     | tail of keychain
 
-protected: //!! -Protected Functions-
-  //& | inputPasskey |
-  //? - returns user inputted passkey
-  string inputPasskey();
+protected:               //!! -Protected Functions-
+  string inputPasskey(); //& inputPasskey()
 
 public:                             //!! -Private Functions-
   keychain(string passkey = _none); //^^ -constructor
   ~keychain();                      //^^ -destructor
 
   //^^ -<keychain> Functions-
-
-  //& | isEmpty() |
-  //? return true if empty, otherwise false
-  bool isEmpty();
-
-  //& | isRestricted() |
-  //? returns true if restricted, otherwise false
-  bool isRestricted();
-
-  //& | requestAccess() |
-  //? returns true if access is permitted, false if denied
-  bool requestAccess(string passkey = _none);
-
-  //& | setPassword() |
-  //? - sets cPasskey to the passed string parameter
-  bool setPassword(string passkey = _none);
-
-  //& | add() |
-  //? - adds a new key to the chain
-  void add(const key &nKey);
-
-  //& | remove() |
-  //? - removes a specified key from the chain
-  bool remove(string keyident = _none);
-
-  //& | lookup() |
-  //? - searches for a specific key on the chain & displays
-  bool lookup(string keyident = _none);
+  bool isEmpty();                             //& isEmpty()
+  bool isRestricted();                        //& isRestricted()
+  bool requestAccess(string passkey = _none); //& requestAccess()
+  bool setPassword(string passkey = _none);   //& setPassword()
+  void add(const key &nKey);                  //& add()
+  bool remove(string keyident = _none);       //& remove()
+  bool lookup(string keyident = _none);       //& lookup()
 
   //^^ -Overloads-
   friend ostream &operator<<(ostream &out, const keychain &object); //& -operator<<

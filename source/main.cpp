@@ -7,7 +7,7 @@ void test_bench(void)
   if (_debugger) //! debugger is on
     cout << "<debugger activated>" << endl;
 
-  //& myKeychain
+  //* myKeychain
   keychain myKeychain("jimmy-johns");
 
   //* create & add 4 keys to the chain
@@ -17,8 +17,10 @@ void test_bench(void)
   myKeychain.add(key3);
   myKeychain.add(key4);
 
-  myKeychain.requestAccess(); 
+  //* request for passkey access
+  myKeychain.requestAccess();
 
+  //* display myKeychain
   cout << myKeychain << endl;
 }
 

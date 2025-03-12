@@ -1,5 +1,9 @@
 #include "../include/Keychain/keychain.h"
+#include <cctype>
+
 //! <protected functions>
+
+//^ returns the user inputted
 string keychain::inputPasskey()
 {
     string input, verification;
@@ -23,7 +27,9 @@ string keychain::inputPasskey()
 }
 
 //* <public functions>
-//^^ -constructor
+
+//^^ -Constructor/Destructor-
+//^ constructs chain
 keychain::keychain(string passkey)
 
     : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
@@ -34,7 +40,7 @@ keychain::keychain(string passkey)
     if (cPasskey == _none)
         cAccess = permitted;
 }
-//^^ -destructor
+//^ destroys chain
 keychain::~keychain()
 {
     if (_debugger)
@@ -43,40 +49,71 @@ keychain::~keychain()
     this->cHead = this->cTail = nullptr;
 }
 
-//^^ -<keychain>_functions
-bool keychain::isEmpty() //^ -isEmpty
+//^^ -<keychain> Functions-
+//^ return true if empty, otherwise false
+bool keychain::isEmpty()
 {
     if (cHead == nullptr && cTail == nullptr) //! if cHead & cTail = nullptr, return true
         return true;
 
     return false;
 }
-bool keychain::isRestricted() //^ -isRestricted
+//^ returns true if restricted, otherwise false
+bool keychain::isRestricted()
 {
     if (cAccess == restricted) //! if cAccess = restricted, return true
         return true;
 
     return false;
 }
-bool keychain::requestAccess(string passkey) //^ -requestAccess
+//^ returns true if access is permitted, false if denied
+bool keychain::requestAccess(string passkey)
 {
-    if (passkey == cPasskey) //* if a passkey was passed as a parameter
+    char input;       //? input character
+    int attempts = 3; //? 3 passkey attempts to start
+
+    if (passkey == cPasskey) //* parameter passed
     {
         cAccess = permitted;
         return true;
     }
+
     else //! no parameter passed
     {
-        if (cPasskey == inputPasskey())
+        while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
         {
-            cAccess = permitted;
-            return true;
+            //* match
+            if (cPasskey == inputPasskey())
+            {
+                cAccess = permitted;
+                return true;
+            }
+
+            //! mismatch encountered
+            while (true)
+            {
+                cout << "Remaining Attempts: "<< attempts << " | " << "Re-enter Passkey? [y/n]: ";
+                cin >> input;
+                input = tolower(input);
+
+                if (input == 'n') //! exit function when equal to 'n'
+                    return false;
+                else if (input == 'y') //* break free of loop when valid
+                    break;
+            }
+            attempts--;
         }
     }
 
     return false;
 }
-void keychain::add(const key &nKey) //^ -add
+//^ sets cPasskey to the passed string parameter
+bool keychain::setPassword(string passkey)
+{
+    return false;
+}
+//^ adds a new key to the chain
+void keychain::add(const key &nKey)
 {
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
@@ -110,7 +147,8 @@ void keychain::add(const key &nKey) //^ -add
 
     this->cKeys++; //* update the number of keys in this chain
 }
-bool keychain::remove(string keyident) //^ -remove
+//^ removes a specified key from the chain
+bool keychain::remove(string keyident)
 {
     if (keyident == _none)
         return false;
@@ -120,11 +158,16 @@ bool keychain::remove(string keyident) //^ -remove
         //? 1. by keyname
         //? 2. by email
         //? 3. by username
-        return true; 
+        return true;
     }
 }
+//^ searches for a specific key on the chain & displays
+bool keychain::lookup(string keyident)
+{
+    return false;
+}
 
-//^^ -overloads
+//^^ -overloads-
 ostream &operator<<(ostream &out, const keychain &object)
 {
     //* create a copy of keychain

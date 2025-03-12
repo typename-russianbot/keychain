@@ -3,6 +3,7 @@
 
 //!! -DEPENDENCIES-
 #include <iostream>  //! iostream
+#include <cctype>    //! cctype
 #include <string.h>  //! string.h
 #include <unistd.h>  //! unistd.h
 #include <getopt.h>  //! getopt.h
@@ -37,7 +38,7 @@ ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (
 void HideTerminal();                                           //* -HideTerminal | alters shell to hide input
 
 //* -ShowTerminal | returns shell to original state
-void ShowTerminal();                                           
+void ShowTerminal();
 
 //?? -GLOBAL VARS-
 extern bool _debugger; //? -debugger
