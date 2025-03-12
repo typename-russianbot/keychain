@@ -7,16 +7,16 @@ void test_bench(void)
   if (_debugger)
     cout << "<debugger activated>" << endl;
 
-  keychain tester;
+  keychain myKeychain;
 
   //* create & add 4 keys to the chain
   key key1("k1"), key2("k2"), key3("k3"), key4("k4");
-  tester.add(key1);
-  tester.add(key2);
-  tester.add(key3);
-  tester.add(key4);
+  myKeychain.add(key1);
+  myKeychain.add(key2);
+  myKeychain.add(key3);
+  myKeychain.add(key4);
 
-  cout << tester << endl;
+  cout << myKeychain << endl;
 }
 
 // && <keychain>

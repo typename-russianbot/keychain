@@ -1,7 +1,7 @@
 #include "../include/Keychain/keychain.h"
 //^^ -constructor
 keychain::keychain()
-    : cKeys(0), cKeyaccess(restricted), cHead(nullptr), cTail(nullptr)
+    : cKeys(0), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
 }
 
@@ -14,15 +14,22 @@ keychain::~keychain()
     this->cHead = this->cTail = nullptr;
 }
 
-//^^ -keychain-functions
+//^^ -<keychain>_functions
 bool keychain::isEmpty() //^ -isEmpty
 {
-    if (cHead == nullptr && cTail == nullptr) //! 
+    if (cHead == nullptr && cTail == nullptr) //! if cHead & cTail = nullptr, return true
         return true;
 
     return false;
 }
-void keychain::add(const key &nKey)
+bool keychain::isRestricted() //^ -isRestricted
+{
+    if (cAccess == restricted) //! if cAccess = restricted, return true
+        return true;
+
+    return false;
+}
+void keychain::add(const key &nKey) //^ -add
 {
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
@@ -60,14 +67,28 @@ void keychain::add(const key &nKey)
 //^^ -overloads
 ostream &operator<<(ostream &out, const keychain &object)
 {
-    keynode *copy = object.cHead; //! make a copy of cHead
+    //* create a copy of keychain
+    keynode *copy = object.cHead;
 
-    if (!copy) //! keychain is empty
+    //! keychain is empty
+    if (!copy)
     {
         out << "-Keychain Empty-" << endl;
     }
     else
     {
+        //! check for permissions
+        if (object.cAccess == restricted)
+        {
+            out << "<Permission Restricted>" << endl;
+            return out;
+        }
+        
+        //* print keys if permissions were granted
+        out << "Keys Found: " << object.cKeys << endl
+            << "Access: " << object.cAccess << endl
+            << endl;
+
         out << "-My Keys-" << endl
             << endl
             << copy->getKey() << endl;

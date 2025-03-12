@@ -4,9 +4,9 @@
 class keynode
 {
 private:          //!! -Attributes-
-  key cKey;       //* 1. cKey -- key data for current key in chain
-  keynode *cNext; //* 2. cNext -- next key in the chain
-  keynode *cPrev; //* 3. cPrev -- previous key in the chain
+  key cKey;       //* -cKey   | key data for current key in chain
+  keynode *cNext; //* -cNext  | next key in the chain
+  keynode *cPrev; //* -cPrev  | previous key in the chain
 
 public:                     //!! -Functions-
   keynode(const key &nKey); //^^ -constructor
