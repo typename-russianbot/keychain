@@ -10,14 +10,14 @@ private:              //!! -Attributes-
   keynode *cHead;     //*  -cHead     | head of keychain
   keynode *cTail;     //*  -cTail     | tail of keychain
 
-public:        //!! -Functions-
-  keychain(string passkey = _none);  //^^ -constructor
-  ~keychain(); //^^ -destructor
+public:                             //!! -Functions-
+  keychain(string passkey = _none); //^^ -constructor
+  ~keychain();                      //^^ -destructor
 
   //^^ -<keychain>_functions
   bool isEmpty();                             //& -isEmpty         | returns true if empty
   bool isRestricted();                        //& -isRestricted    | returns true if restricted
-  bool requestAccess(const string &password); //& -requestAccess   | returns true if access is permitted
+  bool requestAccess(string passkey = _none); //& -requestAccess   | returns true if access is permitted
   void add(const key &nKey);                  //& -add             | adds a new key to the chain
   void remove();                              //& -remove          | removes a specified key from the chain
   void lookup();                              //& -lookup          | searches for a specific key on the chain

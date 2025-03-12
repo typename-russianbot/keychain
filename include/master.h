@@ -2,10 +2,11 @@
 #pragma once
 
 //!! -DEPENDENCIES-
-#include <iostream> //! iostream
-#include <string>   //! string
-#include <unistd.h> //! unistd.h
-#include <getopt.h> //! getopt.h
+#include <iostream>  //! iostream
+#include <string.h>  //! string.h
+#include <unistd.h>  //! unistd.h
+#include <getopt.h>  //! getopt.h
+#include <termios.h> //! termios.h
 
 //~~ -NAMESPACES-
 using namespace std;
@@ -26,13 +27,15 @@ enum integrity //& -integrity
 };
 enum clearance //& -clearance
 {
-  restricted, //& <restricted>    -- all access restricted | default clearance state
-  permitted   //& <permitted>     -- complete access | when password for account is given
+  restricted, //& <restricted>    -- access restricted
+  permitted   //& <permitted>     -- access permitted
 };
 
 //** -GLOBAL FUNCTIONS-
 ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
 ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
+void HideTerminal();                                           //* HideTerminal
+void ShowTerminal();                                           //* ShowTerminal
 
 //?? -GLOBAL VARS-
 extern bool _debugger; //? -debugger

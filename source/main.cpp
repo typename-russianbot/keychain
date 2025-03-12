@@ -17,6 +17,8 @@ void test_bench(void)
   myKeychain.add(key3);
   myKeychain.add(key4);
 
+  myKeychain.requestAccess(); 
+
   cout << myKeychain << endl;
 }
 

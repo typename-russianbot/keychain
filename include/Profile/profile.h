@@ -8,6 +8,6 @@ private:                //!! -Attributes-
     string mPasskey;    //* mPasskey    | profile's passkey
 
 public:         //!! -Functions-
-    profile();  //^^ -constructor
+    profile(string username = _none, string passkey = _none);  //^^ -constructor
     ~profile(); //^^ -destructor
 };

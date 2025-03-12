@@ -34,15 +34,30 @@ bool keychain::isRestricted() //^ -isRestricted
 
     return false;
 }
-bool keychain::requestAccess(const string &password) //^ -requestAccess
+bool keychain::requestAccess(string passkey) //^ -requestAccess
 {
-    string input;
+    if (passkey == cPasskey) //* if a passkey was passed
+    {
+        cAccess = permitted;
+        return true;
+    }
+    else //! no passkey was passed
+    {
+        string input;
 
-    //* prompt for password input
-    cout << "Password: ";
-    cin >> input;
+        HideTerminal(); 
 
-    //* compare to profile passkey in
+        cout << "Password: ";
+        cin >> input;
+
+        ShowTerminal(); 
+
+        if (input == cPasskey)
+        {
+            cAccess = permitted;
+            return true;
+        }
+    }
 
     return false;
 }
@@ -98,7 +113,7 @@ ostream &operator<<(ostream &out, const keychain &object)
     }
     else //* print keys if access reqs. met or no passkey exists
     {
-        out << "Keys Found: " << object.cKeys << " |"<< endl
+        out << "Keys Found: " << object.cKeys << " |" << endl
             << endl
             << copy->getKey() << endl;
 

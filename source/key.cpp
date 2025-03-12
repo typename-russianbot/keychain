@@ -1,7 +1,9 @@
 #include "../include/Keychain/key.h"
 //!! <master>
-//** 1. operator<< (enum==STRENGTH)
-ostream &operator<<(ostream &output, const integrity &object)
+struct termios oldt, newt; //?? termios struct to edit terminal settings
+bool _debugger = _off;     //?? _debugger
+
+ostream &operator<<(ostream &output, const integrity &object) //** 1. operator<< (enum==STRENGTH)
 {
   switch (object)
   {
@@ -24,8 +26,7 @@ ostream &operator<<(ostream &output, const integrity &object)
 
   return output;
 }
-//** 2. operator<< (enum==ACCESS)
-ostream &operator<<(ostream &out, const clearance &object)
+ostream &operator<<(ostream &out, const clearance &object) //** 2. operator<< (enum==ACCESS)
 {
   switch (object)
   {
@@ -40,9 +41,22 @@ ostream &operator<<(ostream &out, const clearance &object)
 
   return out;
 }
+void HideTerminal() //** 3. HideTerminal
+{
+  //& Get terminal attributes
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
 
-//??  1. BOOL -- debugger
-bool _debugger = _off;
+  //&s Disable echo
+  newt.c_lflag &= ~ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+}
+void ShowTerminal() //** 4. ShowTerminal
+{
+  //& Restore terminal settings
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  cout << endl;
+}
 
 //& <key>
 //^^ -constructor
