@@ -1,8 +1,6 @@
 #include "../include/Keychain/keychain.h"
-#include <cctype>
 
 //! <protected functions>
-
 //^ returns the user inputted
 string keychain::inputPasskey()
 {
@@ -27,8 +25,6 @@ string keychain::inputPasskey()
 }
 
 //* <public functions>
-
-//^^ -Constructor/Destructor-
 //^ constructs chain
 keychain::keychain(string passkey)
 
@@ -40,7 +36,7 @@ keychain::keychain(string passkey)
     if (cPasskey == _none)
         cAccess = permitted;
 }
-//^ destroys chain
+// TODO - destroys chain
 keychain::~keychain()
 {
     if (_debugger)
@@ -107,8 +103,8 @@ bool keychain::requestAccess(string passkey)
 
     return false;
 }
-//^ sets cPasskey to the passed string parameter
-bool keychain::setPassword(string passkey)
+// TODO - sets cPasskey to the passed string parameter
+bool keychain::setPasskey(string passkey)
 {
     return false;
 }
@@ -164,7 +160,39 @@ bool keychain::remove(string keyident)
 //^ searches for a specific key on the chain & displays
 bool keychain::lookup(string keyident)
 {
-    return false;
+    if (keyident == _none)
+        return false;
+    else
+    {
+        //? search thru chain
+        //? 1. by keyname
+        //? 2. by email
+        //? 3. by username
+
+        return true;
+    }
+}
+//^ prints the whole keychain if access is granted
+bool keychain::print()
+{
+    if (this->requestAccess()) //* <access==GRANTED>
+    {
+        _clear;
+        cout << "<PASSKEY ACCEPTED>" << endl
+             << *this << endl;
+    }
+    else //! <access==DENIED>
+    {
+        _clear;
+        cout << "<ACCESS DENIED>" << endl;
+        return false;
+    }
+
+    //? re-lock access permissions
+    if (this->cAccess == permitted)
+        this->cAccess = restricted;
+
+    return true;
 }
 
 //^^ -overloads-
@@ -172,8 +200,7 @@ ostream &operator<<(ostream &out, const keychain &object)
 {
     //* create a copy of keychain
     keynode *copy = object.cHead;
-
-    out << "| Keychain Access: " << object.cAccess << " | ";
+    char input;
 
     if (object.cAccess == restricted) //! keychain access restricted
         return out;

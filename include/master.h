@@ -16,29 +16,29 @@ using namespace std;
 #define _on true       //^ -on
 #define _off false     //^ -off
 #define _none "<none>" //^ -none
+#define _clear system("clear") 
 
 //&& -ENUMS-
 enum integrity //& -integrity
 {
-  none,     //& <none>        -- no password
-  poor,     //& <poor>        -- poor password
-  weak,     //& <weak>        -- weak password
-  strong,   //& <strong>      -- strong password
-  excellent //& <excellent>   -- excellent password
+  none,     //& 1. <none>        -- no password
+  poor,     //& 2. <poor>        -- poor password
+  weak,     //& 3. <weak>        -- weak password
+  strong,   //& 4. <strong>      -- strong password
+  excellent //& 5. <excellent>   -- excellent password
 };
 enum clearance //& -clearance
 {
-  restricted, //& <restricted>    -- access restricted
-  permitted   //& <permitted>     -- access permitted
+  restricted, //& 1. <restricted>    -- access restricted
+  permitted   //& 2. <permitted>     -- access permitted
 };
 
 //** -GLOBAL FUNCTIONS-
 ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
 ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
-void HideTerminal();                                           //* -HideTerminal | alters shell to hide input
-
-//* -ShowTerminal | returns shell to original state
-void ShowTerminal();
+void HideTerminal();                                           //* -HideTerminal()    | alters shell to hide input
+void ShowTerminal();                                           //* -ShowTerminal()    | returns shell to original state
+void ValidateInput(char &input);                               //* -ValidateInput()   |
 
 //?? -GLOBAL VARS-
 extern bool _debugger; //? -debugger

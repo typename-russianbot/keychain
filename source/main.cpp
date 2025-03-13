@@ -1,27 +1,46 @@
 #include "../include/Keychain/key.h"
 #include "../include/Keychain/keychain.h"
 
-// ^^ <test_bench>
-void test_bench(void)
+// ^^ <keychain_testing>
+void keychain_testing(void)
 {
-  if (_debugger) //! debugger is on
-    cout << "<debugger activated>" << endl;
+  cout << "| -Keychain- | -Testing- |" << endl
+       << endl;
 
-  //* myKeychain
+  //^ prototype keychain
   keychain myKeychain("jimmy-johns");
 
-  //* create & add 4 keys to the chain
+  //^ create 4 keys, & add them onto the chain
   key key1("k1"), key2("k2"), key3("k3"), key4("k4");
   myKeychain.add(key1);
   myKeychain.add(key2);
   myKeychain.add(key3);
   myKeychain.add(key4);
 
-  //* request for passkey access
-  myKeychain.requestAccess();
+  //^ request permissions to display
+  myKeychain.print(); 
+}
 
-  //* display myKeychain
-  cout << myKeychain << endl;
+// ~~ <keychain_usage>
+void keychain_usage(void)
+{
+  //** -FLAG LIST-
+  //^ -h || displays all program flags & their purpose
+  //* -d || activates debugger
+  //! -a || adds a new key to the chain
+  //& -r: || removes a specified key from the chain
+  //? -p: || prints a specified key to the command line
+  //~ -t || enter testing bench
+
+  cout << "| -Keychain- | -Usage- |" << endl
+       << endl
+       << "Program Flags:" << endl
+       << "\t-h\t| displays all program flags & their purpose" << endl
+       << "\t-d\t| activates debug mode" << endl
+       << "\t-t\t| runs test build of keychain" << endl
+       << "\t-a\t| adds a new key onto the keychain" << endl
+       << "\t-r\t| removes a key from the keychain" << endl
+       << "\t-p\t| searches for a certain key & displays it" << endl;
 }
 
 // && <keychain>
@@ -41,23 +60,18 @@ int main(int argc, char *argv[])
 {
   //** -PROGRAM VARIABLES-
   int flags;
-  //** -FLAG LIST-
-  //^ -h || displays all program flags & their purpose
-  //* -d || activates debugger
-  //! -a || adds a new key to the chain
-  //& -r: || removes a specified key from the chain
-  //? -p: || prints a specified key to the command line
-  //~ -t || enter testing bench
 
   //!! -FLAG PARSER-
   while ((flags = getopt(argc, argv, "hdar:p:t")) != -1)
   {
-    switch (flags) //!++ flag handling goes here
+    switch (flags)
     {
       //^^ 1. <HELP> ||
     case 'h':
       if (_debugger)
         cout << "flag=HELP" << endl;
+
+      keychain_usage();
       break;
 
       //** 2. <DEBUGGER> ||
@@ -88,11 +102,16 @@ int main(int argc, char *argv[])
     case 't':
       if (_debugger)
         cout << "flag=TESTING" << endl;
-      test_bench();
+
+      keychain_testing();
       break;
 
+    //** 7. <DEFAULT> ||
     default:
-      cout << "default=HELP" << endl;
+      if (_debugger)
+        cout << "flag=DEFAULT" << endl;
+
+      keychain_usage();
       break;
     }
   }

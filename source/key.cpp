@@ -57,6 +57,15 @@ void ShowTerminal() //** 4. ShowTerminal
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   cout << endl;
 }
+void ValidateInput(char &input) //** 5. ValidateInput
+{
+  while (input != 'y' && input != 'Y' && input != 'n' && input != 'N')
+    {
+        cout << "Request Permission? [y/n]: ";
+        cin >> input;
+    }
+    cout << endl;
+}
 
 //& <key>
 //^^ -constructor
