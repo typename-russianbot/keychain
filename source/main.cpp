@@ -8,7 +8,9 @@ void keychain_testing(void)
        << endl;
 
   //^ prototype keychain
-  keychain myKeychain("jimmy-johns");
+  keychain myKeychain("mjhsnake2001!!"); 
+
+  myKeychain.setPasskey(); //? sets passkey to none...
 
   //^ create 4 keys, & add them onto the chain
   key key1("k1"), key2("k2"), key3("k3"), key4("k4");

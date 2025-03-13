@@ -10,11 +10,11 @@ private:              //!! -Attributes-
   keynode *cHead;     //*  -cHead     | head of keychain
   keynode *cTail;     //*  -cTail     | tail of keychain
 
-protected:               //!! -Protected Functions-
-  string inputPasskey(); //& -inputPasskey()
-  // TODO -lookupKeyname()
-  // TODO -lookupUsername()
-  // TODO -lookupEmail()
+protected:                                  //!! -Protected Functions-
+  string inputPasskey();                    //& -inputPasskey()
+  void lookuptKeyname(const string &ident); // TODO -lookupKeyname()
+  void lookupUsername(const string &ident); // TODO -lookupUsername()
+  void lookupEmail(const string &ident);    // TODO -lookupEmail()
 
 public:                             //!! -Private Functions-
   keychain(string passkey = _none); //^^ -constructor
@@ -26,7 +26,7 @@ public:                             //!! -Private Functions-
   bool requestAccess(string passkey = _none); //& -requestAccess()  | prompts user for access to keychain
   bool setPasskey(string passkey = _none);    // TODO -setPasskey()     | sets passkey to the passed in string, or if none is passed, the user is prompted
   void add(const key &nKey);                  //& -add()            | adds a new key to the chain
-  bool remove(string keyident = _none);       // TODO -remove()         |
+  bool remove(string keyident = _none);       // TODO -remove()         | removes a specified key via keyident, if no keyident is specified,
   bool lookup(string keyident = _none);       // TODO -lookup()         |
   bool print();                               //& -print()          | prints keychain
   void loadKeychain();                        // TODO -loadKeychain()   |

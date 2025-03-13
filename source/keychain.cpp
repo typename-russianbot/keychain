@@ -73,7 +73,6 @@ bool keychain::requestAccess(string passkey)
         cAccess = permitted;
         return true;
     }
-
     else //! no parameter passed
     {
         while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
@@ -88,7 +87,8 @@ bool keychain::requestAccess(string passkey)
             //! mismatch encountered
             while (true)
             {
-                cout << "Remaining Attempts: " << attempts << " | " << "Re-enter Passkey? [y/n]: ";
+                cout << "| Remaining Attempts: " << attempts << " |" << endl
+                     << "Re-enter Passkey? [y/n]: ";
                 cin >> input;
                 input = tolower(input);
 
@@ -106,7 +106,30 @@ bool keychain::requestAccess(string passkey)
 // TODO - sets cPasskey to the passed string parameter
 bool keychain::setPasskey(string passkey)
 {
-    return false;
+    if (passkey == _none) //! no parameter, set equal to _none
+    {
+        this->cPasskey = _none;
+
+        //? update access permissions
+        if(this->cAccess == restricted)
+            this->cAccess = permitted;
+
+        //* successfully set passkey
+        return true;
+    }
+    else //* parameter passed, set equal to passkey
+    {
+        this->cPasskey = passkey; 
+
+        //? update access permissions
+        if(this->cAccess == permitted)
+            this->cAccess = restricted; 
+
+        //* successfully set passkey
+        return true; 
+    }
+
+    return false; //! unknown error
 }
 //^ adds a new key to the chain
 void keychain::add(const key &nKey)
@@ -175,16 +198,18 @@ bool keychain::lookup(string keyident)
 //^ prints the whole keychain if access is granted
 bool keychain::print()
 {
+    cout << "| -Display Keychain- |" << endl; //? OPERATION: print()
+
     if (this->requestAccess()) //* <access==GRANTED>
     {
         _clear;
-        cout << "<PASSKEY ACCEPTED>" << endl
+        cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
              << *this << endl;
     }
     else //! <access==DENIED>
     {
         _clear;
-        cout << "<ACCESS DENIED>" << endl;
+        cout << "<KEYCHAIN ACCESS DENIED>" << endl;
         return false;
     }
 
@@ -198,20 +223,22 @@ bool keychain::print()
 //^^ -overloads-
 ostream &operator<<(ostream &out, const keychain &object)
 {
-    //* create a copy of keychain
-    keynode *copy = object.cHead;
-    char input;
-
-    if (object.cAccess == restricted) //! keychain access restricted
+    if (object.cAccess == restricted) //! <access=RESTRICTED>
+    {
+        _clear;
+        out << "<ACCESS DENIED>" << endl;
         return out;
+    }
+
+    keynode *copy = object.cHead; //? create a copy of keychain
 
     if (!copy) //! keychain is empty
     {
-        out << "Keys Found: 0" << endl;
+        out << "| Keys on Record: 0 |" << endl;
     }
-    else //* print keys if access reqs. met or no passkey exists
+    else //* display keychain
     {
-        out << "Keys Found: " << object.cKeys << " |" << endl
+        out << "| Keys on Record: " << object.cKeys << " |" << endl
             << endl
             << copy->getKey() << endl;
 
