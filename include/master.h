@@ -34,11 +34,16 @@ enum clearance //& -clearance
 };
 
 //** -GLOBAL FUNCTIONS-
-ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
-ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
 void HideTerminal();                                           //* -HideTerminal()    | alters shell to hide input
 void ShowTerminal();                                           //* -ShowTerminal()    | returns shell to original state
-void ValidateInput(char &input);                               //* -ValidateInput()   |
+void ValidateInput(char &input);                               //* -ValidateInput()   | 
+bool ValidateFile(ifstream& readfile); 
+bool ValidateFile(ofstream& writefile); 
+
+//* -GLOBAL OVERLOADS-
+ostream &operator<<(ostream &output, const integrity &object); //* -operator<< (enum=INTEGRITY)
+ostream &operator<<(ostream &out, const clearance &object);    //* -operator<< (enum=CLEARANCE)
+
 
 //?? -GLOBAL VARS-
 extern bool _debugger; //? -debugger

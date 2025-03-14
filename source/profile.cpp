@@ -29,8 +29,18 @@ void profile::loadProfile()
 
     if (!readFile)
         cout << "file not loaded" << endl;
-    else    
-        cout << "file was loaded" << endl; 
+    else
+        cout << "file was loaded" << endl;
+}
+
+void profile::saveProfile()
+{
+    ofstream writeFile("data/profiles.txt");
+
+    if (!writeFile)
+        cout << "file not loaded" << endl;
+    else
+        cout << "file was loaded" << endl;
 }
 
 //* -[PUBLIC]- *
