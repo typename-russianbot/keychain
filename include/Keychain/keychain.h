@@ -4,7 +4,7 @@
 //? -[CLASS: Keychain]- ?
 class keychain
 {
-  //! -[PRIVATE]-
+  //! -[PRIVATE]- !
 private:
   unsigned int cKeys; //! cKeys
   string cPassword;   //! cPassword

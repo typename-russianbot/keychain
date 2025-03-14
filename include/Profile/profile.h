@@ -25,4 +25,5 @@ public:
 
     //* -overloads-
     friend ostream& operator<<(ostream& out, const profile& profile); 
+    
 };
