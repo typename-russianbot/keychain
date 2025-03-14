@@ -9,16 +9,10 @@ void keychain_testing(void)
   //^ proto keychain
   keychain myKeychain("mjhsnake2001!!");
 
-  profile myProfile; 
-  myProfile.loadProfile(); 
+  profile myProfile("mjh2001" , "mjhsnake2001!!"); //* constructor accepts the string & searches for the target string. 
+  
 
-
-  //^ create two keys
-  myKeychain.create("github");
-  myKeychain.create("okta-verify");
-
-  //^ print keychain
-  myKeychain.display();
+  cout << myProfile << endl; 
 }
 
 // ~~ <keychain_usage>
