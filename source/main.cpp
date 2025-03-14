@@ -1,5 +1,5 @@
 #include "../include/Keychain/keychain.h"
-
+#include "../include/Profile/profile.h"
 // ^^ <keychain_testing>
 void keychain_testing(void)
 {
@@ -8,6 +8,10 @@ void keychain_testing(void)
 
   //^ proto keychain
   keychain myKeychain("mjhsnake2001!!");
+
+  profile myProfile; 
+  myProfile.loadProfile(); 
+
 
   //^ create two keys
   myKeychain.create("github");

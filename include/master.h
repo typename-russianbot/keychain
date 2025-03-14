@@ -2,6 +2,7 @@
 
 //!! -DEPENDENCIES-
 #include <iostream>  //! iostream
+#include <fstream>   //! fstream
 #include <cctype>    //! cctype
 #include <string.h>  //! string.h
 #include <unistd.h>  //! unistd.h
@@ -9,7 +10,7 @@
 #include <termios.h> //! termios.h
 
 //~~ -NAMESPACES-
-using namespace std; 
+using namespace std;
 
 //^^ -MACROS-
 #define _on true               //^ _on
