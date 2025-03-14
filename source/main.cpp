@@ -9,13 +9,10 @@ void keychain_testing(void)
   //^ proto keychain
   keychain myKeychain("mjhsnake2001!!");
 
-  profile myProfile("mjh2001" , "mjhsnake2001!!"); //* constructor accepts the string & searches for the target string. 
-  
-
-  cout << myProfile << endl; 
+  profile myProfile("flompy-donky"); //* constructor accepts the string & searches for the target string.
 }
 
-// ~~ <keychain_usage>
+// && <keychain_usage>
 void keychain_usage(void)
 {
   //** -FLAG LIST-

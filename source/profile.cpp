@@ -32,9 +32,9 @@ bool profile::loadProfile(const string &username)
 
     else //* file validated
     {
-        //? parse through file
-        string line, value = _none;
+        string line, value;
 
+        //* parse through file
         while (getline(readfile, line))
         {
             stringstream currentline(line);
@@ -44,15 +44,14 @@ bool profile::loadProfile(const string &username)
             {
                 checkProfile(i, value, username);
             }
-
-            if (username != cUsername)
-            {
-                readfile.close();
-                return false;
-            }
-
-            readfile.close();
         }
+
+        if (username != cUsername)
+        {
+            return false;
+        }
+
+        readfile.close();
     }
 
     return true;
@@ -112,11 +111,26 @@ profile::profile(const string &username)
 
 profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password)
 {
-} 
+    saveProfile();
+}
 
 //* -destructor-
 profile::~profile()
 {
+}
+
+//* -functions-
+bool profile::search(const string &username)
+{
+    if (!loadProfile(username))
+    {
+        cout << "Profile: '" << username << "' not found" << endl;
+        return false;
+    }
+    else
+        cout << "Profile: '" << username << "' found" << endl;
+
+    return true;
 }
 
 //* -overloads-
