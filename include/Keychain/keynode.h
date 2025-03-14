@@ -30,5 +30,5 @@ public:
   void setPrev(keynode *nNode);
 
   //* -overloads-
-  friend ostream &operator<<(ostream &out, const keynode *object); //* operator<<
+  friend ostream &operator<<(ostream &out, const keynode *keynode); //* operator<<
 };

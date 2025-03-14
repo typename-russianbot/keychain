@@ -22,11 +22,11 @@ void keynode::setNext(keynode *nNode) { this->cNext = nNode; }
 void keynode::setPrev(keynode *nNode) { this->cPrev = nNode; }
 
 //^^ -overloads
-ostream &operator<<(ostream &out, const keynode *object)
+ostream &operator<<(ostream &out, const keynode *keynode)
 {
-  out << "\t" << object->cKey << endl
-      << "\tPrevious Key:\t" << object->cPrev << endl
-      << "\tNext Key:    \t" << object->cNext << endl;
+  out << "\t" << keynode->cKey << endl
+      << "\tPrevious Key:\t" << keynode->cPrev << endl
+      << "\tNext Key:    \t" << keynode->cNext << endl;
 
   return out;
 }

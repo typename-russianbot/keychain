@@ -3,13 +3,26 @@
 #include "../Keychain/keychain.h"
 class profile
 {
-private:              //!! -Attributes-
-    string mUsername; //* mUsername   | profile's username
-    string mPasskey;  //* mPasskey    | profile's passkey
+    //! -[PRIVATE]- !
+private:
+    string cUsername; //! cUsername
+    string cPassword; //! cPassword
 
-protected:                                                    //!! -Protected Functions-
+    //^ -[PROTECTED]- ^
+protected:
+    const string getUsername();               //^ getUsername
+    const string getPasskey();                //^ getPasskey
+    void setUsername(const string &username); //^ setUsername
+    void setPassword(const string &password);   //^ setPasskey
 
-public:                                                       //!! -Private Functions-
-    profile(string username = _none, string passkey = _none); //^^ -constructor
-    ~profile();                                               //^^ -destructor
+    //* -[PUBLIC]- *
+public:
+    //* -constructor-
+    profile(string username = _none, string password = _none);
+
+    //* -destructor-
+    ~profile();
+
+    //* -overloads-
+    friend ostream& operator<<(ostream& out, const profile& profile); 
 };

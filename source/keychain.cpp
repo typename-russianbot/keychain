@@ -50,7 +50,7 @@ bool keychain::requestAccess(string passkey)
     char input;       //? -input    | input for attempt looping
     int attempts = 3; //? -attempts | # of attempts
 
-    if (passkey == cPasskey) //* parameter passed
+    if (passkey == cPassword) //* parameter passed
     {
         cAccess = permitted;
         return true;
@@ -60,7 +60,7 @@ bool keychain::requestAccess(string passkey)
         while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
         {
             //* match
-            if (cPasskey == inputPasskey())
+            if (cPassword == inputPasskey())
             {
                 cAccess = permitted;
                 return true;
@@ -91,7 +91,7 @@ bool keychain::setPasskey(string passkey)
 {
     if (passkey == _none) //! no parameter, set equal to _none
     {
-        this->cPasskey = _none;
+        this->cPassword = _none;
 
         //? update access permissions
         if (this->cAccess == restricted)
@@ -102,7 +102,7 @@ bool keychain::setPasskey(string passkey)
     }
     else //* parameter passed, set equal to passkey
     {
-        this->cPasskey = passkey;
+        this->cPassword = passkey;
 
         //? update access permissions
         if (this->cAccess == permitted)
@@ -200,12 +200,12 @@ bool keychain::lookup(string keyident)
 //* -constructor-
 keychain::keychain(string passkey)
 
-    : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
+    : cKeys(0), cPassword(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
-    if (cPasskey == "")
-        cPasskey = _none;
+    if (cPassword == "")
+        cPassword = _none;
 
-    if (cPasskey == _none)
+    if (cPassword == _none)
         cAccess = permitted;
 }
 
@@ -280,16 +280,16 @@ bool keychain::display()
 }
 
 //* - operator<<
-ostream &operator<<(ostream &out, const keychain &object)
+ostream &operator<<(ostream &out, const keychain &keychain)
 {
-    if (object.cAccess == restricted) //! <access=RESTRICTED>
+    if (keychain.cAccess == restricted) //! <access=RESTRICTED>
     {
         _clear;
         out << "<ACCESS DENIED>" << endl;
         return out;
     }
 
-    keynode *copy = object.cHead; //? create a copy of keychain
+    keynode *copy = keychain.cHead; //? create a copy of keychain
 
     if (!copy) //! keychain is empty
     {
@@ -297,13 +297,13 @@ ostream &operator<<(ostream &out, const keychain &object)
     }
     else //* display keychain
     {
-        out << "| Keys on Record: " << object.cKeys << " |" << endl
+        out << "| Keys on Record: " << keychain.cKeys << " |" << endl
             << endl
             << copy->getKey() << endl;
 
         copy = copy->getNext();
 
-        while (copy != object.cHead)
+        while (copy != keychain.cHead)
         {
             out << copy->getKey() << endl;
             copy = copy->getNext();

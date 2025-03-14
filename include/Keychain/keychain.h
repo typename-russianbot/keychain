@@ -7,21 +7,21 @@ class keychain
   //! -[PRIVATE]-
 private:
   unsigned int cKeys; //! cKeys
-  string cPasskey;    //! cPasskey
+  string cPassword;   //! cPassword
   clearance cAccess;  //! cAccess
   keynode *cHead;     //! cHead
   keynode *cTail;     //! cTail
 
   //^ -[PROTECTED]- ^
 protected:
-  string inputPasskey();                      //^ inputPasskey()
-  bool isEmpty();                             //^ isEmpty()
-  bool isRestricted();                        //^ isRestricted()
-  bool requestAccess(string passkey = _none); //^ requestAccess()
-  bool setPasskey(string passkey = _none);    //^ setPasskey()
-  void add(const key &nKey);                  //^ add()
-  bool remove(const key &nKey);               //^ remove()
-  bool lookup(string keyident = _none);       //^ lookup()
+  string inputPasskey();                       //^ inputPasskey()
+  bool isEmpty();                              //^ isEmpty()
+  bool isRestricted();                         //^ isRestricted()
+  bool requestAccess(string password = _none); //^ requestAccess()
+  bool setPasskey(string password = _none);    //^ setPasskey()
+  void add(const key &nKey);                   //^ add()
+  bool remove(const key &nKey);                //^ remove()
+  bool lookup(string keyident = _none);        //^ lookup()
 
   //* -[PUBLIC]- *
 public:
@@ -36,8 +36,8 @@ public:
               const string &email = _none, const string &password = _none); //* create()
   bool remove();                                                            //* remove()
   bool search();                                                            //* search()
-  bool display();                                                             //* print()
+  bool display();                                                           //* print()
 
   //* -overloads-
-  friend ostream &operator<<(ostream &out, const keychain &object); //* operator<<
+  friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<
 };
