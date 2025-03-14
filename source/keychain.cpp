@@ -1,6 +1,8 @@
 #include "../include/Keychain/keychain.h"
 
-//! <protected functions>
+//^ <PROTECTED> ^
+
+//^ - inputPasskey
 //^ returns the user inputted
 string keychain::inputPasskey()
 {
@@ -24,27 +26,7 @@ string keychain::inputPasskey()
         return _none;
 }
 
-//* <public functions>
-//^ constructs chain
-keychain::keychain(string passkey)
-
-    : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
-{
-    if (cPasskey == "")
-        cPasskey = _none;
-
-    if (cPasskey == _none)
-        cAccess = permitted;
-}
-// TODO - destroys chain
-keychain::~keychain()
-{
-    if (_debugger)
-        cout << "destroying keychain" << endl;
-
-    this->cHead = this->cTail = nullptr;
-}
-
+//^ - isEmpty() 
 //^ return true if empty, otherwise false
 bool keychain::isEmpty()
 {
@@ -54,6 +36,7 @@ bool keychain::isEmpty()
     return false; //! keychain not empty, return false
 }
 
+//^ - isRestricted() 
 //^ returns true if restricted, otherwise false
 bool keychain::isRestricted()
 {
@@ -63,6 +46,7 @@ bool keychain::isRestricted()
     return false; //* access is permitted, return false
 }
 
+//^ - requestAccess() 
 //^ returns true if access is permitted, false if denied
 bool keychain::requestAccess(string passkey)
 {
@@ -105,6 +89,7 @@ bool keychain::requestAccess(string passkey)
     return false;
 }
 
+//^ - setPasskey() 
 //^ sets passkey to the passed in string, or if none is passed, the user is prompted
 bool keychain::setPasskey(string passkey)
 {
@@ -134,6 +119,7 @@ bool keychain::setPasskey(string passkey)
     return false; //! unknown error
 }
 
+//^ - add() 
 //^ adds a new key to the chain
 void keychain::add(const key &nKey)
 {
@@ -172,6 +158,7 @@ void keychain::add(const key &nKey)
     this->cKeys++; //* update the number of keys in this chain
 }
 
+//^ - remove() 
 //^ removes a specified key from the chain
 bool keychain::remove(const key &nKey)
 {
@@ -194,9 +181,10 @@ bool keychain::remove(const key &nKey)
         return false;
     }
 
-    return true; 
+    return true;
 }
 
+//^ - lookup()
 //^ searches for a specific key on the chain & displays
 bool keychain::lookup(string keyident)
 {
@@ -220,7 +208,49 @@ bool keychain::lookup(string keyident)
     }
 }
 
-//^ prints the whole keychain if access is granted
+//* <PUBLIC> *
+
+//* -constructor-
+keychain::keychain(string passkey)
+
+    : cKeys(0), cPasskey(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
+{
+    if (cPasskey == "")
+        cPasskey = _none;
+
+    if (cPasskey == _none)
+        cAccess = permitted;
+}
+
+//* -destructor-
+keychain::~keychain()
+{
+    if (_debugger)
+        cout << "destroying keychain" << endl;
+
+    this->cHead = this->cTail = nullptr;
+}
+
+//* -keychain functions-
+//* - create()
+bool keychain::create()
+{
+    return false;
+}
+
+//* - remove()
+bool keychain::remove()
+{
+    return false;
+}
+
+//* - search()
+bool keychain::search()
+{
+    return false;
+}
+
+//* - print()
 bool keychain::print()
 {
     cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
@@ -246,7 +276,7 @@ bool keychain::print()
     return true;
 }
 
-//^^ -overloads-
+//* - operator<<
 ostream &operator<<(ostream &out, const keychain &object)
 {
     if (object.cAccess == restricted) //! <access=RESTRICTED>

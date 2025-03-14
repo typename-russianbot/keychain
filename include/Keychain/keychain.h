@@ -15,10 +15,10 @@ private:
   //^ -[PROTECTED]- ^
 protected:
   string inputPasskey();                      //^ inputPasskey()
-  bool requestAccess(string passkey = _none); //^ requestAccess()
-  bool setPasskey(string passkey = _none);    //^ setPasskey()
   bool isEmpty();                             //^ isEmpty()
   bool isRestricted();                        //^ isRestricted()
+  bool requestAccess(string passkey = _none); //^ requestAccess()
+  bool setPasskey(string passkey = _none);    //^ setPasskey()
   void add(const key &nKey);                  //^ add()
   bool remove(const key &nKey);               //^ remove()
   bool lookup(string keyident = _none);       //^ lookup()
@@ -31,12 +31,12 @@ public:
   //* -destructor-
   ~keychain();
 
-  //* -class_functions-
-  bool print(); //* print()
-  //* create()
-  //* delete()
+  //* -keychain functions-
+  bool create(); //* create()
+  bool remove(); //* remove()
+  bool search(); //* search()
+  bool print();  //* print()
 
   //* -overloads-
   friend ostream &operator<<(ostream &out, const keychain &object); //* operator<<
-  keychain operator=(const keychain &object);                       //* operator=
 };
