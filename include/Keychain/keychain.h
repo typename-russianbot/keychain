@@ -32,10 +32,11 @@ public:
   ~keychain();
 
   //* -keychain functions-
-  bool create(); //* create()
-  bool remove(); //* remove()
-  bool search(); //* search()
-  bool print();  //* print()
+  bool create(const string &keyname = _none, const string &username = _none,
+              const string &email = _none, const string &password = _none); //* create()
+  bool remove();                                                            //* remove()
+  bool search();                                                            //* search()
+  bool display();                                                             //* print()
 
   //* -overloads-
   friend ostream &operator<<(ostream &out, const keychain &object); //* operator<<

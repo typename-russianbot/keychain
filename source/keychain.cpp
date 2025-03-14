@@ -25,8 +25,7 @@ string keychain::inputPasskey()
     else
         return _none;
 }
-
-//^ - isEmpty() 
+//^ - isEmpty()
 //^ return true if empty, otherwise false
 bool keychain::isEmpty()
 {
@@ -35,8 +34,7 @@ bool keychain::isEmpty()
 
     return false; //! keychain not empty, return false
 }
-
-//^ - isRestricted() 
+//^ - isRestricted()
 //^ returns true if restricted, otherwise false
 bool keychain::isRestricted()
 {
@@ -45,8 +43,7 @@ bool keychain::isRestricted()
 
     return false; //* access is permitted, return false
 }
-
-//^ - requestAccess() 
+//^ - requestAccess()
 //^ returns true if access is permitted, false if denied
 bool keychain::requestAccess(string passkey)
 {
@@ -88,8 +85,7 @@ bool keychain::requestAccess(string passkey)
 
     return false;
 }
-
-//^ - setPasskey() 
+//^ - setPasskey()
 //^ sets passkey to the passed in string, or if none is passed, the user is prompted
 bool keychain::setPasskey(string passkey)
 {
@@ -118,13 +114,10 @@ bool keychain::setPasskey(string passkey)
 
     return false; //! unknown error
 }
-
-//^ - add() 
+//^ - add()
 //^ adds a new key to the chain
 void keychain::add(const key &nKey)
 {
-    cout << "| -Keychain: Add- |" << endl;
-
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
     if (cHead == nullptr && cTail == nullptr) //! 1. if both, start & end are empty, store key in start & keep end nullptr
@@ -157,13 +150,10 @@ void keychain::add(const key &nKey)
 
     this->cKeys++; //* update the number of keys in this chain
 }
-
-//^ - remove() 
+//^ - remove()
 //^ removes a specified key from the chain
 bool keychain::remove(const key &nKey)
 {
-    cout << "| -Keychain: Remove- |" << endl; //^ OPERATION: remove()
-
     if (isEmpty()) //! nothing to remove
         return false;
 
@@ -183,13 +173,10 @@ bool keychain::remove(const key &nKey)
 
     return true;
 }
-
 //^ - lookup()
 //^ searches for a specific key on the chain & displays
 bool keychain::lookup(string keyident)
 {
-    cout << "| -Keychain: Search- |" << endl; //^ OPERATION: lookup()
-
     if (isEmpty()) //! nothing to lookup
         return false;
 
@@ -232,26 +219,42 @@ keychain::~keychain()
 }
 
 //* -keychain functions-
+
 //* - create()
-bool keychain::create()
+//* creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
+bool keychain::create(const string &keyname, const string &username, const string &email, const string &password)
 {
+    key nKey(keyname, username, email, password); //? create a key object with passed in strings
+
+    if (keyname == _none && username == _none && email == _none && password == _none) //! key is empty
+    {
+        if (_debugger)
+            cout << "prompt user for input with empty param call" << endl;
+        return false;
+    }
+    else //* add key onto the chain
+    {
+        this->add(nKey);
+        return true;
+    }
+
     return false;
 }
-
 //* - remove()
+//*
 bool keychain::remove()
 {
     return false;
 }
-
 //* - search()
+//*
 bool keychain::search()
 {
     return false;
 }
-
-//* - print()
-bool keychain::print()
+//* - display() 
+//*
+bool keychain::display()
 {
     cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
 

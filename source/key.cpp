@@ -67,7 +67,7 @@ void ValidateInput(char &input) //** 5. ValidateInput
     cout << endl;
 }
 
-//& <key>
+//* <PUBLIC> *
 //^^ -constructor
 key::key(string destination, string username, string email, string password,
          integrity integrity)

@@ -1,4 +1,3 @@
-#include "../include/Keychain/key.h"
 #include "../include/Keychain/keychain.h"
 
 // ^^ <keychain_testing>
@@ -7,12 +6,15 @@ void keychain_testing(void)
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
-  //^ prototype keychain
+  //^ proto keychain
   keychain myKeychain("mjhsnake2001!!");
 
-  //^ request permissions to display
-  myKeychain.print();
+  //^ create two keys
+  myKeychain.create("github");
+  myKeychain.create("okta-verify");
 
+  //^ print keychain
+  myKeychain.display();
 }
 
 // ~~ <keychain_usage>
