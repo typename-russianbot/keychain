@@ -1,28 +1,34 @@
-// TODO: class=<keynode>
 #pragma once
 #include "key.h"
+
+//? -[CLASS: Keynode]- ?
 class keynode
 {
-private:          //!! -Attributes-
-  key cKey;       //* -cKey   | key data for current key in chain
-  keynode *cNext; //* -cNext  | next key in the chain
-  keynode *cPrev; //* -cPrev  | previous key in the chain
+  //! -[PRIVATE]- !
+private:
+  key cKey;       //! cKey
+  keynode *cNext; //! cNext
+  keynode *cPrev; //! cPrev
 
-public:                     //!! -Functions-
-  keynode(const key &nKey); //^^ -constructor
-  ~keynode(void);           //^^ -destructor
+  //* -[PUBLIC]- *
+public:
+  //* -constructor-
+  keynode(const key &nKey);
 
-  //^^ -get
-  key getKey(void);       //& -getKey
-  keynode *getNext(void); //& -getNext
-  keynode *getPrev(void); //& -getPrev
+  //* -destructor-
+  ~keynode(void);
 
-  //^^ -set
-  void setKey(const key &nKey);   //& -setKey
-  void setStart(keynode *nStart); //& -setStart
-  void setNext(keynode *nNode);   //& -setNext
-  void setPrev(keynode *nNode);   //& -setPrev
+  //* -getters-
+  key getKey(void);
+  keynode *getNext(void);
+  keynode *getPrev(void);
 
-  //^^ -overloads
-  friend ostream &operator<<(ostream &out, const keynode *object); //& operator<<
+  //* -setters-
+  void setKey(const key &nKey);
+  void setStart(keynode *nStart);
+  void setNext(keynode *nNode);
+  void setPrev(keynode *nNode);
+
+  //* -overloads-
+  friend ostream &operator<<(ostream &out, const keynode *object); //* operator<<
 };

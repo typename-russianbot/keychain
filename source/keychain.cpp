@@ -45,23 +45,24 @@ keychain::~keychain()
     this->cHead = this->cTail = nullptr;
 }
 
-//^^ -<keychain> Functions-
 //^ return true if empty, otherwise false
 bool keychain::isEmpty()
 {
-    if (cHead == nullptr && cTail == nullptr) //! if cHead & cTail = nullptr, return true
+    if (cHead == nullptr && cTail == nullptr) //* keychain empty, return true
         return true;
 
-    return false;
+    return false; //! keychain not empty, return false
 }
+
 //^ returns true if restricted, otherwise false
 bool keychain::isRestricted()
 {
-    if (cAccess == restricted) //! if cAccess = restricted, return true
+    if (cAccess == restricted) //! access restricted, return true
         return true;
 
-    return false;
+    return false; //* access is permitted, return false
 }
+
 //^ returns true if access is permitted, false if denied
 bool keychain::requestAccess(string passkey)
 {
@@ -103,7 +104,8 @@ bool keychain::requestAccess(string passkey)
 
     return false;
 }
-// TODO - sets cPasskey to the passed string parameter
+
+//^ sets passkey to the passed in string, or if none is passed, the user is prompted
 bool keychain::setPasskey(string passkey)
 {
     if (passkey == _none) //! no parameter, set equal to _none
@@ -111,7 +113,7 @@ bool keychain::setPasskey(string passkey)
         this->cPasskey = _none;
 
         //? update access permissions
-        if(this->cAccess == restricted)
+        if (this->cAccess == restricted)
             this->cAccess = permitted;
 
         //* successfully set passkey
@@ -119,21 +121,24 @@ bool keychain::setPasskey(string passkey)
     }
     else //* parameter passed, set equal to passkey
     {
-        this->cPasskey = passkey; 
+        this->cPasskey = passkey;
 
         //? update access permissions
-        if(this->cAccess == permitted)
-            this->cAccess = restricted; 
+        if (this->cAccess == permitted)
+            this->cAccess = restricted;
 
         //* successfully set passkey
-        return true; 
+        return true;
     }
 
     return false; //! unknown error
 }
+
 //^ adds a new key to the chain
 void keychain::add(const key &nKey)
 {
+    cout << "| -Keychain: Add- |" << endl;
+
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
     if (cHead == nullptr && cTail == nullptr) //! 1. if both, start & end are empty, store key in start & keep end nullptr
@@ -166,23 +171,42 @@ void keychain::add(const key &nKey)
 
     this->cKeys++; //* update the number of keys in this chain
 }
+
 //^ removes a specified key from the chain
-bool keychain::remove(string keyident)
+bool keychain::remove(const key &nKey)
 {
-    if (keyident == _none)
+    cout << "| -Keychain: Remove- |" << endl; //^ OPERATION: remove()
+
+    if (isEmpty()) //! nothing to remove
         return false;
-    else
+
+    //& request keychain permissions
+    if (this->requestAccess()) //* <access==GRANTED>
     {
-        //? search thru chain
-        //? 1. by keyname
-        //? 2. by email
-        //? 3. by username
-        return true;
+        _clear;
+        cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
+             << *this << endl;
     }
+    else //! <access==DENIED>
+    {
+        _clear;
+        cout << "<KEYCHAIN ACCESS DENIED>" << endl;
+        return false;
+    }
+
+    return true; 
 }
+
 //^ searches for a specific key on the chain & displays
 bool keychain::lookup(string keyident)
 {
+    cout << "| -Keychain: Search- |" << endl; //^ OPERATION: lookup()
+
+    if (isEmpty()) //! nothing to lookup
+        return false;
+
+    //! request keychain permissions
+
     if (keyident == _none)
         return false;
     else
@@ -195,11 +219,13 @@ bool keychain::lookup(string keyident)
         return true;
     }
 }
+
 //^ prints the whole keychain if access is granted
 bool keychain::print()
 {
-    cout << "| -Display Keychain- |" << endl; //? OPERATION: print()
+    cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
 
+    //& request keychain permissions
     if (this->requestAccess()) //* <access==GRANTED>
     {
         _clear;

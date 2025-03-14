@@ -8,19 +8,11 @@ void keychain_testing(void)
        << endl;
 
   //^ prototype keychain
-  keychain myKeychain("mjhsnake2001!!"); 
-
-  myKeychain.setPasskey(); //? sets passkey to none...
-
-  //^ create 4 keys, & add them onto the chain
-  key key1("k1"), key2("k2"), key3("k3"), key4("k4");
-  myKeychain.add(key1);
-  myKeychain.add(key2);
-  myKeychain.add(key3);
-  myKeychain.add(key4);
+  keychain myKeychain("mjhsnake2001!!");
 
   //^ request permissions to display
-  myKeychain.print(); 
+  myKeychain.print();
+
 }
 
 // ~~ <keychain_usage>
@@ -43,18 +35,6 @@ void keychain_usage(void)
        << "\t-a\t| adds a new key onto the keychain" << endl
        << "\t-r\t| removes a key from the keychain" << endl
        << "\t-p\t| searches for a certain key & displays it" << endl;
-}
-
-// && <keychain>
-void keychain(void)
-{
-  //&& -KEYCHAIN-
-  cout << "||==== Keychain ====||==== <v.0.0.2> ====||"
-       << endl
-       << endl;
-
-  cout << "||=======================================||"
-       << endl;
 }
 
 // TODO <main>

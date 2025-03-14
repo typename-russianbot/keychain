@@ -1,4 +1,3 @@
-// TODO -PROGRAM <KEYCHAIN>
 #pragma once
 
 //!! -DEPENDENCIES-
@@ -10,13 +9,13 @@
 #include <termios.h> //! termios.h
 
 //~~ -NAMESPACES-
-using namespace std;
+using namespace std; 
 
 //^^ -MACROS-
-#define _on true       //^ -on
-#define _off false     //^ -off
-#define _none "<none>" //^ -none
-#define _clear system("clear") 
+#define _on true               //^ _on
+#define _off false             //^ _off
+#define _none "<none>"         //^ _none
+#define _clear system("clear") //^ _clear
 
 //&& -ENUMS-
 enum integrity //& -integrity
