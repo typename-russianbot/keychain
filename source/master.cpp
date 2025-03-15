@@ -1,14 +1,20 @@
 #include "../include/master.h"
 
-//!! <master>
-//? -[GLOBAL VARIABLES]- ?
-struct termios oldt, newt; //?? termios struct to edit terminal settings
-bool _debugger = _off;     //?? _debugger
+//! -[MASTER]- !
 
-//* -[GLOBAL FUNCTIONS]- *
+//? <GLOBAL VARIABLES>
 
-//* HideTerminal
-//*
+//?? termios structs ?/
+//? @def: edit terminal state
+struct termios oldt, newt; 
+
+//?? debugger ?/
+//? @def: displays data to terminal when enabled
+bool _debugger = _off;
+
+//* <GLOBAL FUNCTIONS>
+
+//** HideTerminal() */
 void HideTerminal()
 {
     //& Get terminal attributes
@@ -20,8 +26,7 @@ void HideTerminal()
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-//* ShowTerminal
-//*
+//** ShowTerminal() */
 void ShowTerminal()
 {
     //& Restore terminal settings
@@ -29,8 +34,8 @@ void ShowTerminal()
     cout << endl;
 }
 
-//* ValidateInput
-//*
+//** ValidateInput() */
+//* @param: char
 void ValidateInput(char &input)
 {
     while (input != 'y' && input != 'Y' && input != 'n' && input != 'N')
@@ -41,8 +46,8 @@ void ValidateInput(char &input)
     cout << endl;
 }
 
-//* ValidateFile
-//*
+//** ValidateFile() */
+//* @param: ifstream
 bool ValidateFile(ifstream &readfile)
 {
     if (!readfile) //! file wasn't opened, return false
@@ -50,6 +55,9 @@ bool ValidateFile(ifstream &readfile)
 
     return true; //* file opened, return true
 }
+
+//** ValidateFile() */
+//* @param: ofstream
 bool ValidateFile(ofstream &writefile)
 {
     if (!writefile) //! file wasn't opened, return false
@@ -58,44 +66,61 @@ bool ValidateFile(ofstream &writefile)
     return true; //* file opened, return true
 }
 
-//! -[GLOBAL OVERLOADS]- !
+//^ <GLOBAL OVERLOADS>
 
-//! operator<< | [enum==integrity]
-ostream &operator<<(ostream &output, const integrity &object)
+//^^ operator<< | (enum=INTEGRITY) ^/
+ostream &operator<<(ostream &out, const integrity &object)
 {
     switch (object)
     {
     default:
-        output << "<none>";
+        out << "<none>";
         break;
     case 1:
-        output << "<poor>";
+        out << "<poor>";
         break;
     case 2:
-        output << "<weak>";
+        out << "<weak>";
         break;
     case 3:
-        output << "<strong>";
+        out << "<strong>";
         break;
     case 4:
-        output << "<excellent>";
+        out << "<excellent>";
         break;
     }
 
-    return output;
+    return out;
 }
 
-//! operator<< | [enum==clearance]
+//^^ operator<< | (enum=CLEARANCE) ^/
 ostream &operator<<(ostream &out, const clearance &object)
 {
     switch (object)
     {
     default: //* by default, access to most info should be restricted
-        cout << "<Restricted>";
+        out << "<Restricted>";
         break;
 
     case 1:
-        cout << "<Granted>";
+        out << "<Granted>";
+        break;
+    }
+
+    return out;
+}
+
+//^^ operator<< | (enum=LOCK) ^/
+ostream &operator<<(ostream &out, const lock &object)
+{
+    switch (object)
+    {
+    default:
+        out << "<Locked>";
+        break;
+
+    case 1:
+        out << "<Unlocked>";
         break;
     }
 

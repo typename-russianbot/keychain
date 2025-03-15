@@ -2,9 +2,8 @@
 
 //^ -[PROTECTED]- ^
 
-//^ -getters-
+//^ <GETTERS>
 //^ @protected
-
 const string profile::getUsername()
 {
     return this->cUsername;
@@ -14,9 +13,8 @@ const string profile::getPasskey()
     return this->cPassword;
 }
 
-//^ -setters-
+//^ <SETTERS>
 //^ @protected
-
 void profile::setUsername(const string &username)
 {
     this->cUsername = username;
@@ -26,7 +24,7 @@ void profile::setPassword(const string &password)
     this->cPassword = password;
 }
 
-//^ -helpers-
+//^ <HELPERS>
 //^ @protected
 
 //^ loadProfile()
@@ -164,57 +162,60 @@ bool profile::removeProfile(const string &target)
 
 //^ createProfile()
 //^ @def:
-//* @returns true: 
+//* @returns true:
 //! @returns false:
 bool profile::createProfile(const string &username, const string &password)
 {
-    //* set current username & password to parameters
-    setUsername(username); 
-    setPassword(password); 
+    //* set current username & password to params
+    setUsername(username);
+    setPassword(password);
 
+    if (username == cUsername && password == cPassword)
+    {
+        save();
+        return true;
+    }
 
     return false;
 }
 
 //* -[PUBLIC]- *
 
-//* -constructor-
+//* <CONSTRUCTOR>
 //* @public
-profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password), cAccess(restricted)
+profile::profile(const string &username, const string &password)
 {
 
-    if (username == _none && password == _none) //! both username & password are empty
+    if (username == _none && password == _none) //* @if: both username & password are _none
     {
-        cout << "prompt user for input here" << endl;
+        //* 1. load profile data
+        //* 2. create a new profile
+        //* 3. exit program
     }
-    else if (username != _none && password == _none) //^ search for passed in username & load data (if found) into this profile
+    else if (username != _none) //* @elseif: username is not empty
     {
-        if (!loadProfile(username))
-        {
-            cout << "Profile: '" << username << "' not found" << endl;
-            exit(1);
-        }
-        else
-            cout << "Profile: '" << username << "' found" << endl;
-    }
-    else if (username != _none && password != _none)
-    {
-        setUsername(username);
-        setPassword(password);
+        if (password == _none) //* un-restrict profile permissions
+            cAccess = permitted;
+
+        else //! restrict profile permissions
+            cAccess = restricted;
+
+        create(username, password);
     }
     else
     {
-        exit(1);
+        cout << "blank profile created" << endl;
+        create(username, password);
     }
 }
 
-//* -destructor-
+//* <DESTRUCTOR>
 //* @public
 profile::~profile()
 {
 }
 
-//* -functions-
+//* <FUNCTIONS>
 //* @public
 
 //** load() */
@@ -277,19 +278,26 @@ bool profile::remove(const string &target)
 //! @returns false: profile creation failed
 bool profile::create(const string &username, const string &password)
 {
-    if(createProfile(username, password)) //* profile created
-        return true; 
+    if (createProfile(username, password)) //* profile created
+        return true;
 
     return false; //! profile creation failed
 }
 
-//* -overloads-
+//* <OVERLOADS>
 //* @public
-
 ostream &operator<<(ostream &out, const profile &profile)
 {
-    out << "Username: " << profile.cUsername << endl
-        << "Password: " << profile.cPassword << endl;
+    if (profile.cAccess != restricted)
+    {
+        out << "Username: " << profile.cUsername << endl
+            << "Password: " << profile.cPassword << endl;
+    }
+    else
+    {
+        out << "Username: " << profile.cUsername << endl
+            << "Password: " << _censor << endl;
+    }
 
     return out;
 }

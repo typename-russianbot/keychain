@@ -24,7 +24,8 @@ protected:
     bool saveProfile();                                                 //^ saveProfile()
     bool searchProfile(const string &target);                           //^ searchProfile()
     bool removeProfile(const string &target);                           //^ removeProfile()
-    bool createProfile(const string &username, const string &password); //^ createProfile() -- stores username & password into
+    bool createProfile(const string &username, const string &password); //^ createProfile() 
+    bool requestAccess();                                               //^ requestAccess()
 
     //* -[PUBLIC]- *
 public:

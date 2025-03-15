@@ -6,7 +6,7 @@ CXX = g++ #?? 1. gdb compiler
 CXX_FLAGS = -g -Wall -std=c++11 #?? C++ flags
 
 BUILD = build #?? build directory
-SOURCES = source/main.cpp source/key.cpp source/keynode.cpp source/keychain.cpp source/profile.cpp source/master.cpp #?? source files
+SOURCES = source/main.cpp source/key.cpp source/keynode.cpp source/keychain.cpp source/profile.cpp source/master.cpp source/account.cpp #?? source files
 OBJECTS = $(patsubst source/%.cpp, build/%.o, $(SOURCES)) #?? objects files
 TARGET = keychain #?? target executable
 

@@ -10,7 +10,10 @@ void keychain_testing(void)
   keychain myKeychain("mjhsnake2001!!");
 
   //^ prototype profile:
-  profile myProfile("username", "password");
+  profile myProfile("username");
+
+  //^ remove the prototype from profiles .txt
+  myProfile.remove("username");
 }
 
 // && <keychain_usage>
@@ -26,56 +29,33 @@ void keychain_usage(void)
 
   cout << "| -Keychain- | -Usage- |" << endl
        << endl
-       << "Program Flags:" << endl
-       << "\t-h\t| displays all program flags & their purpose" << endl
-       << "\t-d\t| activates debug mode" << endl
-       << "\t-t\t| runs test build of keychain" << endl
-       << "\t-a\t| adds a new key onto the keychain" << endl
-       << "\t-r\t| removes a key from the keychain" << endl
-       << "\t-p\t| searches for a certain key & displays it" << endl;
+       << "| Program Flags: |" << endl
+       << "\t-h | HELP -- " << endl
+       << "\t-p | PROFILE INTERFACE --" << endl
+       << "\t-t | TESTING INTERFACE --" << endl
+       << "\t-h | description" << endl;
+
+  //* concept flags:
+  //* 1. -c : create a new account
+  //* 2. -r : remove a pre-existing account
+  //* 3. -p : print an account's keychain
+  //* 4. -
 }
 
-// TODO <main>
+// ~~ <main program>
 int main(int argc, char *argv[])
 {
-  //** -PROGRAM VARIABLES-
+  //?? -PROGRAM VARIABLES-
   int flags;
 
-  //!! -FLAG PARSER-
+  //** -FLAG PARSER-
   while ((flags = getopt(argc, argv, "hdar:p:t")) != -1)
   {
     switch (flags)
     {
-      //^^ 1. <HELP> ||
+      //^^ 1. <HELP>
     case 'h':
-      if (_debugger)
-        cout << "flag=HELP" << endl;
-
       keychain_usage();
-      break;
-
-      //** 2. <DEBUGGER> ||
-    case 'd':
-      _debugger = _on;
-      cout << "_debugger=ON" << endl;
-      break;
-
-      //!! 3. <ADD> ||
-    case 'a':
-      if (_debugger)
-        cout << "flag=ADD" << endl;
-      break;
-
-      //&& 4. <REMOVE> ||
-    case 'r':
-      if (_debugger)
-        cout << "flag=REMOVE" << endl;
-      break;
-
-      //?? 5. <DISPLAY> ||
-    case 'p':
-      if (_debugger)
-        cout << "flag=DISPLAY" << endl;
       break;
 
     //~~ 6. <TESTING> ||
@@ -88,17 +68,10 @@ int main(int argc, char *argv[])
 
     //** 7. <DEFAULT> ||
     default:
-      if (_debugger)
-        cout << "flag=DEFAULT" << endl;
-
       keychain_usage();
       break;
     }
   }
-
-  // string line;
-  // cout << "input: ";
-  // getline(cin, line);
 
   return 0;
 }

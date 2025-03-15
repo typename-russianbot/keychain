@@ -1,6 +1,6 @@
 #include "../include/Keychain/keychain.h"
 
-//^ <PROTECTED> ^
+//^ -[PROTECTED]- ^
 
 //^ - inputPasskey
 //^ returns the user inputted
@@ -25,6 +25,7 @@ string keychain::inputPasskey()
     else
         return _none;
 }
+
 //^ - isEmpty()
 //^ return true if empty, otherwise false
 bool keychain::isEmpty()
@@ -34,6 +35,7 @@ bool keychain::isEmpty()
 
     return false; //! keychain not empty, return false
 }
+
 //^ - isRestricted()
 //^ returns true if restricted, otherwise false
 bool keychain::isRestricted()
@@ -43,6 +45,7 @@ bool keychain::isRestricted()
 
     return false; //* access is permitted, return false
 }
+
 //^ - requestAccess()
 //^ returns true if access is permitted, false if denied
 bool keychain::requestAccess(string passkey)
@@ -85,6 +88,7 @@ bool keychain::requestAccess(string passkey)
 
     return false;
 }
+
 //^ - setPasskey()
 //^ sets passkey to the passed in string, or if none is passed, the user is prompted
 bool keychain::setPasskey(string passkey)
@@ -114,6 +118,7 @@ bool keychain::setPasskey(string passkey)
 
     return false; //! unknown error
 }
+
 //^ - add()
 //^ adds a new key to the chain
 void keychain::add(const key &nKey)
@@ -150,6 +155,7 @@ void keychain::add(const key &nKey)
 
     this->cKeys++; //* update the number of keys in this chain
 }
+
 //^ - remove()
 //^ removes a specified key from the chain
 bool keychain::remove(const key &nKey)
@@ -173,6 +179,7 @@ bool keychain::remove(const key &nKey)
 
     return true;
 }
+
 //^ - lookup()
 //^ searches for a specific key on the chain & displays
 bool keychain::lookup(string keyident)
@@ -195,9 +202,10 @@ bool keychain::lookup(string keyident)
     }
 }
 
-//* <PUBLIC> *
+//* -[PUBLIC]- *
 
-//* -constructor-
+//* <CONSTRUCTOR>
+//* @public
 keychain::keychain(string passkey)
 
     : cKeys(0), cPassword(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
@@ -209,7 +217,7 @@ keychain::keychain(string passkey)
         cAccess = permitted;
 }
 
-//* -destructor-
+//* <DESTRUCTOR>
 //* @public
 keychain::~keychain()
 {
@@ -219,10 +227,11 @@ keychain::~keychain()
     this->cHead = this->cTail = nullptr;
 }
 
-//* -keychain functions-
+//* <FUNCTIONS>
 //* @public
 
-//* - create()
+//** create() */
+//* @def: 
 //* creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
 bool keychain::create(const string &keyname, const string &username, const string &email, const string &password)
 {
@@ -244,19 +253,21 @@ bool keychain::create(const string &keyname, const string &username, const strin
 }
 
 //** remove() */ 
-//*
+//* def: 
 bool keychain::remove()
 {
     return false;
 }
 
 //** search() */
+//* @def:
 bool keychain::search()
 {
     return false;
 }
 
 //** display() */
+//* @def: 
 bool keychain::print()
 {
     cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
@@ -282,7 +293,8 @@ bool keychain::print()
     return true;
 }
 
-//* - operator<<
+//* <OVERLOADS>
+//* @public
 ostream &operator<<(ostream &out, const keychain &keychain)
 {
     if (keychain.cAccess == restricted) //! <access=RESTRICTED>
