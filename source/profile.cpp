@@ -112,6 +112,11 @@ bool profile::searchProfile(const string &target)
     }
 }
 
+bool profile::removeProfile(const string &target)
+{
+    return false;
+} 
+
 //* -[PUBLIC]- *
 
 //* -constructor-

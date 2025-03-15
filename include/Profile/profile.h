@@ -34,11 +34,12 @@ public:
     ~profile();
 
     //* -functions-
-    bool load(const string &target = _none);   //* load()
-    bool save();                               //* save()
-    bool search(const string &target = _none); //* search()
-    bool remove(const string &target = _none); //* remove()
+    bool load(const string &target = _none);                                     //* load()
+    bool save();                                                                 //* save()
+    bool search(const string &target = _none);                                   //* search()
+    bool remove(const string &target = _none);                                   //* remove()
+    bool create(const string &username = _none, const string &password = _none); //* create()
 
     //* -overloads-
-    friend ostream &operator<<(ostream &out, const profile &profile);
+    friend ostream &operator<<(ostream &out, const profile &profile); //* operator<<
 };
