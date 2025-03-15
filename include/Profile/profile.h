@@ -20,10 +20,11 @@ protected:
     void setPassword(const string &password); //^ setPasskey()
 
     //^ -helpers-
-    bool loadProfile(const string &username); //^ loadProfile()
-    bool saveProfile();                       //^ saveProfile()
-    bool searchProfile(const string &target); //^ searchProfile()
-    bool removeProfile(const string &target); //^ removeProfile()
+    bool loadProfile(const string &username);                           //^ loadProfile()
+    bool saveProfile();                                                 //^ saveProfile()
+    bool searchProfile(const string &target);                           //^ searchProfile()
+    bool removeProfile(const string &target);                           //^ removeProfile()
+    bool createProfile(const string &username, const string &password); //^ createProfile() -- stores username & password into 
 
     //* -[PUBLIC]- *
 public:
@@ -39,6 +40,7 @@ public:
     bool search(const string &target = _none);                                   //* search()
     bool remove(const string &target = _none);                                   //* remove()
     bool create(const string &username = _none, const string &password = _none); //* create()
+    bool print();                                                                //* print()
 
     //* -overloads-
     friend ostream &operator<<(ostream &out, const profile &profile); //* operator<<

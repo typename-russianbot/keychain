@@ -3,6 +3,7 @@
 //^ -[PROTECTED]- ^
 
 //^ -getters-
+//^ @protected
 const string profile::getUsername()
 {
     return this->cUsername;
@@ -13,6 +14,7 @@ const string profile::getPasskey()
 }
 
 //^ -setters-
+//^ @protected
 void profile::setUsername(const string &username)
 {
     this->cUsername = username;
@@ -23,8 +25,10 @@ void profile::setPassword(const string &password)
 }
 
 //^ -helpers-
+//^ @protected
 
 //^ loadProfile()
+//^ @def: compares the target string & compares it to
 bool profile::loadProfile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
@@ -61,6 +65,7 @@ bool profile::loadProfile(const string &target)
 }
 
 //^ saveProfile()
+//^ @def
 bool profile::saveProfile()
 {
     ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
@@ -78,6 +83,7 @@ bool profile::saveProfile()
 }
 
 //^ searchProfile()
+//^ @def
 bool profile::searchProfile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
@@ -112,21 +118,55 @@ bool profile::searchProfile(const string &target)
     }
 }
 
+//^ removeProfile()
+//^ @def
 bool profile::removeProfile(const string &target)
 {
+    //* create readfile obj
+    ifstream readfile("data/profiles.txt");
+    ofstream tempfile("temp.txt");
+
+    if (!ValidateFile(readfile)) //! file load failure
+        return false;
+
+    else //* file validated
+    {
+        string line;
+
+        //^ get each line from profiles.txt, except the target line
+        while (getline(readfile, line))
+        {
+            if (line.find(target) == string::npos) //* write all lines that aren't target to temp.txt
+                tempfile << line << endl;
+        }
+    }
+
+    //^ close opened files
+    readfile.close();
+    tempfile.close();
+
+    //^ update profiles.txt to temp.txt
+    remove("data/profiles.txt");
+    rename("temp.txt", "data/profiles.txt");
+
+    return true;
+}
+
+//^ createProfile()
+//^ @def:
+bool profile::createProfile(const string &username, const string &password)
+{
     return false;
-} 
+}
 
 //* -[PUBLIC]- *
 
 //* -constructor-
-//* @details:
-//* if both username & password are empty, prompt for user input
-//* if username is not empty &
+//* @public
 profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password), cAccess(restricted)
 {
 
-    if (username == _none && password == _none) //! both username & password are empty; prompt for input
+    if (username == _none && password == _none) //! both username & password are empty
     {
         cout << "prompt user for input here" << endl;
     }
@@ -152,13 +192,18 @@ profile::profile(const string &username, const string &password) : cUsername(use
 }
 
 //* -destructor-
+//* @public
 profile::~profile()
 {
 }
 
 //* -functions-
+//* @public
 
 //** load() */
+//* @def:
+//* @returns true:
+//! @returns false:
 bool profile::load(const string &target)
 {
     if (searchProfile(target)) //* target was found, load data
@@ -166,11 +211,14 @@ bool profile::load(const string &target)
         loadProfile(target);
         return true;
     }
-    
+
     return false; //! target not found
 }
 
 //** save() */
+//* @def: saves the current username & password attributes to profiles.txt
+//* @returns true: target saved to profiles.txt
+//! @returns false: target failed to save
 bool profile::save()
 {
     if (saveProfile()) //* target saved to profiles.txt
@@ -180,6 +228,9 @@ bool profile::save()
 }
 
 //** search() */
+//* @def: takes the target string & compares it to all usernames in profiles.txt
+//* @returns true:
+//! @returns false:
 bool profile::search(const string &target)
 {
     if (searchProfile(target))
@@ -189,12 +240,35 @@ bool profile::search(const string &target)
 }
 
 //** remove() */
+//* @def:
+//* @returns true: target was removed
+//! @returns false: target removal failure
 bool profile::remove(const string &target)
+{
+
+    if (!search(target)) //! search for target in file before removal
+    {
+        cout << "profile doesn't exist" << endl;
+        return false;
+    }
+
+    if (removeProfile(target)) //* target removed
+        return true;
+
+    else //! target removal failure
+        return false;
+}
+
+//** create() */
+//* @def: takes the passed in username & password
+bool profile::create(const string &username, const string &password)
 {
     return false;
 }
 
 //* -overloads-
+//* @public
+
 ostream &operator<<(ostream &out, const profile &profile)
 {
     out << "Username: " << profile.cUsername << endl

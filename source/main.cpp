@@ -11,10 +11,6 @@ void keychain_testing(void)
 
   //^ prototype profile:
   profile myProfile("username", "password");
-
-  myProfile.save(); 
-  
-
 }
 
 // && <keychain_usage>
