@@ -14,6 +14,7 @@ private:
 
   //^ -[PROTECTED]- ^
 protected:
+  //^ <HELPERS>
   string inputPasskey();                       //^ inputPasskey()
   bool isEmpty();                              //^ isEmpty()
   bool isRestricted();                         //^ isRestricted()
@@ -25,19 +26,21 @@ protected:
 
   //* -[PUBLIC]- *
 public:
-  //* -constructor-
+  //* <CONSTRUCTOR>
   keychain(string passkey = _none);
 
-  //* -destructor-
+  //* <DESTRUCTOR>
   ~keychain();
 
-  //* -keychain functions-
+  //* <FUNCTIONS>
   bool create(const string &keyname = _none, const string &username = _none,
               const string &email = _none, const string &password = _none); //* create()
   bool remove();                                                            //* remove()
   bool search();                                                            //* search()
-  bool display();                                                           //* print()
+  bool print();                                                             //* print()
+  bool load();                                                              //* load()
+  bool save();                                                              //* save()
 
-  //* -overloads-
+  //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<
 };

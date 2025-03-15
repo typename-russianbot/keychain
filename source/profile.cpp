@@ -4,6 +4,7 @@
 
 //^ -getters-
 //^ @protected
+
 const string profile::getUsername()
 {
     return this->cUsername;
@@ -15,6 +16,7 @@ const string profile::getPasskey()
 
 //^ -setters-
 //^ @protected
+
 void profile::setUsername(const string &username)
 {
     this->cUsername = username;
@@ -28,7 +30,9 @@ void profile::setPassword(const string &password)
 //^ @protected
 
 //^ loadProfile()
-//^ @def: compares the target string & compares it to
+//^ @def: compares the target string to all other usernames in profiles.txt
+//* @returns true:
+//! @returns false:
 bool profile::loadProfile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
@@ -65,7 +69,9 @@ bool profile::loadProfile(const string &target)
 }
 
 //^ saveProfile()
-//^ @def
+//^ @def: writes the currently stored profile attributes to profiles.txt
+//* @returns true:
+//! @returns false:
 bool profile::saveProfile()
 {
     ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
@@ -83,7 +89,9 @@ bool profile::saveProfile()
 }
 
 //^ searchProfile()
-//^ @def
+//^ @def:
+//* @returns true:
+//! @returns false:
 bool profile::searchProfile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
@@ -119,7 +127,9 @@ bool profile::searchProfile(const string &target)
 }
 
 //^ removeProfile()
-//^ @def
+//^ @def:
+//* @returns true:
+//! @returns false:
 bool profile::removeProfile(const string &target)
 {
     //* create readfile obj
@@ -154,8 +164,15 @@ bool profile::removeProfile(const string &target)
 
 //^ createProfile()
 //^ @def:
+//* @returns true: 
+//! @returns false:
 bool profile::createProfile(const string &username, const string &password)
 {
+    //* set current username & password to parameters
+    setUsername(username); 
+    setPassword(password); 
+
+
     return false;
 }
 
@@ -201,9 +218,9 @@ profile::~profile()
 //* @public
 
 //** load() */
-//* @def:
-//* @returns true:
-//! @returns false:
+//* @def: first, searches for the profile before attempting to load. If found, load profile. Otherwise, return false
+//* @returns true: profile loaded
+//! @returns false: profile loading failed
 bool profile::load(const string &target)
 {
     if (searchProfile(target)) //* target was found, load data
@@ -217,8 +234,8 @@ bool profile::load(const string &target)
 
 //** save() */
 //* @def: saves the current username & password attributes to profiles.txt
-//* @returns true: target saved to profiles.txt
-//! @returns false: target failed to save
+//* @returns true: profile saved
+//! @returns false: profile saving failed
 bool profile::save()
 {
     if (saveProfile()) //* target saved to profiles.txt
@@ -229,41 +246,41 @@ bool profile::save()
 
 //** search() */
 //* @def: takes the target string & compares it to all usernames in profiles.txt
-//* @returns true:
-//! @returns false:
+//* @returns true: profile found
+//! @returns false: profile search failed
 bool profile::search(const string &target)
 {
-    if (searchProfile(target))
+    if (searchProfile(target)) //* profile found
         return true;
 
-    return false;
+    return false; //! profile search failed
 }
 
 //** remove() */
 //* @def:
-//* @returns true: target was removed
-//! @returns false: target removal failure
+//* @returns true: profile removed
+//! @returns false: profile removal failed
 bool profile::remove(const string &target)
 {
-
     if (!search(target)) //! search for target in file before removal
-    {
-        cout << "profile doesn't exist" << endl;
         return false;
-    }
 
-    if (removeProfile(target)) //* target removed
+    if (removeProfile(target)) //* profile removed
         return true;
 
-    else //! target removal failure
-        return false;
+    return false; //! profile removal failed
 }
 
 //** create() */
 //* @def: takes the passed in username & password
+//* @returns true: profile created
+//! @returns false: profile creation failed
 bool profile::create(const string &username, const string &password)
 {
-    return false;
+    if(createProfile(username, password)) //* profile created
+        return true; 
+
+    return false; //! profile creation failed
 }
 
 //* -overloads-

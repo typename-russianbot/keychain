@@ -210,6 +210,7 @@ keychain::keychain(string passkey)
 }
 
 //* -destructor-
+//* @public
 keychain::~keychain()
 {
     if (_debugger)
@@ -219,6 +220,7 @@ keychain::~keychain()
 }
 
 //* -keychain functions-
+//* @public
 
 //* - create()
 //* creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
@@ -240,21 +242,22 @@ bool keychain::create(const string &keyname, const string &username, const strin
 
     return false;
 }
-//* - remove()
+
+//** remove() */ 
 //*
 bool keychain::remove()
 {
     return false;
 }
-//* - search()
-//*
+
+//** search() */
 bool keychain::search()
 {
     return false;
 }
-//* - display() 
-//*
-bool keychain::display()
+
+//** display() */
+bool keychain::print()
 {
     cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
 
