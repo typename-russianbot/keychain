@@ -24,10 +24,10 @@ void profile::setPassword(const string &password)
 
 //^ -helpers-
 
-//^
-bool profile::loadProfile(const string &username)
+//^ loadProfile()
+bool profile::loadProfile(const string &target)
 {
-    ifstream readfile("data/profiles.txt"); //^ load profiles.txt for read
+    ifstream readfile("data/profiles.txt");
 
     if (!ValidateFile(readfile)) //! file failed to load
         return false;
@@ -39,9 +39,28 @@ bool profile::loadProfile(const string &username)
         while (getline(readfile, line))
         {
             size_t commaPos = line.find(',');
+
+            //? validate commaPos
+            if (commaPos != string::npos)
+            {
+                if (line.substr(0, commaPos) == target) //* target found
+                {
+                    setUsername(line.substr(0, commaPos));
+                    setPassword(line.substr(commaPos + 1));
+
+                    readfile.close();
+                    return true;
+                }
+            }
         }
+
+        //! target not found
+        readfile.close();
+        return false;
     }
 }
+
+//^ saveProfile()
 bool profile::saveProfile()
 {
     ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
@@ -68,20 +87,18 @@ bool profile::searchProfile(const string &target)
 
     else //* file validated
     {
-        string line, username;
+        string line;
 
         //^ parse thru file
         while (getline(readfile, line))
         {
-            size_t usernamePos = line.find(',');
+            size_t commaPos = line.find(',');
 
-            if (usernamePos != string::npos)
+            //^ validate commaPos
+            if (commaPos != string::npos)
             {
-                username = line.substr(0, usernamePos);
-                // cout << line.substr(usernamePos + 1) << endl;
-
                 //* target found
-                if (username == target)
+                if (line.substr(0, commaPos) == target)
                 {
                     readfile.close();
                     return true;
@@ -139,10 +156,15 @@ profile::~profile()
 //** load() */
 bool profile::load(const string &target)
 {
-    if(loadProfile(target)) //* target was loaded
-        return true; 
-    else //! target was not loaded
-        return false; 
+    if (searchProfile(target)) //* target was found, load data
+    {
+        loadProfile(target); 
+        return true;
+    }
+    else //! target was not found, cancel loading
+    {
+        return false;
+    }
 }
 
 //** save() */

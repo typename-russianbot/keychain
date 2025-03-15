@@ -20,9 +20,10 @@ protected:
     void setPassword(const string &password); //^ setPasskey()
 
     //^ -helpers-
-    bool loadProfile(const string &username);                                  //^ loadProfile()
-    bool saveProfile();                                                        //^ saveProfile()
-    bool searchProfile(const string &target);                                  //^ searchProfile()
+    bool loadProfile(const string &username); //^ loadProfile()
+    bool saveProfile();                       //^ saveProfile()
+    bool searchProfile(const string &target); //^ searchProfile()
+    bool removeProfile(const string &target); //^ removeProfile()
 
     //* -[PUBLIC]- *
 public:

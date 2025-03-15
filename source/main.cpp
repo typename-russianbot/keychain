@@ -10,14 +10,8 @@ void keychain_testing(void)
   keychain myKeychain("mjhsnake2001!!");
 
   //^ prototype profile:
-  profile myProfile("username", "password"); 
-  
-  string username("jimmys-hog"); 
+  profile myProfile("username", "password");
 
-  if(myProfile.search(username))
-    cout << username << endl; 
-  else
-    cout << username << " not found" << endl ;
 }
 
 // && <keychain_usage>
@@ -103,9 +97,9 @@ int main(int argc, char *argv[])
     }
   }
 
-  // string line; 
-  // cout << "input: "; 
-  // getline(cin, line); 
+  // string line;
+  // cout << "input: ";
+  // getline(cin, line);
 
   return 0;
 }
