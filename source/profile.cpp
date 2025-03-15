@@ -22,7 +22,9 @@ void profile::setPassword(const string &password)
     this->cPassword = password;
 }
 
-//^ -load/save profiles-
+//^ -helpers-
+
+//^
 bool profile::loadProfile(const string &username)
 {
     ifstream readfile("data/profiles.txt"); //^ load profiles.txt for read
@@ -32,29 +34,13 @@ bool profile::loadProfile(const string &username)
 
     else //* file validated
     {
-        string line, value;
+        string line;
 
-        //* parse through file
         while (getline(readfile, line))
         {
-            stringstream currentline(line);
-            unsigned int i = 0;
-
-            while (getline(currentline, value, ','))
-            {
-                checkProfile(i, value, username);
-            }
+            size_t commaPos = line.find(',');
         }
-
-        if (username != cUsername)
-        {
-            return false;
-        }
-
-        readfile.close();
     }
-
-    return true;
 }
 bool profile::saveProfile()
 {
@@ -71,33 +57,58 @@ bool profile::saveProfile()
 
     return true;
 }
-//^ checkProfile()
-void profile::checkProfile(unsigned int &i, string &value, const string &username)
+
+//^ searchProfile()
+bool profile::searchProfile(const string &target)
 {
-    switch (i)
+    ifstream readfile("data/profiles.txt");
+
+    if (!ValidateFile(readfile)) //! file failed to load
+        return false;
+
+    else //* file validated
     {
-    case 0: //* case0:
-        if (value == username)
-            this->cUsername = value;
+        string line, username;
 
-        i++;
-        break;
+        //^ parse thru file
+        while (getline(readfile, line))
+        {
+            size_t usernamePos = line.find(',');
 
-    case 1: //* case1:
-        if (username == cUsername)
-            this->cPassword = value;
-        break;
+            if (usernamePos != string::npos)
+            {
+                username = line.substr(0, usernamePos);
+                // cout << line.substr(usernamePos + 1) << endl;
+
+                //* target found
+                if (username == target)
+                {
+                    readfile.close();
+                    return true;
+                }
+            }
+        }
+
+        //! target not found
+        readfile.close();
+        return false;
     }
 }
 
 //* -[PUBLIC]- *
 
 //* -constructor-
-profile::profile(const string &username)
+//* @details:
+//* if both username & password are empty, prompt for user input
+//* if username is not empty &
+profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password), cAccess(restricted)
 {
-    if (username == _none)
+
+    if (username == _none && password == _none) //! both username & password are empty; prompt for input
+    {
         cout << "prompt user for input here" << endl;
-    else
+    }
+    else if (username != _none && password == _none) //^ search for passed in username & load data (if found) into this profile
     {
         if (!loadProfile(username))
         {
@@ -107,11 +118,15 @@ profile::profile(const string &username)
         else
             cout << "Profile: '" << username << "' found" << endl;
     }
-}
-
-profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password)
-{
-    saveProfile();
+    else if (username != _none && password != _none)
+    {
+        setUsername(username);
+        setPassword(password);
+    }
+    else
+    {
+        exit(1);
+    }
 }
 
 //* -destructor-
@@ -120,17 +135,35 @@ profile::~profile()
 }
 
 //* -functions-
-bool profile::search(const string &username)
-{
-    if (!loadProfile(username))
-    {
-        cout << "Profile: '" << username << "' not found" << endl;
-        return false;
-    }
-    else
-        cout << "Profile: '" << username << "' found" << endl;
 
-    return true;
+//** load() */
+bool profile::load(const string &target)
+{
+    if(loadProfile(target)) //* target was loaded
+        return true; 
+    else //! target was not loaded
+        return false; 
+}
+
+//** save() */
+bool profile::save()
+{
+    return false;
+}
+
+//** search() */
+bool profile::search(const string &target)
+{
+    if (searchProfile(target))
+        return true;
+    else
+        return false;
+}
+
+//** remove() */
+bool profile::remove(const string &target)
+{
+    return false;
 }
 
 //* -overloads-

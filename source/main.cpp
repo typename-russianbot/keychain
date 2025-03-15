@@ -9,7 +9,15 @@ void keychain_testing(void)
   //^ proto keychain
   keychain myKeychain("mjhsnake2001!!");
 
-  profile myProfile("flompy-donky"); //* constructor accepts the string & searches for the target string.
+  //^ prototype profile:
+  profile myProfile("username", "password"); 
+  
+  string username("jimmys-hog"); 
+
+  if(myProfile.search(username))
+    cout << username << endl; 
+  else
+    cout << username << " not found" << endl ;
 }
 
 // && <keychain_usage>
@@ -94,6 +102,10 @@ int main(int argc, char *argv[])
       break;
     }
   }
+
+  // string line; 
+  // cout << "input: "; 
+  // getline(cin, line); 
 
   return 0;
 }
