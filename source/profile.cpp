@@ -158,19 +158,20 @@ bool profile::load(const string &target)
 {
     if (searchProfile(target)) //* target was found, load data
     {
-        loadProfile(target); 
+        loadProfile(target);
         return true;
     }
-    else //! target was not found, cancel loading
-    {
-        return false;
-    }
+    
+    return false; //! target not found
 }
 
 //** save() */
 bool profile::save()
 {
-    return false;
+    if (saveProfile()) //* target saved to profiles.txt
+        return true;
+
+    return false; //! target failed to save
 }
 
 //** search() */
@@ -178,8 +179,8 @@ bool profile::search(const string &target)
 {
     if (searchProfile(target))
         return true;
-    else
-        return false;
+
+    return false;
 }
 
 //** remove() */
