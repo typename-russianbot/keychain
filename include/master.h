@@ -1,6 +1,6 @@
 #pragma once
 
-//!! -DEPENDENCIES-
+//!! <DEPENDENCIES>
 #include <iostream>  //! iostream
 #include <fstream>   //! fstream
 #include <sstream>   //! sstream
@@ -10,9 +10,8 @@
 #include <getopt.h>  //! getopt.h
 #include <termios.h> //! termios.h
 
-using namespace std;
-
 //^^ <MACROS>
+using namespace std;
 #define _on true               //^ _on
 #define _off false             //^ _off
 #define _none "<none>"         //^ _none

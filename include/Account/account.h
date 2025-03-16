@@ -3,16 +3,18 @@
 #include "../Profile/profile.h"
 
 //? -[CLASS: Account]- ?
-class account
+class account : public profile, public keychain
 {
     //! -[PRIVATE]- !
 private:
-    profile cProfile;   //! cProfile
-    keychain cKeychain; //! cKeychain
+    lock cLock; //! cLock
 
     //^ -[PROTECTED]- ^
 protected:
-    //^^ ^/
+    //^ <HELPERS>
+    bool unlock();   //^ unlock()
+    bool relock();   //^ relock()
+    bool isLocked(); //^ isLocked()
 
     //* -[PUBLIC]- *
 public:
@@ -27,7 +29,6 @@ public:
     bool remove();  //* remove()
     bool search();  //* search()
     bool details(); //* details()
-    bool unlock();  //* unlock()
 
     //* <OVERLOADS>
 };

@@ -15,31 +15,30 @@ private:
   //^ -[PROTECTED]- ^
 protected:
   //^ <HELPERS>
-  string inputPasskey();                       //^ inputPasskey()
-  bool isEmpty();                              //^ isEmpty()
-  bool isRestricted();                         //^ isRestricted()
-  bool requestAccess(string password = _none); //^ requestAccess()
-  bool setPasskey(string password = _none);    //^ setPasskey()
-  void add(const key &nKey);                   //^ add()
-  bool remove(const key &nKey);                //^ remove()
-  bool lookup(string keyident = _none);        //^ lookup()
+  string inputPassword();                        //^ inputPasskey()
+  bool isEmpty();                               //^ isEmpty()
+  bool isRestricted();                          //^ isRestricted()
+  bool accessKeychain(string password = _none); //^ accessKeychain()
+  void addKey(const key &nKey);                 //^ add()
+  bool removeKey(const key &nKey);              //^ remove()
+  bool lookupKey(string keyident = _none);      //^ lookup()
 
   //* -[PUBLIC]- *
 public:
   //* <CONSTRUCTOR>
-  keychain(string passkey = _none);
+  keychain(string password = _none);
 
   //* <DESTRUCTOR>
   ~keychain();
 
   //* <FUNCTIONS>
-  bool create(const string &keyname = _none, const string &username = _none,
-              const string &email = _none, const string &password = _none); //* create()
-  bool remove();                                                            //* remove()
-  bool search();                                                            //* search()
-  bool print();                                                             //* print()
-  bool load();                                                              //* load()
-  bool save();                                                              //* save()
+  bool createKey(const string &keyname = _none, const string &username = _none,
+                 const string &email = _none, const string &password = _none); //* createKey()
+  bool removeKey();                                                            //* removeKey()
+  bool searchKey();                                                            //* searchKey()
+  bool printKeychain();                                                        //* printKeychain()
+  bool loadKeychain();                                                         //* loadKeychain()
+  bool saveKeychain();                                                         //* saveKeychain()
 
   //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<

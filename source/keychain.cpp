@@ -2,9 +2,8 @@
 
 //^ -[PROTECTED]- ^
 
-//^ - inputPasskey
-//^ returns the user inputted
-string keychain::inputPasskey()
+//^^ inputPassword() ^/
+string keychain::inputPassword()
 {
     string input, verification;
 
@@ -26,29 +25,26 @@ string keychain::inputPasskey()
         return _none;
 }
 
-//^ - isEmpty()
-//^ return true if empty, otherwise false
+//^^ isEmpty() ^/
 bool keychain::isEmpty()
 {
-    if (cHead == nullptr && cTail == nullptr) //* keychain empty, return true
+    if (cHead == nullptr && cTail == nullptr) //* keychain empty
         return true;
 
-    return false; //! keychain not empty, return false
+    return false; //! keychain not empty
 }
 
-//^ - isRestricted()
-//^ returns true if restricted, otherwise false
+//^^ isRestricted() ^/
 bool keychain::isRestricted()
 {
-    if (cAccess == restricted) //! access restricted, return true
+    if (cAccess == restricted) //* access restricted
         return true;
 
-    return false; //* access is permitted, return false
+    return false; //! access permitted
 }
 
-//^ - requestAccess()
-//^ returns true if access is permitted, false if denied
-bool keychain::requestAccess(string passkey)
+//^^ accessKeychain() ^/
+bool keychain::accessKeychain(string passkey)
 {
     char input;       //? -input    | input for attempt looping
     int attempts = 3; //? -attempts | # of attempts
@@ -63,7 +59,7 @@ bool keychain::requestAccess(string passkey)
         while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
         {
             //* match
-            if (cPassword == inputPasskey())
+            if (cPassword == inputPassword())
             {
                 cAccess = permitted;
                 return true;
@@ -89,39 +85,8 @@ bool keychain::requestAccess(string passkey)
     return false;
 }
 
-//^ - setPasskey()
-//^ sets passkey to the passed in string, or if none is passed, the user is prompted
-bool keychain::setPasskey(string passkey)
-{
-    if (passkey == _none) //! no parameter, set equal to _none
-    {
-        this->cPassword = _none;
-
-        //? update access permissions
-        if (this->cAccess == restricted)
-            this->cAccess = permitted;
-
-        //* successfully set passkey
-        return true;
-    }
-    else //* parameter passed, set equal to passkey
-    {
-        this->cPassword = passkey;
-
-        //? update access permissions
-        if (this->cAccess == permitted)
-            this->cAccess = restricted;
-
-        //* successfully set passkey
-        return true;
-    }
-
-    return false; //! unknown error
-}
-
-//^ - add()
-//^ adds a new key to the chain
-void keychain::add(const key &nKey)
+//^^ addKey() ^/
+void keychain::addKey(const key &nKey)
 {
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
@@ -156,15 +121,14 @@ void keychain::add(const key &nKey)
     this->cKeys++; //* update the number of keys in this chain
 }
 
-//^ - remove()
-//^ removes a specified key from the chain
-bool keychain::remove(const key &nKey)
+//^^ removeKey() ^/
+bool keychain::removeKey(const key &nKey)
 {
     if (isEmpty()) //! nothing to remove
         return false;
 
     //& request keychain permissions
-    if (this->requestAccess()) //* <access==GRANTED>
+    if (this->accessKeychain()) //* <access==GRANTED>
     {
         _clear;
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
@@ -180,9 +144,8 @@ bool keychain::remove(const key &nKey)
     return true;
 }
 
-//^ - lookup()
-//^ searches for a specific key on the chain & displays
-bool keychain::lookup(string keyident)
+//^^ lookupKey() ^/
+bool keychain::lookupKey(string keyident)
 {
     if (isEmpty()) //! nothing to lookup
         return false;
@@ -206,9 +169,8 @@ bool keychain::lookup(string keyident)
 
 //* <CONSTRUCTOR>
 //* @public
-keychain::keychain(string passkey)
-
-    : cKeys(0), cPassword(passkey), cAccess(restricted), cHead(nullptr), cTail(nullptr)
+keychain::keychain(string password)
+    : cKeys(0), cPassword(password), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
     if (cPassword == "")
         cPassword = _none;
@@ -230,50 +192,47 @@ keychain::~keychain()
 //* <FUNCTIONS>
 //* @public
 
-//** create() */
-//* @def: 
-//* creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
-bool keychain::create(const string &keyname, const string &username, const string &email, const string &password)
+//** createKey() */
+//* @def: creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
+bool keychain::createKey(const string &keyname, const string &username, const string &email, const string &password)
 {
     key nKey(keyname, username, email, password); //? create a key object with passed in strings
 
-    if (keyname == _none && username == _none && email == _none && password == _none) //! key is empty
+    if (keyname == _none && username == _none && email == _none && password == _none) //! key is empty, cancel createKey()
     {
-        if (_debugger)
-            cout << "prompt user for input with empty param call" << endl;
         return false;
     }
     else //* add key onto the chain
     {
-        this->add(nKey);
+        this->addKey(nKey);
         return true;
     }
 
-    return false;
+    return false; //! unknown error
 }
 
-//** remove() */ 
-//* def: 
-bool keychain::remove()
+//**TODO: removeKey() */
+//* def:
+bool keychain::removeKey()
 {
     return false;
 }
 
-//** search() */
+//**TODO: searchKey() */
 //* @def:
-bool keychain::search()
+bool keychain::searchKey()
 {
     return false;
 }
 
-//** display() */
-//* @def: 
-bool keychain::print()
+//** printKeychain() */
+//* @def:
+bool keychain::printKeychain()
 {
-    cout << "| -Keychain: Display- |" << endl; //^ OPERATION: print()
+    cout << "<Print Keychain>" << endl;
 
     //& request keychain permissions
-    if (this->requestAccess()) //* <access==GRANTED>
+    if (this->accessKeychain()) //* <access==GRANTED>
     {
         _clear;
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl

@@ -1,19 +1,11 @@
-#include "../include/Keychain/keychain.h"
-#include "../include/Profile/profile.h"
+#include "../include/Account/account.h"
 // ^^ <keychain_testing>
 void keychain_testing(void)
 {
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
-  //^ proto keychain
-  keychain myKeychain("mjhsnake2001!!");
-
-  //^ prototype profile:
-  profile myProfile("username");
-
-  //^ remove the prototype from profiles .txt
-  myProfile.remove("username");
+  account myAccount("mjh2001");
 }
 
 // && <keychain_usage>
