@@ -186,7 +186,7 @@ bool keychain::keychainAccess()
     return false; //! access restricted
 } 
 
-//* -[PUBLIC]- *
+//* -[PUBLIC]- *// @publicsection
 
 //* <CONSTRUCTOR>
 //* @public
@@ -257,19 +257,19 @@ unsigned int keychain::getKeys()
 //* @def:
 bool keychain::printKeychain()
 {
-    //& request keychain permissions
-    if (this->requestPermissions()) //* <access==GRANTED>
+    //^ request access:
+    if (this->requestPermissions()) //* access request granted
     {
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
              << *this << endl;
     }
-    else //! <access==DENIED>
+    else //! access request denied
     {
         cout << "<KEYCHAIN ACCESS DENIED>" << endl;
         return false;
     }
 
-    //? re-lock access permissions
+    //^ re-lock access:
     if (this->cAccess == permitted)
         this->cAccess = restricted;
 
