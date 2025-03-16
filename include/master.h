@@ -1,3 +1,5 @@
+//? | @author: Matthew H. | @github: typename-russianbot | ?
+
 #pragma once
 
 //!! <DEPENDENCIES>
@@ -18,8 +20,10 @@ using namespace std;
 #define _clear system("clear") //^ _clear
 #define _censor "**********"   //^ _censor
 
-//^^ <ENUMS>
-enum integrity //& -integrity
+//^^ <ENUMS> 
+
+//^^ @enum: <INTEGRITY> ^/
+enum integrity
 {
   none,     //& 1. <none>        -- no password
   poor,     //& 2. <poor>        -- poor password
@@ -27,28 +31,35 @@ enum integrity //& -integrity
   strong,   //& 4. <strong>      -- strong password
   excellent //& 5. <excellent>   -- excellent password
 };
-enum clearance //& -clearance
+
+//^^ @enum: <CLEARANCE> ^/
+enum clearance 
 {
   restricted, //& 1. <restricted>    -- access restricted
   permitted   //& 2. <permitted>     -- access permitted
 };
-enum lock //& -lock
+
+//^^ @enum: <LOCK> ^/
+enum lock 
 {
   locked,  //& 1. <locked>
   unlocked //& 2. <unlocked>
 };
 
 //** <GLOBAL FUNCTIONS>
-void HideTerminal();                    //* HideTerminal()
-void ShowTerminal();                    //* ShowTerminal()
-void ValidateInput(char &input);        //* ValidateInput()
-bool ValidateFile(ifstream &readfile);  //* ValidateFile()
-bool ValidateFile(ofstream &writefile); //* ValidateFile()
+void HideTerminal(void); //* HideTerminal() @param: void
+void ShowTerminal(void); //* ShowTerminal() @param: void
+
+void ValidateInput(char &input);   //* ValidateInput() @param: char
+bool ValidateInput(string &input); //* ValidateInput() @param: string
+
+bool ValidateFile(ifstream &readfile);  //* ValidateFile() @param: ifstream
+bool ValidateFile(ofstream &writefile); //* ValidateFile() @param: ofstream
 
 //^^ <GLOBAL OVERLOADS>
-ostream &operator<<(ostream &output, const integrity &object); //^ -operator<< (enum=INTEGRITY)
-ostream &operator<<(ostream &out, const clearance &object);    //^ -operator<< (enum=CLEARANCE)
-ostream &operator<<(ostream &out, const lock &object);         //^ -operator<< (enum=LOCK)
+ostream &operator<<(ostream &output, const integrity &object); //^ -operator<< | @enum=INTEGRITY
+ostream &operator<<(ostream &out, const clearance &object);    //^ -operator<< | @enum=CLEARANCE
+ostream &operator<<(ostream &out, const lock &object);         //^ -operator<< | @enum=LOCK
 
 //?? <GLOBAL VARIABLES>
 extern bool _debugger; //? -DEBUGGER

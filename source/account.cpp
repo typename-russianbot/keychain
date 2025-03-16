@@ -1,7 +1,6 @@
 #include "../include/Account/account.h"
 
-//^ -[PROTECTED]- ^
-//^ @protectedsection
+//^ -[PROTECTED]- ^// @protectedsection
 
 //^ <HELPERS>
 //^ @protected
@@ -45,8 +44,16 @@ bool account::isLocked()
     return false; //! account is unlocked
 }
 
-//* -[PUBLIC]- *
-//* @publicsection
+//^^ getKeyData() ^/
+bool account::inputKeyData(const string &keyname, const string &username, const string &email, const string &password)
+{
+
+    return false;
+}
+
+//^^ ^/
+
+//* -[PUBLIC]- *// @publicsection
 
 //* <CONSTRUCTOR>
 //* @public
@@ -69,6 +76,7 @@ account::~account()
 //* @public
 
 //** create() */
+//* @def: 
 bool account::create()
 {
     return false;
@@ -87,24 +95,30 @@ bool account::search()
 }
 
 //** details() */
-bool account::details()
+void account::details()
 {
+    cout << "|--Details--------------|" << endl
+         << endl;
+
+    cout << " - Account: " << cLock << endl;
+
     //* print profile data
-    this->printProfile(); 
+    this->printProfile();
 
-    //* print keychain data
-    if (this->printKeychain())
-        return true;
+    cout << " - Keys Found: " << getKeys() << endl
+         << endl;
 
-    return false;
+    cout << "|------------------------|" << endl;
 }
 
-//* <OVERLOADS>
-
-//** operator<< */
-ostream &operator<<(ostream &out, const account &account)
+//^^ addKey() ^/
+bool account::add()
 {
-    // TODO: insert return statement here
+    //* input variables
+    key newKey; 
+    cin >> newKey; 
 
-    return out;
+    this->addKey(newKey); 
+
+    return false; //! failed to add key
 }

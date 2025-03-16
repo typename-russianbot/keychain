@@ -6,7 +6,7 @@
 
 //?? termios structs ?/
 //? @def: edit terminal state
-struct termios oldt, newt; 
+struct termios oldt, newt;
 
 //?? debugger ?/
 //? @def: displays data to terminal when enabled
@@ -44,6 +44,34 @@ void ValidateInput(char &input)
         cin >> input;
     }
     cout << endl;
+}
+
+//** ValidateInput() */
+//* @param: string
+bool ValidateInput(string &input)
+{
+    if(input == "")
+        input = _none; 
+
+    //! detect for illegal characters
+    for (char character : input)
+    {
+        switch (character)
+        {
+        case ' ':
+            cout << "<ERROR>: use '-' or '_'" << endl;
+            return false; 
+            break;
+
+        case ',':
+            cout << "<ERROR>: illegal character detected" << endl;
+            return false; 
+            break;
+
+        }
+    }
+
+    return true; //* input valid
 }
 
 //** ValidateFile() */

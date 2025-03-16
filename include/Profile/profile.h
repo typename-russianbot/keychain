@@ -22,10 +22,10 @@ protected:
     //^ <HELPERS>
     bool loadProfile(const string &username);                                        //^ loadProfile()
     bool saveProfile();                                                              //^ saveProfile()
-    bool lookupProfile(const string &target);                                        //^ lookupProfile();
+    bool lookupProfile(const string &target);                                        //^ lookupProfile()
     bool deleteProfile(const string &target);                                        //^ deleteProfile()
     bool addProfile(const string &username = _none, const string &password = _none); //^ addProfile()
-    bool accessProfile();                                                            //^ accessProfile()
+    bool profileAccess();                                                            //^ profileAccess()
 
     //* -[PUBLIC]- *
 public:

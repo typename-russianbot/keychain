@@ -1,4 +1,7 @@
+//? | @author: Matthew H. | typename-russianbot | ?
+
 #include "../include/Account/account.h"
+
 // ^^ <keychain_testing>
 void keychain_testing(void)
 {
@@ -7,9 +10,9 @@ void keychain_testing(void)
 
   account myAccount("mjh2001", "password");
 
-  myAccount.details(); 
+  myAccount.add();
 
-  
+  myAccount.details();
 }
 
 // && <keychain_usage>

@@ -186,6 +186,17 @@ bool profile::addProfile(const string &username, const string &password)
     return false;
 }
 
+//^^ profileAccess() ^/
+//* @returns true: if access is permitted
+//! @returns false: if access is restricted
+bool profile::profileAccess()
+{
+    if (this->cAccess == permitted) //* access permitted
+        return true;
+
+    return false; //! access restricted
+}
+
 //* -[PUBLIC]- *
 
 //* <CONSTRUCTOR>
@@ -294,7 +305,7 @@ bool profile::createProfile(const string &username, const string &password)
 //** printProfile() */
 void profile::printProfile()
 {
-    cout << *this << endl;
+    cout << *this;
 }
 
 //* <OVERLOADS>
@@ -303,13 +314,13 @@ ostream &operator<<(ostream &out, const profile &profile)
 {
     if (profile.cAccess != restricted)
     {
-        out << "Username: " << profile.cUsername << endl
-            << "Password: " << profile.cPassword << endl;
+        out << " - Username: " << profile.cUsername << endl
+            << " - Password: " << profile.cPassword << endl;
     }
     else
     {
-        out << "Username: " << profile.cUsername << endl
-            << "Password: " << _censor << endl;
+        out << " - Username: " << profile.cUsername << endl
+            << " - Password: " << _censor << endl;
     }
 
     return out;

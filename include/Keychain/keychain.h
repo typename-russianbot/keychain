@@ -15,14 +15,14 @@ private:
   //^ -[PROTECTED]- ^
 protected:
   //^ <HELPERS>
-  string inputPassword();                           //^ inputPasskey()
-  bool isEmpty();                                   //^ isEmpty()
-  bool isRestricted();                              //^ isRestricted()
-  bool accessKeychain(string password = _none);     //^ accessKeychain()
-  void addKey(const key &nKey);                     //^ addKey()
-  bool deleteKey(const key &nKey);                  //^ removeKey()
-  bool lookupKey(string keyident = _none);          //^ lookupKey()
-  bool addPassword(const string &password = _none); //^ addPassword()
+  string inputPassword();                                  //^ inputPasskey()
+  bool isEmpty();                                          //^ isEmpty()
+  bool requestPermissions(const string &password = _none); //^ accessKeychain()
+  void addKey(const key &nKey);                            //^ addKey()
+  bool deleteKey(const key &nKey);                         //^ removeKey()
+  bool lookupKey(const string &keyident = _none);          //^ lookupKey()
+  bool addPassword(const string &password = _none);        //^ addPassword()
+  bool keychainAccess();                                   //^ keychainAccess()
 
   //* -[PUBLIC]- *
 public:
@@ -37,10 +37,12 @@ public:
                  const string &email = _none, const string &password = _none); //* createKey()
   bool removeKey(const string &target);                                        //* removeKey()
   bool searchKey();                                                            //* searchKey()
+  unsigned int getKeys();                                                      //* getKeys()
   bool printKeychain();                                                        //* printKeychain()
   bool loadKeychain();                                                         //* loadKeychain()
   bool saveKeychain();                                                         //* saveKeychain()
 
   //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<
+  friend istream &operator>>(istream &in, const keychain &keychain);  //* operator>>
 };

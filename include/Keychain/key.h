@@ -1,3 +1,5 @@
+//? | @author: Matthew H. | @github: typename-russianbot | ?
+
 #pragma once
 #include "../master.h"
 
@@ -11,6 +13,13 @@ private:
   string cEmail;           //! cEmail
   string cPassword;        //! cPassword
   integrity cKeyintegrity; //! cKeyintegrity
+
+  //^ -[PROTECTED]- ^
+protected:
+  void inputKeyname(istream &in, key &object);  //^ inputKeyname()
+  void inputUsername(istream &in, key &object); //^ inputUsername()
+  void inputEmail(istream &in, key &object);    //^ inputEmail()
+  void inputPassword(istream &in, key &object); //^ inputPassword()
 
   //* -[PUBLIC]- *
 public:
@@ -36,7 +45,7 @@ public:
   const integrity getKeyintegrity(void); //* getKeyintegrity
 
   //* -overloads-
-  friend istream &operator>>(istream &input, key &object);        //* operator>>
+  friend istream &operator>>(istream &in, key &object);           //* operator>>
   friend ostream &operator<<(ostream &output, const key &object); //* operator<<
   key &operator=(const key &object);                              //* operator=
 };

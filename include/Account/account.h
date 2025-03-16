@@ -1,3 +1,5 @@
+//? | @author: Matthew H. | @github: typename-russianbot | ?
+
 #pragma once
 #include "../Keychain/keychain.h"
 #include "../Profile/profile.h"
@@ -12,9 +14,11 @@ private:
     //^ -[PROTECTED]- ^
 protected:
     //^ <HELPERS>
-    bool unlock();   //^ unlock()
-    bool relock();   //^ relock()
-    bool isLocked(); //^ isLocked()
+    bool unlock();                                                                                                 //^ unlock()
+    bool relock();                                                                                                 //^ relock()
+    bool isLocked();                                                                                               //^ isLocked()
+    bool inputKeyData(const string &keyname, const string &username, const string &email, const string &password); //^ getKeyData()
+    bool getTarget(const string &target);                                                                          //^ getTarget()
 
     //* -[PUBLIC]- *
 public:
@@ -28,8 +32,9 @@ public:
     bool create();  //* create()
     bool remove();  //* remove()
     bool search();  //* search()
-    bool details(); //* details()
+    void details(); //* details()
 
-    //* <OVERLOADS>
-    friend ostream &operator<<(ostream &out, const account &account); //* operator<<
+    bool add();    //* addKey()
+    bool removeKey(); //* removeKey()
+    bool printKey();  //* printKey()
 };

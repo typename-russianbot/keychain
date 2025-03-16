@@ -34,17 +34,8 @@ bool keychain::isEmpty()
     return false; //! keychain not empty
 }
 
-//^^ isRestricted() ^/
-bool keychain::isRestricted()
-{
-    if (cAccess == restricted) //* access restricted
-        return true;
-
-    return false; //! access permitted
-}
-
-//^^ accessKeychain() ^/
-bool keychain::accessKeychain(string passkey)
+//^^ requestPermissions() ^/
+bool keychain::requestPermissions(const string& passkey)
 {
     char input;       //? -input    | input for attempt looping
     int attempts = 3; //? -attempts | # of attempts
@@ -128,7 +119,7 @@ bool keychain::deleteKey(const key &nKey)
         return false;
 
     //& request keychain permissions
-    if (this->accessKeychain()) //* <access==GRANTED>
+    if (this->requestPermissions()) //* <access==GRANTED>
     {
         _clear;
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
@@ -145,7 +136,7 @@ bool keychain::deleteKey(const key &nKey)
 }
 
 //^^ lookupKey() ^/
-bool keychain::lookupKey(string keyident)
+bool keychain::lookupKey(const string& keyident)
 {
     if (isEmpty()) //! nothing to lookup
         return false;
@@ -165,6 +156,7 @@ bool keychain::lookupKey(string keyident)
     }
 }
 
+//^^ addPassword() ^/
 bool keychain::addPassword(const string &password)
 {
     if (password == _none) //! no password
@@ -182,6 +174,17 @@ bool keychain::addPassword(const string &password)
 
     return false;
 }
+
+//^^ keychainAccess() ^/
+//* @returns true: if access is permitted
+//! @returns false: if access is restricted
+bool keychain::keychainAccess()
+{
+    if(this->cAccess == permitted) //* access permitted
+        return true; 
+    
+    return false; //! access restricted
+} 
 
 //* -[PUBLIC]- *
 
@@ -243,12 +246,19 @@ bool keychain::searchKey()
     return false;
 }
 
+//** getKeys() */
+//* @def: returns the number of keys found on this chain
+unsigned int keychain::getKeys()
+{
+    return cKeys; 
+} 
+
 //** printKeychain() */
 //* @def:
 bool keychain::printKeychain()
 {
     //& request keychain permissions
-    if (this->accessKeychain()) //* <access==GRANTED>
+    if (this->requestPermissions()) //* <access==GRANTED>
     {
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
              << *this << endl;
