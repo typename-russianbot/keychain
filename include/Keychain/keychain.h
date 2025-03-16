@@ -15,18 +15,19 @@ private:
   //^ -[PROTECTED]- ^
 protected:
   //^ <HELPERS>
-  string inputPassword();                        //^ inputPasskey()
-  bool isEmpty();                               //^ isEmpty()
-  bool isRestricted();                          //^ isRestricted()
-  bool accessKeychain(string password = _none); //^ accessKeychain()
-  void addKey(const key &nKey);                 //^ add()
-  bool removeKey(const key &nKey);              //^ remove()
-  bool lookupKey(string keyident = _none);      //^ lookup()
+  string inputPassword();                           //^ inputPasskey()
+  bool isEmpty();                                   //^ isEmpty()
+  bool isRestricted();                              //^ isRestricted()
+  bool accessKeychain(string password = _none);     //^ accessKeychain()
+  void addKey(const key &nKey);                     //^ addKey()
+  bool deleteKey(const key &nKey);                  //^ removeKey()
+  bool lookupKey(string keyident = _none);          //^ lookupKey()
+  bool addPassword(const string &password = _none); //^ addPassword()
 
   //* -[PUBLIC]- *
 public:
   //* <CONSTRUCTOR>
-  keychain(string password = _none);
+  keychain(const string &password = _none);
 
   //* <DESTRUCTOR>
   ~keychain();
@@ -34,7 +35,7 @@ public:
   //* <FUNCTIONS>
   bool createKey(const string &keyname = _none, const string &username = _none,
                  const string &email = _none, const string &password = _none); //* createKey()
-  bool removeKey();                                                            //* removeKey()
+  bool removeKey(const string &target);                                        //* removeKey()
   bool searchKey();                                                            //* searchKey()
   bool printKeychain();                                                        //* printKeychain()
   bool loadKeychain();                                                         //* loadKeychain()

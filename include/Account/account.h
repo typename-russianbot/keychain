@@ -31,4 +31,5 @@ public:
     bool details(); //* details()
 
     //* <OVERLOADS>
+    friend ostream &operator<<(ostream &out, const account &account); //* operator<<
 };

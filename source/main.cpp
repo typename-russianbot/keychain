@@ -5,7 +5,11 @@ void keychain_testing(void)
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
-  account myAccount("mjh2001");
+  account myAccount("mjh2001", "password");
+
+  myAccount.details(); 
+
+  
 }
 
 // && <keychain_usage>

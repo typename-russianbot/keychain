@@ -90,7 +90,7 @@ bool profile::saveProfile()
 //^ @def:
 //* @returns true:
 //! @returns false:
-bool profile::searchProfile(const string &target)
+bool profile::lookupProfile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
 
@@ -128,7 +128,7 @@ bool profile::searchProfile(const string &target)
 //^ @def:
 //* @returns true:
 //! @returns false:
-bool profile::removeProfile(const string &target)
+bool profile::deleteProfile(const string &target)
 {
     //* create readfile obj
     ifstream readfile("data/profiles.txt");
@@ -154,7 +154,7 @@ bool profile::removeProfile(const string &target)
     tempfile.close();
 
     //^ update profiles.txt to temp.txt
-    remove("data/profiles.txt");
+    removeProfile("data/profiles.txt");
     rename("temp.txt", "data/profiles.txt");
 
     return true;
@@ -164,14 +164,21 @@ bool profile::removeProfile(const string &target)
 //^ @def:
 //* @returns true:
 //! @returns false:
-bool profile::createProfile(const string &username, const string &password)
+bool profile::addProfile(const string &username, const string &password)
 {
-    //* set current username & password to params
-    setUsername(username);
-    setPassword(password);
+    if (username == _none && password == _none) //! no data, cancel profile creation
+        return false;
 
-    if (username == cUsername && password == cPassword)
+    else if (username != _none) //* username param accepted
     {
+        cAccess = restricted;
+
+        if (password == _none)
+            cAccess = permitted;
+
+        setUsername(username);
+        setPassword(password);
+
         save();
         return true;
     }
@@ -200,12 +207,12 @@ profile::profile(const string &username, const string &password)
         else //! restrict profile permissions
             cAccess = restricted;
 
-        create(username, password);
+        createProfile(username, password);
     }
     else
     {
         cout << "blank profile created" << endl;
-        create(username, password);
+        createProfile(username, password);
     }
 }
 
@@ -224,7 +231,7 @@ profile::~profile()
 //! @returns false: profile loading failed
 bool profile::load(const string &target)
 {
-    if (searchProfile(target)) //* target was found, load data
+    if (lookupProfile(target)) //* target was found, load data
     {
         loadProfile(target);
         return true;
@@ -249,9 +256,9 @@ bool profile::save()
 //* @def: takes the target string & compares it to all usernames in profiles.txt
 //* @returns true: profile found
 //! @returns false: profile search failed
-bool profile::search(const string &target)
+bool profile::searchProfile(const string &target)
 {
-    if (searchProfile(target)) //* profile found
+    if (lookupProfile(target)) //* profile found
         return true;
 
     return false; //! profile search failed
@@ -261,12 +268,12 @@ bool profile::search(const string &target)
 //* @def:
 //* @returns true: profile removed
 //! @returns false: profile removal failed
-bool profile::remove(const string &target)
+bool profile::removeProfile(const string &target)
 {
-    if (!search(target)) //! search for target in file before removal
+    if (!searchProfile(target)) //! search for target in file before removal
         return false;
 
-    if (removeProfile(target)) //* profile removed
+    if (deleteProfile(target)) //* profile removed
         return true;
 
     return false; //! profile removal failed
@@ -276,12 +283,18 @@ bool profile::remove(const string &target)
 //* @def: takes the passed in username & password
 //* @returns true: profile created
 //! @returns false: profile creation failed
-bool profile::create(const string &username, const string &password)
+bool profile::createProfile(const string &username, const string &password)
 {
-    if (createProfile(username, password)) //* profile created
+    if (addProfile(username, password)) //* profile created
         return true;
 
     return false; //! profile creation failed
+}
+
+//** printProfile() */
+void profile::printProfile()
+{
+    cout << *this << endl;
 }
 
 //* <OVERLOADS>

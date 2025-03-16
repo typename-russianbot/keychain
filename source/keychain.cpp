@@ -122,7 +122,7 @@ void keychain::addKey(const key &nKey)
 }
 
 //^^ removeKey() ^/
-bool keychain::removeKey(const key &nKey)
+bool keychain::deleteKey(const key &nKey)
 {
     if (isEmpty()) //! nothing to remove
         return false;
@@ -165,11 +165,29 @@ bool keychain::lookupKey(string keyident)
     }
 }
 
+bool keychain::addPassword(const string &password)
+{
+    if (password == _none) //! no password
+    {
+        cPassword = _none;
+        cAccess = permitted; //? unlock access
+        return true;
+    }
+    else //* password param accepted
+    {
+        cPassword = password;
+        cAccess = restricted; //? restrict access
+        return true;
+    }
+
+    return false;
+}
+
 //* -[PUBLIC]- *
 
 //* <CONSTRUCTOR>
 //* @public
-keychain::keychain(string password)
+keychain::keychain(const string &password)
     : cKeys(0), cPassword(password), cAccess(restricted), cHead(nullptr), cTail(nullptr)
 {
     if (cPassword == "")
@@ -213,7 +231,7 @@ bool keychain::createKey(const string &keyname, const string &username, const st
 
 //**TODO: removeKey() */
 //* def:
-bool keychain::removeKey()
+bool keychain::removeKey(const string &target)
 {
     return false;
 }
@@ -229,18 +247,14 @@ bool keychain::searchKey()
 //* @def:
 bool keychain::printKeychain()
 {
-    cout << "<Print Keychain>" << endl;
-
     //& request keychain permissions
     if (this->accessKeychain()) //* <access==GRANTED>
     {
-        _clear;
         cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
              << *this << endl;
     }
     else //! <access==DENIED>
     {
-        _clear;
         cout << "<KEYCHAIN ACCESS DENIED>" << endl;
         return false;
     }
@@ -258,7 +272,6 @@ ostream &operator<<(ostream &out, const keychain &keychain)
 {
     if (keychain.cAccess == restricted) //! <access=RESTRICTED>
     {
-        _clear;
         out << "<ACCESS DENIED>" << endl;
         return out;
     }
