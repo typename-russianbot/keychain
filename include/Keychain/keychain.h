@@ -41,8 +41,8 @@ public:
   bool searchKey(const string &keyident = _none); //* 4. searchKey()
   bool printKey(const string &keyident);          //* 5. printKey()
   void printKeychain();                           //* 6. printKeychain()
-  bool loadKeychain();                            //* 7. loadKeychain()
-  bool saveKeychain();                            //* 8. saveKeychain()
+  bool loadKeychain();                            //* 7. loadKeychain() @note: needs implementing
+  bool saveKeychain();                            //* 8. saveKeychain() @note: needs implementation
 
   //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<

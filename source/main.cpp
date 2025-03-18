@@ -20,6 +20,8 @@ void keychain_testing(void)
   if (myKeychain.deleteKey("chatgpt"))
     cout << "key deleted" << endl;
 
+  myKeychain.deleteKey("chatgpt");
+
   myKeychain.printKeychain();
 }
 

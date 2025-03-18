@@ -113,6 +113,7 @@ bool keychain::keyDelete(const string &keyident)
             prev->setNext(next);
 
             cHead = next;
+            cTail = prev; 
             cKeys--;
 
             delete temp;
@@ -141,6 +142,7 @@ bool keychain::keyDelete(const string &keyident)
                     }
 
                     cHead = next; 
+                    cTail = cHead->getPrev(); 
                     cKeys--; 
                     return true; 
                 }
@@ -238,6 +240,9 @@ bool keychain::newKey(const key &nKey)
 //* def:
 bool keychain::deleteKey(const string &keyident)
 {
+    if(isEmpty())
+        return false; 
+
     if (keyDelete(keyident))
         return true;
 
@@ -257,13 +262,14 @@ bool keychain::searchKey(const string &keyident)
 //** 4. printKey() */
 bool keychain::printKey(const string &keyident)
 {
+    if(isEmpty())
+        return false; 
+
     if (!searchKey(keyident))
         return false;
-    else
-    {
-        cout << getKey(keyident) << endl;
-        return true;
-    }
+   
+    cout << getKey(keyident) << endl; 
+    return true; 
 }
 
 //** 5. printKeychain() */
