@@ -1,3 +1,5 @@
+//? | @author: Matthew H. | @github: typename-russianbot | ?
+
 #pragma once
 #include "../master.h"
 //& -[CLASS: profile]- &
@@ -13,19 +15,19 @@ private:
 protected:
     //^ <GETTERS>
     const string getUsername(); //^ getUsername()
-    const string getPasskey();  //^ getPasskey()
+    const string getPassword(); //^ getPassword()
 
     //^ <SETTERS>
-    void setUsername(const string &username); //^ setUsername()
-    void setPassword(const string &password); //^ setPasskey()
+    void setUsername(const string &username = _none); //^ setUsername()
+    void setPassword();                               //^ setPassword()
 
     //^ <HELPERS>
-    bool loadProfile(const string &username);                                        //^ loadProfile()
-    bool saveProfile();                                                              //^ saveProfile()
-    bool lookupProfile(const string &target);                                        //^ lookupProfile()
-    bool deleteProfile(const string &target);                                        //^ deleteProfile()
-    bool addProfile(const string &username = _none, const string &password = _none); //^ addProfile()
-    bool profileAccess();                                                            //^ profileAccess()
+    bool profileNew(const string &username = _none, const string &password = _none); //^ 1. profileNew()
+    bool profileDelete(const string &target);                                        //^ 2. profileDelete()
+    bool profileSearch(const string &target);                                        //^ 3. profileSearch()
+    bool profileAccess();                                                            //^ 4. profileAccess()
+    bool profileLoad(const string &username);                                        //^ 5. profileLoad()
+    bool profileSave();                                                              //^ 6. profileSave()
 
     //* -[PUBLIC]- *
 public:
@@ -36,13 +38,15 @@ public:
     ~profile();
 
     //* <FUNCTIONS>
-    bool load(const string &target = _none);                                            //* load()
-    bool save();                                                                        //* save()
-    bool searchProfile(const string &target = _none);                                   //* search()
-    bool removeProfile(const string &target = _none);                                   //* remove()
-    bool createProfile(const string &username = _none, const string &password = _none); //* create()
-    void printProfile();                                                                //* print()
+    bool newProfile(const string &username = _none, const string &password = _none); //* 1. newProfile()
+    bool deleteProfile(const string &target = _none);                                //* 2. deleteProfile()
+    bool searchProfile(const string &target = _none);                                //* 3. searchProfile()
+    bool accessProfile();                                                            //* 4. accessProfile()
+    void printProfile();                                                             //* 5. printProfile()
+    bool loadProfile(const string &target = _none);                                  //* 6. loadProfile()
+    bool saveProfile();                                                              //* 7. saveProfile()
 
     //* <OVERLOADS>
     friend ostream &operator<<(ostream &out, const profile &profile); //* operator<<
+    friend istream &operator>>(istream &in, const profile &profile);  //* operator>>
 };

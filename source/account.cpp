@@ -44,81 +44,107 @@ bool account::isLocked()
     return false; //! account is unlocked
 }
 
-//^^ getKeyData() ^/
-bool account::inputKeyData(const string &keyname, const string &username, const string &email, const string &password)
-{
-
-    return false;
-}
-
 //^^ ^/
 
 //* -[PUBLIC]- *// @publicsection
 
-//* <CONSTRUCTOR>
-//* @public
+//* <CONSTRUCTOR> *// @public
 account::account(const string &username, const string &password) : cLock(locked)
 {
-    if (password == _none) //^ if no password is given, don't lock account
-        cLock = unlocked;
+    if (username == _none && password == _none) //! both username & password are empty
+    {
+    }
+    else
+    {
+        if (password == _none) //^ if no password is given, don't lock account
+            cLock = unlocked;
 
-    addProfile(username, password);
-    addPassword(password);
+        profileNew(username, password);
+    }
 }
 
-//* <DESTRUCTOR>
-//* @public
+//* <DESTRUCTOR> *// @public
 account::~account()
 {
 }
 
-//* <FUNCTIONS>
-//* @public
+//* <FUNCTIONS> *// @public
 
 //** create() */
+//* @def:
+bool account::newAccount(const string &username, const string &password)
+{
+    return false;
+}
+
+//** wipe() */
 //* @def: 
-bool account::create()
+bool account::deleteAccount(const string &username)
 {
+    //! @note: need to add wipe feature for keychain
+
+    //* @note: if no username is specified, remove the current profile
+    if (username == _none && this->deleteProfile(getUsername()))
+    {
+        //* @note: overwrite current data in username & password
+        this->setUsername(_none);
+        // this->setPassword(); @note: use setPassword in account
+        return true;
+    }
+
     return false;
 }
 
-//** remove() */
-bool account::remove()
+//** swap() */
+//* @def:
+bool account::switchAccount(const string &username)
 {
-    return false;
-}
+    if (username == _none) //! no name specified to swap to
+        return false;
+    else
+    {
+        if (!this->searchProfile(username)) //! profile not found
+            return false;
 
-//** search() */
-bool account::search()
-{
-    return false;
+        else //* profile found
+        {
+            this->saveProfile();                //* @note: save current profile
+            this->profileLoad(username); //* @note: load designated profile
+        }
+    }
+
+    return true;
 }
 
 //** details() */
+//* @def:
 void account::details()
 {
-    cout << "|--Details--------------|" << endl
+    cout << "|--Details---------------|" << endl
          << endl;
 
-    cout << " - Account: " << cLock << endl;
+    cout << " - Account: " << cLock << endl; //* @note: display current account state
 
-    //* print profile data
-    this->printProfile();
+    this->printProfile(); //* @note: print profile data
 
-    cout << " - Keys Found: " << getKeys() << endl
+    cout << " - Keys Found: " << getKeys() << endl //* @note: display the number of keys on this account
          << endl;
 
     cout << "|------------------------|" << endl;
 }
 
-//^^ addKey() ^/
-bool account::add()
+//** add() */
+//* @def:
+void account::addKey()
 {
-    //* input variables
-    key newKey; 
-    cin >> newKey; 
+    key newKey; //* @note: create a new key object
 
-    this->addKey(newKey); 
+    cin >> newKey; //* @note: get data for new key
 
-    return false; //! failed to add key
+    this->keyNew(newKey); //* @note: add the key
+}
+
+bool account::deleteKey()
+{
+    return false;
 }

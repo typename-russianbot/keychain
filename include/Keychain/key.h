@@ -1,5 +1,4 @@
-//? | @author: Matthew H. | @github: typename-russianbot | ?
-
+//? | @author: Matthew H. | @github: typename-russianbot | ?//
 #pragma once
 #include "../master.h"
 
@@ -23,28 +22,28 @@ protected:
 
   //* -[PUBLIC]- *
 public:
-  //* -constructor-
+  //* <CONSTRUCTOR>
   key(string keyname = "none", string username = _none, string email = _none,
       string password = _none, integrity integrity = none);
 
-  //* -destructor-
+  //* <DESTRUCTOR>
   ~key();
 
-  //* -setters-
-  void setKeyname(const string &nKeyname);           //* setKeyname
-  void setUsername(const string &nUsername);         //* setUsername
-  void setEmail(const string &nEmail);               //* setEmail
-  void setPassword(const string &nPassword);         //* setPassword
-  void setKeyintegrity(const integrity &nIntegrity); //* setKeyintegrity
+  //* <SETTERS>
+  void setKeyname(const string &nKeyname);
+  void setUsername(const string &nUsername);
+  void setEmail(const string &nEmail);
+  void setPassword(const string &nPassword);
+  void setKeyintegrity(const integrity &nIntegrity);
 
-  //* -getters-
-  const string getKeyname(void);         //* getKeyname
-  const string getUsername(void);        //* getUsername
-  const string getEmail(void);           //* getEmail
-  const string getPassword(void);        //* getPassword
-  const integrity getKeyintegrity(void); //* getKeyintegrity
+  //* <GETTERS>
+  const string getKeyname(void);
+  const string getUsername(void);
+  const string getEmail(void);
+  const string getPassword(void);
+  const integrity getKeyintegrity(void);
 
-  //* -overloads-
+  //* <OVERLOADS>
   friend istream &operator>>(istream &in, key &object);           //* operator>>
   friend ostream &operator<<(ostream &output, const key &object); //* operator<<
   key &operator=(const key &object);                              //* operator=

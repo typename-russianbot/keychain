@@ -2,95 +2,167 @@
 
 //^ -[PROTECTED]- ^
 
-//^ <GETTERS>
-//^ @protected
+//^ <GETTERS> //^ @protected
 const string profile::getUsername()
 {
     return this->cUsername;
 }
-const string profile::getPasskey()
+const string profile::getPassword()
 {
-    return this->cPassword;
+    string input, verification;
+
+    HideTerminal();
+
+    //^ @note: prompt for password input
+    cout << "Password: ";
+    cin >> input;
+    ValidatePassword(input);
+    cout << endl;
+
+    //^ @note: prompt for password verification
+    cout << "Re-enter Password: ";
+    cin >> verification;
+    ValidatePassword(verification);
+    cout << endl;
+
+    ShowTerminal();
+
+    if (input == verification) //* return input if it matches
+        return input;
+    else //! if input mis-match, return _none
+        return _none;
 }
 
-//^ <SETTERS>
-//^ @protected
+//^ <SETTERS> ^// @protected
 void profile::setUsername(const string &username)
 {
-    this->cUsername = username;
+    if (username == _none)
+    {
+        string input;
+        cout << "Username: ";
+        cin >> input;
+
+        if (ValidatePassword(input))
+            cout << "password added" << endl;
+        else
+        {
+            cout << "failed to add " << endl;
+        }
+
+        while (!ValidatePassword(input))
+        {
+            cout << "Username: " << endl;
+            cin >> input;
+            ValidatePassword(input);
+        }
+
+        cout << endl;
+
+        if (input == _none)
+        {
+            cUsername = _none;
+            cout << "username is empty" << endl;
+        }
+        else
+        {
+            cUsername = input;
+        }
+    }
+    else
+    {
+        this->cUsername = username;
+    }
 }
-void profile::setPassword(const string &password)
+void profile::setPassword()
 {
-    this->cPassword = password;
+    string input, verification;
+
+    HideTerminal();
+
+    cout << "Password: ";
+    cin >> input;
+
+    ValidatePassword(input);
+    cout << endl;
+
+    cout << "Re-enter Password: ";
+    cin >> verification;
+    ValidatePassword(verification);
+    cout << endl;
+
+    ShowTerminal();
+
+    if (input == verification)
+        this->cPassword = input;
+    else
+    {
+        cout << "<ERROR>: password not set" << endl;
+        this->cPassword = _none;
+    }
 }
 
-//^ <HELPERS>
-//^ @protected
+//^ <HELPERS> ^// @protected
 
-//^ loadProfile()
-//^ @def: compares the target string to all other usernames in profiles.txt
-//* @returns true:
-//! @returns false:
-bool profile::loadProfile(const string &target)
+//^ 1. profileNew() ^/
+//^ @def:
+bool profile::profileNew(const string &username, const string &password)
 {
+    if (username == _none && password == _none) //! no data, cancel profile creation
+        return false;
+
+    else if (username != _none) //* username param accepted
+    {
+        cAccess = restricted;
+
+        if (password == _none)
+            cAccess = permitted;
+
+        this->cUsername = username;
+        this->cPassword = password;
+
+        return true;
+    }
+
+    return false;
+}
+
+//^ 2. profileDelete() ^/
+//^ @def:
+bool profile::profileDelete(const string &target)
+{
+    //* create readfile obj
     ifstream readfile("data/profiles.txt");
+    ofstream tempfile("temp.txt");
 
-    if (!ValidateFile(readfile)) //! file failed to load
+    if (!ValidateFile(readfile)) //! file load failure
         return false;
 
     else //* file validated
     {
         string line;
 
+        //^ get each line from profiles.txt, except the target line
         while (getline(readfile, line))
         {
-            size_t commaPos = line.find(',');
-
-            //? validate commaPos
-            if (commaPos != string::npos)
-            {
-                if (line.substr(0, commaPos) == target) //* target found
-                {
-                    setUsername(line.substr(0, commaPos));
-                    setPassword(line.substr(commaPos + 1));
-
-                    readfile.close();
-                    return true;
-                }
-            }
+            if (line.find(target) == string::npos) //* write all lines that aren't target to temp.txt
+                tempfile << line << endl;
         }
-
-        //! target not found
-        readfile.close();
-        return false;
     }
-}
 
-//^ saveProfile()
-//^ @def: writes the currently stored profile attributes to profiles.txt
-//* @returns true:
-//! @returns false:
-bool profile::saveProfile()
-{
-    ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
+    //^ close opened files
+    readfile.close();
+    tempfile.close();
 
-    if (!ValidateFile(writefile)) //! file failed to load
-        return false;
-
-    else //* file validated
-    {
-        writefile << this->cUsername << "," << this->cPassword << endl; //* write to file
-        writefile.close();
-    }
+    //^ update profiles.txt to temp.txt
+    deleteProfile("data/profiles.txt");
+    rename("temp.txt", "data/profiles.txt");
 
     return true;
 }
 
-//^ searchProfile()
+//^ 3. profileSearch() ^/
 //^ @def:
-//* @returns true:
-//! @returns false:
-bool profile::lookupProfile(const string &target)
+bool profile::profileSearch(const string &target)
 {
     ifstream readfile("data/profiles.txt");
 
@@ -124,91 +196,107 @@ bool profile::lookupProfile(const string &target)
     }
 }
 
-//^ removeProfile()
+//^^ 4. profileAccess() ^/
 //^ @def:
-//* @returns true:
-//! @returns false:
-bool profile::deleteProfile(const string &target)
+bool profile::profileAccess()
 {
-    //* create readfile obj
-    ifstream readfile("data/profiles.txt");
-    ofstream tempfile("temp.txt");
+    char input;
+    int attempts = 3;
 
-    if (!ValidateFile(readfile)) //! file load failure
+    while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
+    {
+        //* match
+        if (getPassword() == cPassword)
+        {
+            cAccess = permitted;
+            return true;
+        }
+
+        //! mismatch encountered
+        while (true)
+        {
+            cout << "| Remaining Attempts: " << attempts << " |" << endl
+                 << "Re-enter Passkey? [y/n]: ";
+            cin >> input;
+            input = tolower(input);
+
+            if (input == 'n') //! exit function when equal to 'n'
+                return false;
+            else if (input == 'y') //* break free of loop when valid
+                break;
+        }
+
+        attempts--;
+    }
+
+    return false;
+}
+
+//^ 5. profileLoad() ^/
+//^ @def: compares the target string to all other usernames in profiles.txt
+bool profile::profileLoad(const string &target)
+{
+    ifstream readfile("data/profiles.txt");
+
+    if (!ValidateFile(readfile)) //! file failed to load
         return false;
 
     else //* file validated
     {
         string line;
 
-        //^ get each line from profiles.txt, except the target line
         while (getline(readfile, line))
         {
-            if (line.find(target) == string::npos) //* write all lines that aren't target to temp.txt
-                tempfile << line << endl;
+            size_t commaPos = line.find(',');
+
+            //? validate commaPos
+            if (commaPos != string::npos)
+            {
+                if (line.substr(0, commaPos) == target) //* target found
+                {
+                    this->cUsername = line.substr(0, commaPos);
+                    this->cPassword = line.substr(commaPos + 1);
+
+                    readfile.close();
+                    return true;
+                }
+            }
         }
+
+        //! target not found
+        readfile.close();
+        return false;
     }
+}
 
-    //^ close opened files
-    readfile.close();
-    tempfile.close();
+//^ 6. profileSave() ^/
+//^ @def: writes the currently stored profile attributes to profiles.txt
+bool profile::profileSave()
+{
+    ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
 
-    //^ update profiles.txt to temp.txt
-    removeProfile("data/profiles.txt");
-    rename("temp.txt", "data/profiles.txt");
+    if (!ValidateFile(writefile)) //! file failed to load
+        return false;
+
+    else //* file validated
+    {
+        writefile << this->cUsername << "," << this->cPassword << endl; //* write to file
+        writefile.close();
+    }
 
     return true;
 }
 
-//^ createProfile()
-//^ @def:
-//* @returns true:
-//! @returns false:
-bool profile::addProfile(const string &username, const string &password)
-{
-    if (username == _none && password == _none) //! no data, cancel profile creation
-        return false;
+//* -[PUBLIC]- *// @publicsection
 
-    else if (username != _none) //* username param accepted
-    {
-        cAccess = restricted;
-
-        if (password == _none)
-            cAccess = permitted;
-
-        setUsername(username);
-        setPassword(password);
-
-        save();
-        return true;
-    }
-
-    return false;
-}
-
-//^^ profileAccess() ^/
-//* @returns true: if access is permitted
-//! @returns false: if access is restricted
-bool profile::profileAccess()
-{
-    if (this->cAccess == permitted) //* access permitted
-        return true;
-
-    return false; //! access restricted
-}
-
-//* -[PUBLIC]- *
-
-//* <CONSTRUCTOR>
-//* @public
+//* <CONSTRUCTOR> *// @public
 profile::profile(const string &username, const string &password)
 {
 
     if (username == _none && password == _none) //* @if: both username & password are _none
     {
-        //* 1. load profile data
-        //* 2. create a new profile
-        //* 3. exit program
+        setUsername();
+        setPassword();
     }
     else if (username != _none) //* @elseif: username is not empty
     {
@@ -218,98 +306,95 @@ profile::profile(const string &username, const string &password)
         else //! restrict profile permissions
             cAccess = restricted;
 
-        createProfile(username, password);
+        newProfile(username, password);
     }
     else
     {
         cout << "blank profile created" << endl;
-        createProfile(username, password);
+        newProfile(username, password);
     }
 }
 
-//* <DESTRUCTOR>
-//* @public
+//* <DESTRUCTOR> *// @public
 profile::~profile()
 {
 }
 
-//* <FUNCTIONS>
-//* @public
+//* <FUNCTIONS> *// @public
 
-//** load() */
-//* @def: first, searches for the profile before attempting to load. If found, load profile. Otherwise, return false
-//* @returns true: profile loaded
-//! @returns false: profile loading failed
-bool profile::load(const string &target)
+//** 1. newProfile() */
+//* @def: takes the passed in username & password
+bool profile::newProfile(const string &username, const string &password)
 {
-    if (lookupProfile(target)) //* target was found, load data
+    if (profileNew(username, password)) //* profile created
+        return true;
+
+    return false; //! profile creation failed
+}
+
+//** 2. deleteProfile() */
+//* @def:
+bool profile::deleteProfile(const string &target)
+{
+    if (!searchProfile(target)) //! search for target in file before removal
+        return false;
+
+    if (profileDelete(target)) //* profile removed
+        return true;
+
+    return false; //! profile removal failed
+}
+
+//** 3. searchProfile() */
+//* @def: takes the target string & compares it to all usernames in profiles.txt
+bool profile::searchProfile(const string &target)
+{
+    if (profileSearch(target)) //* profile found
+        return true;
+
+    return false; //! profile search failed
+}
+
+//** 4. accessProfile() */
+bool profile::accessProfile()
+{
+    if (profileAccess())
+        return true;
+    else
+        return false;
+}
+
+//** 5. printProfile() */
+//* @def:
+void profile::printProfile()
+{
+    cout << *this;
+}
+
+//** 6. loadProfile() */
+//* @def: first, searches for the profile before attempting to load. If found, load profile. Otherwise, return false
+bool profile::loadProfile(const string &target)
+{
+    if (profileSearch(target)) //* target was found, load data
     {
-        loadProfile(target);
+        profileLoad(target);
         return true;
     }
 
     return false; //! target not found
 }
 
-//** save() */
+//** 7. saveProfile() */
 //* @def: saves the current username & password attributes to profiles.txt
-//* @returns true: profile saved
-//! @returns false: profile saving failed
-bool profile::save()
+bool profile::saveProfile()
 {
-    if (saveProfile()) //* target saved to profiles.txt
+    if (profileSave()) //* target saved to profiles.txt
         return true;
 
     return false; //! target failed to save
 }
 
-//** search() */
-//* @def: takes the target string & compares it to all usernames in profiles.txt
-//* @returns true: profile found
-//! @returns false: profile search failed
-bool profile::searchProfile(const string &target)
-{
-    if (lookupProfile(target)) //* profile found
-        return true;
-
-    return false; //! profile search failed
-}
-
-//** remove() */
-//* @def:
-//* @returns true: profile removed
-//! @returns false: profile removal failed
-bool profile::removeProfile(const string &target)
-{
-    if (!searchProfile(target)) //! search for target in file before removal
-        return false;
-
-    if (deleteProfile(target)) //* profile removed
-        return true;
-
-    return false; //! profile removal failed
-}
-
-//** create() */
-//* @def: takes the passed in username & password
-//* @returns true: profile created
-//! @returns false: profile creation failed
-bool profile::createProfile(const string &username, const string &password)
-{
-    if (addProfile(username, password)) //* profile created
-        return true;
-
-    return false; //! profile creation failed
-}
-
-//** printProfile() */
-void profile::printProfile()
-{
-    cout << *this;
-}
-
-//* <OVERLOADS>
-//* @public
+//* <OVERLOADS> *// @public
 ostream &operator<<(ostream &out, const profile &profile)
 {
     if (profile.cAccess != restricted)

@@ -1,4 +1,4 @@
-//? | @author: Matthew H. | typename-russianbot | ?
+//? | @author: Matthew H. | @github: typename-russianbot | ?
 
 #include "../include/Account/account.h"
 
@@ -8,11 +8,28 @@ void keychain_testing(void)
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
-  account myAccount("mjh2001", "password");
+  //? @note: profile prototype block
+  profile myProfile;
 
-  myAccount.add();
+  cout << myProfile << endl; 
 
-  myAccount.details();
+
+  if (myProfile.accessProfile())
+    cout << "success" << endl;
+  else
+    cout << "failure" << endl;
+
+  //! @note: account prototype block
+  // account myAccount("mjh2001", "password"); //* base password
+
+  // myAccount.details(); //* get details of account
+
+  // if (myAccount.switchAccount("jimmyjohns")) //! attempt swap
+  //   cout << "profiles swapped successfully" << endl;
+
+  // myAccount.details(); //* get details of the found profile
+
+  // myAccount.deleteAccount();
 }
 
 // && <keychain_usage>

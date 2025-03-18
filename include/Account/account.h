@@ -14,27 +14,26 @@ private:
     //^ -[PROTECTED]- ^
 protected:
     //^ <HELPERS>
-    bool unlock();                                                                                                 //^ unlock()
-    bool relock();                                                                                                 //^ relock()
-    bool isLocked();                                                                                               //^ isLocked()
-    bool inputKeyData(const string &keyname, const string &username, const string &email, const string &password); //^ getKeyData()
-    bool getTarget(const string &target);                                                                          //^ getTarget()
+    bool unlock();   //^ unlock()
+    bool relock();   //^ relock()
+    bool isLocked(); //^ isLocked()
 
     //* -[PUBLIC]- *
 public:
     //* <CONSTRUCTOR>
-    account(const string &username = _none, const string &password = _none);
+    account(const string &username = _none, const string &password = _none); //! @note: maybe we shouldn't have access to the password in constructors... always prompt the user for their password, not grab it from constructs
 
     //* <DESTRUCTOR>
     ~account();
 
     //* <FUNCTIONS>
-    bool create();  //* create()
-    bool remove();  //* remove()
-    bool search();  //* search()
-    void details(); //* details()
+    //* @details: class functions of account
+    bool newAccount(const string &username = _none, const string &password = _none); //* newAccount()
+    bool deleteAccount(const string &username = _none);                              //* deleteAccount()
+    bool switchAccount(const string &username = _none);                              //* switchAccount()
+    void details();                                                                  //* details()
 
-    bool add();    //* addKey()
-    bool removeKey(); //* removeKey()
+    void addKey();    //* addKey()
+    bool deleteKey(); //* deleteKey()
     bool printKey();  //* printKey()
 };

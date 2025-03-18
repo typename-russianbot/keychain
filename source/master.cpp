@@ -46,29 +46,53 @@ void ValidateInput(char &input)
     cout << endl;
 }
 
-//** ValidateInput() */
-//* @param: string
-bool ValidateInput(string &input)
+
+//** ValidateUsername() */
+//* @def: 
+
+
+//** ValidatePassword() */
+//* @def: 
+bool ValidatePassword(string &password)
 {
-    if(input == "")
-        input = _none; 
+    bool flag = true; 
+
+    if(password == "")
+        password = _none; 
 
     //! detect for illegal characters
-    for (char character : input)
+    for (char character : password)
     {
         switch (character)
         {
         case ' ':
             cout << "<ERROR>: use '-' or '_'" << endl;
-            return false; 
+            flag = false; 
             break;
 
         case ',':
             cout << "<ERROR>: illegal character detected" << endl;
-            return false; 
+            flag = false; 
             break;
 
+        case ';': 
+            cout << "<ERROR>: " << endl; 
+            flag = false; 
+            break; 
+
+        case '~': 
+            flag = false; 
+            break; 
+        
+        case '*': 
+            flag = false; 
+            break; 
+
+        case '`': 
+            break; 
         }
+
+
     }
 
     return true; //* input valid
@@ -84,7 +108,6 @@ bool ValidateFile(ifstream &readfile)
     return true; //* file opened, return true
 }
 
-//** ValidateFile() */
 //* @param: ofstream
 bool ValidateFile(ofstream &writefile)
 {

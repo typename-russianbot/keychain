@@ -1,83 +1,19 @@
 #include "../include/Keychain/keychain.h"
 
-//^ -[PROTECTED]- ^
+//^ -[PROTECTED]- ^// @protectedsection
 
-//^^ inputPassword() ^/
-string keychain::inputPassword()
+//^ <GETTERS> ^// @protected
+
+//^ @def: returns the number of keys found on this chain
+unsigned int keychain::getKeys()
 {
-    string input, verification;
-
-    HideTerminal();
-
-    cout << "Passkey: ";
-    cin >> input;
-    cout << endl;
-
-    cout << "Re-enter Passkey: ";
-    cin >> verification;
-    cout << endl;
-
-    ShowTerminal();
-
-    if (input == verification)
-        return input;
-    else
-        return _none;
+    return cKeys;
 }
 
-//^^ isEmpty() ^/
-bool keychain::isEmpty()
-{
-    if (cHead == nullptr && cTail == nullptr) //* keychain empty
-        return true;
+//^ <HELPERS> ^// @protected
 
-    return false; //! keychain not empty
-}
-
-//^^ requestPermissions() ^/
-bool keychain::requestPermissions(const string& passkey)
-{
-    char input;       //? -input    | input for attempt looping
-    int attempts = 3; //? -attempts | # of attempts
-
-    if (passkey == cPassword) //* parameter passed
-    {
-        cAccess = permitted;
-        return true;
-    }
-    else //! no parameter passed
-    {
-        while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
-        {
-            //* match
-            if (cPassword == inputPassword())
-            {
-                cAccess = permitted;
-                return true;
-            }
-
-            //! mismatch encountered
-            while (true)
-            {
-                cout << "| Remaining Attempts: " << attempts << " |" << endl
-                     << "Re-enter Passkey? [y/n]: ";
-                cin >> input;
-                input = tolower(input);
-
-                if (input == 'n') //! exit function when equal to 'n'
-                    return false;
-                else if (input == 'y') //* break free of loop when valid
-                    break;
-            }
-            attempts--;
-        }
-    }
-
-    return false;
-}
-
-//^^ addKey() ^/
-void keychain::addKey(const key &nKey)
+//^^ 1. keyNew() ^/
+void keychain::keyNew(const key &nKey)
 {
     keynode *newNode = new keynode(nKey); //* allocate space for a new node
 
@@ -112,31 +48,17 @@ void keychain::addKey(const key &nKey)
     this->cKeys++; //* update the number of keys in this chain
 }
 
-//^^ removeKey() ^/
-bool keychain::deleteKey(const key &nKey)
+//^^ 2. keyDelete() ^/
+bool keychain::keyDelete(const key &nKey)
 {
     if (isEmpty()) //! nothing to remove
         return false;
 
-    //& request keychain permissions
-    if (this->requestPermissions()) //* <access==GRANTED>
-    {
-        _clear;
-        cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
-             << *this << endl;
-    }
-    else //! <access==DENIED>
-    {
-        _clear;
-        cout << "<KEYCHAIN ACCESS DENIED>" << endl;
-        return false;
-    }
-
     return true;
 }
 
-//^^ lookupKey() ^/
-bool keychain::lookupKey(const string& keyident)
+//^^ 3. keySearch() ^/
+bool keychain::keySearch(const string &keyident)
 {
     if (isEmpty()) //! nothing to lookup
         return false;
@@ -156,52 +78,24 @@ bool keychain::lookupKey(const string& keyident)
     }
 }
 
-//^^ addPassword() ^/
-bool keychain::addPassword(const string &password)
+//^^ 4. isEmpty() ^/
+bool keychain::isEmpty()
 {
-    if (password == _none) //! no password
-    {
-        cPassword = _none;
-        cAccess = permitted; //? unlock access
+    if (cHead == nullptr && cTail == nullptr) //* keychain empty
         return true;
-    }
-    else //* password param accepted
-    {
-        cPassword = password;
-        cAccess = restricted; //? restrict access
-        return true;
-    }
 
-    return false;
+    return false; //! keychain not empty
 }
-
-//^^ keychainAccess() ^/
-//* @returns true: if access is permitted
-//! @returns false: if access is restricted
-bool keychain::keychainAccess()
-{
-    if(this->cAccess == permitted) //* access permitted
-        return true; 
-    
-    return false; //! access restricted
-} 
 
 //* -[PUBLIC]- *// @publicsection
 
-//* <CONSTRUCTOR>
-//* @public
+//* <CONSTRUCTOR> *// @public
 keychain::keychain(const string &password)
-    : cKeys(0), cPassword(password), cAccess(restricted), cHead(nullptr), cTail(nullptr)
+    : cKeys(0), cHead(nullptr), cTail(nullptr)
 {
-    if (cPassword == "")
-        cPassword = _none;
-
-    if (cPassword == _none)
-        cAccess = permitted;
 }
 
-//* <DESTRUCTOR>
-//* @public
+//* <DESTRUCTOR> *// @public
 keychain::~keychain()
 {
     if (_debugger)
@@ -210,88 +104,54 @@ keychain::~keychain()
     this->cHead = this->cTail = nullptr;
 }
 
-//* <FUNCTIONS>
-//* @public
+//* <FUNCTIONS> *// @public
 
-//** createKey() */
-//* @def: creates a key w/ the passed in parameters; if no parameters were passed, prompt user for input
-bool keychain::createKey(const string &keyname, const string &username, const string &email, const string &password)
+//** 1. newKey() */
+//* @def: creates a key w/ the passed in parameters
+bool keychain::newKey(const string &keyname, const string &username, const string &email, const string &password)
 {
     key nKey(keyname, username, email, password); //? create a key object with passed in strings
 
-    if (keyname == _none && username == _none && email == _none && password == _none) //! key is empty, cancel createKey()
-    {
+    if (keyname == _none && username == _none && email == _none && password == _none) //! do not add an empty key
         return false;
-    }
-    else //* add key onto the chain
+
+    else //* add key
     {
-        this->addKey(nKey);
+        this->keyNew(nKey);
         return true;
     }
 
     return false; //! unknown error
 }
 
-//**TODO: removeKey() */
+//**TODO: 2. deleteKey() */
 //* def:
-bool keychain::removeKey(const string &target)
+bool keychain::deleteKey(const string &target)
 {
     return false;
 }
 
-//**TODO: searchKey() */
+//**TODO: 3. searchKey() */
 //* @def:
 bool keychain::searchKey()
 {
     return false;
 }
 
-//** getKeys() */
-//* @def: returns the number of keys found on this chain
-unsigned int keychain::getKeys()
+//** 5. printKeychain() */
+void keychain::printKeychain()
 {
-    return cKeys; 
-} 
-
-//** printKeychain() */
-//* @def:
-bool keychain::printKeychain()
-{
-    //^ request access:
-    if (this->requestPermissions()) //* access request granted
-    {
-        cout << "<KEYCHAIN ACCESS PERMITTED>" << endl
-             << *this << endl;
-    }
-    else //! access request denied
-    {
-        cout << "<KEYCHAIN ACCESS DENIED>" << endl;
-        return false;
-    }
-
-    //^ re-lock access:
-    if (this->cAccess == permitted)
-        this->cAccess = restricted;
-
-    return true;
+    cout << *this << endl;
 }
 
-//* <OVERLOADS>
-//* @public
+//* <OVERLOADS> *// @public
 ostream &operator<<(ostream &out, const keychain &keychain)
 {
-    if (keychain.cAccess == restricted) //! <access=RESTRICTED>
-    {
-        out << "<ACCESS DENIED>" << endl;
-        return out;
-    }
-
-    keynode *copy = keychain.cHead; //? create a copy of keychain
+    keynode *copy = keychain.cHead;
 
     if (!copy) //! keychain is empty
-    {
         out << "| Keys on Record: 0 |" << endl;
-    }
+
     else //* display keychain
     {
         out << "| Keys on Record: " << keychain.cKeys << " |" << endl

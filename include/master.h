@@ -51,7 +51,7 @@ void HideTerminal(void); //* HideTerminal() @param: void
 void ShowTerminal(void); //* ShowTerminal() @param: void
 
 void ValidateInput(char &input);   //* ValidateInput() @param: char
-bool ValidateInput(string &input); //* ValidateInput() @param: string
+bool ValidatePassword(string &input); //* ValidateInput() @param: string
 
 bool ValidateFile(ifstream &readfile);  //* ValidateFile() @param: ifstream
 bool ValidateFile(ofstream &writefile); //* ValidateFile() @param: ofstream
