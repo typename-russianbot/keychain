@@ -10,17 +10,25 @@ void keychain_testing(void)
 
   keychain myKeychain;
 
-  key k1("github"), k2("google"), k3("chatgpt");
+  key k1("github"), k2("google"), k3("chatgpt"), k4("yahoo.com");
 
+  
   myKeychain.newKey(k1);
   myKeychain.newKey(k2);
   myKeychain.newKey(k3);
+  myKeychain.newKey(k4); 
 
-  myKeychain.printKey("google");
-  if (myKeychain.deleteKey("chatgpt"))
-    cout << "key deleted" << endl;
+  myKeychain.printKeychain(); 
 
-  myKeychain.deleteKey("chatgpt");
+  
+  myKeychain.deleteKey("yahoo.com"); 
+  myKeychain.deleteKey("github"); 
+  myKeychain.deleteKey("google"); 
+
+  myKeychain.deleteKey("chatgpt"); 
+
+
+
 
   myKeychain.printKeychain();
 }

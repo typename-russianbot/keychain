@@ -91,65 +91,47 @@ bool keychain::keyDelete(const string &keyident)
     if (isEmpty()) //! @note: keychain is empty
         return false;
 
-    else
+    if (keyident == _none)
+        return false;
+
+    //* @note: only one element in the keychain exists
+    if (cHead == cTail && cHead->getKey().getKeyname() == keyident)
     {
-        //* @note: if both cHead & cTail have the same keyname, only one element exists
-        if (cHead->getKey().getKeyname() == keyident && cTail->getKey().getKeyname() == keyident)
+        delete cHead;
+        cHead = cTail = nullptr;
+        cKeys--;
+        return true;
+    }
+
+    //* @note: first element in keychain is the target
+    if (cHead->getKey().getKeyname() == keyident)
+    {
+        cHead = cHead->getNext();
+        cHead->setPrev(cTail);
+        cTail->setNext(cHead);
+        cKeys--;
+
+        return true;
+    }
+
+    keynode *copy = cHead->getNext(), *prev = nullptr;
+
+    while (copy != cHead)
+    {
+        if (copy->getKey().getKeyname() == keyident)
         {
-            cHead = cTail = nullptr;
+            prev = copy->getPrev();
+            prev->setNext(copy->getNext());
+            copy->getNext()->setPrev(prev);
             cKeys--;
+
+            if (copy == cTail)
+                cTail = prev;
+
+            delete copy;
             return true;
         }
-
-        //* @note: if cHead & cTail do not equal
-        else if (cHead->getKey().getKeyname() == keyident)
-        {
-            keynode *temp = cHead, *prev = cHead->getPrev(), *next = cHead->getNext();
-
-            prev = temp->getPrev();
-            next = temp->getNext();
-
-            next->setPrev(prev);
-            prev->setNext(next);
-
-            cHead = next;
-            cTail = prev; 
-            cKeys--;
-
-            delete temp;
-            delete next;
-            delete prev;
-
-            return true;
-        }
-        else
-        {
-            keynode *temp = cHead->getNext(), *prev, *next;
-
-            while (temp != cHead)
-            {
-                if (temp->getKey().getKeyname() == keyident)
-                {
-                    prev = temp->getPrev();
-                    next = temp->getNext();
-
-                    next->setPrev(prev);
-                    prev->setNext(next);
-
-                    while (next != cHead)
-                    {
-                        next = next->getPrev();
-                    }
-
-                    cHead = next; 
-                    cTail = cHead->getPrev(); 
-                    cKeys--; 
-                    return true; 
-                }
-
-                temp = temp->getNext();
-            }
-        }
+        copy = copy->getNext();
     }
 
     return false;
@@ -240,8 +222,8 @@ bool keychain::newKey(const key &nKey)
 //* def:
 bool keychain::deleteKey(const string &keyident)
 {
-    if(isEmpty())
-        return false; 
+    if (isEmpty())
+        return false;
 
     if (keyDelete(keyident))
         return true;
@@ -262,14 +244,14 @@ bool keychain::searchKey(const string &keyident)
 //** 4. printKey() */
 bool keychain::printKey(const string &keyident)
 {
-    if(isEmpty())
-        return false; 
+    if (isEmpty())
+        return false;
 
     if (!searchKey(keyident))
         return false;
-   
-    cout << getKey(keyident) << endl; 
-    return true; 
+
+    cout << getKey(keyident) << endl;
+    return true;
 }
 
 //** 5. printKeychain() */
