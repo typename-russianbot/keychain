@@ -23,7 +23,7 @@ protected:
   //* -[PUBLIC]- *
 public:
   //* <CONSTRUCTOR>
-  key(string keyname = "none", string username = _none, string email = _none,
+  key(string keyname = _none, string username = _none, string email = _none,
       string password = _none, integrity integrity = none);
 
   //* <DESTRUCTOR>

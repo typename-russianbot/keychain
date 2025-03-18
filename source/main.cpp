@@ -14,30 +14,13 @@ void keychain_testing(void)
 
   myKeychain.newKey(k1);
   myKeychain.newKey(k2);
-  myKeychain.newKey(k3); 
+  myKeychain.newKey(k3);
 
-  if (myKeychain.searchKey(k1.getKeyname()) && myKeychain.searchKey(k2.getKeyname()) && myKeychain.searchKey(k3.getKeyname()))
-    cout << "Test Passed" << endl; 
+  myKeychain.printKey("google");
+  if (myKeychain.deleteKey("chatgpt"))
+    cout << "key deleted" << endl;
 
-  //? @note: profile prototype block
-  // profile myProfile;
-
-  // cout << myProfile << endl;
-
-  // if(myProfile.accessProfile())
-  //   cout << "great!" << endl;
-
-  //! @note: account prototype block
-  // account myAccount("mjh2001", "password"); //* base password
-
-  // myAccount.details(); //* get details of account
-
-  // if (myAccount.switchAccount("jimmyjohns")) //! attempt swap
-  //   cout << "profiles swapped successfully" << endl;
-
-  // myAccount.details(); //* get details of the found profile
-
-  // myAccount.deleteAccount();
+  myKeychain.printKeychain();
 }
 
 // && <keychain_usage>

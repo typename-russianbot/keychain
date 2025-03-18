@@ -10,13 +10,41 @@ unsigned int keychain::getKeys()
     return cKeys;
 }
 
+key keychain::getKey(const string &keyident)
+{
+    key nKey;
+    if (isEmpty()) //! @note: empty, return blank key
+        return nKey;
+
+    if (!keySearch(keyident)) //! @note: keysearch failed to find keyident, return blank key
+        return nKey;
+
+    keynode *copy = this->cHead;
+
+    if (copy->getKey().getKeyname() == keyident)
+        return copy->getKey();
+
+    else
+        copy = copy->getNext();
+
+    while (copy != cHead)
+    {
+        if (copy->getKey().getKeyname() == keyident)
+            return copy->getKey();
+
+        copy = copy->getNext();
+    }
+
+    return nKey; //! @note: return empty key if not found
+}
+
 //^ <HELPERS> ^// @protected
 
 //^^ 1. keyNew() ^/
 bool keychain::keyNew(const key &nKey)
 {
     keynode *newNode = new keynode(nKey); //* @note: allocate space for a new node
-    bool flag = false; 
+    bool flag = false;
 
     if (cHead == nullptr && cTail == nullptr) //* @note: set both, cHead & cTail to newNode
     {
@@ -25,7 +53,7 @@ bool keychain::keyNew(const key &nKey)
         cHead->setNext(cTail);
         cHead->setPrev(cTail);
 
-        flag = true; 
+        flag = true;
     }
     else if (cHead != nullptr && cTail == cHead) //* @note: cHead is occupied, store in cTail
     {
@@ -36,7 +64,7 @@ bool keychain::keyNew(const key &nKey)
         cTail->setNext(cHead);
         cTail->setPrev(cHead);
 
-        flag = true; 
+        flag = true;
     }
     else //* @note: both, cHead & cTail are occupied, link the newNode to cHead & cTail, then set newNode as cTail
     {
@@ -49,21 +77,80 @@ bool keychain::keyNew(const key &nKey)
 
         cTail = newNode;
 
-        flag = true; 
+        flag = true;
     }
 
     this->cKeys++; //* @note: iterate the number of keys stored on this chain
 
-    return flag; 
+    return flag;
 }
 
 //^^ 2. keyDelete() ^/
-bool keychain::keyDelete()
+bool keychain::keyDelete(const string &keyident)
 {
     if (isEmpty()) //! @note: keychain is empty
         return false;
 
-    return true;
+    else
+    {
+        //* @note: if both cHead & cTail have the same keyname, only one element exists
+        if (cHead->getKey().getKeyname() == keyident && cTail->getKey().getKeyname() == keyident)
+        {
+            cHead = cTail = nullptr;
+            cKeys--;
+            return true;
+        }
+
+        //* @note: if cHead & cTail do not equal
+        else if (cHead->getKey().getKeyname() == keyident)
+        {
+            keynode *temp = cHead, *prev = cHead->getPrev(), *next = cHead->getNext();
+
+            prev = temp->getPrev();
+            next = temp->getNext();
+
+            next->setPrev(prev);
+            prev->setNext(next);
+
+            cHead = next;
+            cKeys--;
+
+            delete temp;
+            delete next;
+            delete prev;
+
+            return true;
+        }
+        else
+        {
+            keynode *temp = cHead->getNext(), *prev, *next;
+
+            while (temp != cHead)
+            {
+                if (temp->getKey().getKeyname() == keyident)
+                {
+                    prev = temp->getPrev();
+                    next = temp->getNext();
+
+                    next->setPrev(prev);
+                    prev->setNext(next);
+
+                    while (next != cHead)
+                    {
+                        next = next->getPrev();
+                    }
+
+                    cHead = next; 
+                    cKeys--; 
+                    return true; 
+                }
+
+                temp = temp->getNext();
+            }
+        }
+    }
+
+    return false;
 }
 
 //^^ 3. keySearch() ^/
@@ -89,7 +176,7 @@ bool keychain::keySearch(const string &keyident)
         if (copy->getKey().getKeyname() == keyident)
             return true;
 
-        copy = copy->getNext(); 
+        copy = copy->getNext();
     }
 
     return false;
@@ -123,7 +210,7 @@ keychain::~keychain()
 
 //* <FUNCTIONS> *// @public
 
-//** newKeychain() */
+//** 1. newKeychain() */
 bool keychain::newKeychain(const string &owner)
 {
     if (owner == _none)
@@ -138,29 +225,45 @@ bool keychain::newKeychain(const string &owner)
     return false;
 }
 
+//** 2. newKey() */
 bool keychain::newKey(const key &nKey)
 {
     if (keyNew(nKey))
-        return true; 
-    
-    return false; 
-}
+        return true;
 
-//**TODO: 2. deleteKey() */
-//* def:
-bool keychain::deleteKey()
-{
     return false;
 }
 
-//**TODO: 3. searchKey() */
-//* @def:
-bool keychain::searchKey(const string& keyident)
+//** 2. deleteKey() */
+//* def:
+bool keychain::deleteKey(const string &keyident)
 {
-    if(keySearch(keyident))
-        return true; 
+    if (keyDelete(keyident))
+        return true;
 
-    return false; 
+    return false;
+}
+
+//** 3. searchKey() */
+//* @def:
+bool keychain::searchKey(const string &keyident)
+{
+    if (keySearch(keyident))
+        return true;
+
+    return false;
+}
+
+//** 4. printKey() */
+bool keychain::printKey(const string &keyident)
+{
+    if (!searchKey(keyident))
+        return false;
+    else
+    {
+        cout << getKey(keyident) << endl;
+        return true;
+    }
 }
 
 //** 5. printKeychain() */

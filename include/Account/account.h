@@ -37,5 +37,5 @@ public:
 
     void addKey();    //* addKey()
     bool deleteKey(); //* deleteKey()
-    bool printKey();  //* printKey()
+    bool printKey(const string& keyname = _none);  //* printKey()
 };

@@ -6,7 +6,7 @@
 //^ @protected
 
 //^^ unlock() ^/
-bool account::unlock() 
+bool account::unlock()
 {
     if (this->cLock == unlocked) //* already unlocked
         return true;
@@ -53,7 +53,7 @@ account::account(const string &username, const string &password) : cLock(locked)
 {
     if (username == _none && password == _none) //! both username & password are empty
     {
-        newProfile(); 
+        newProfile();
     }
     else
     {
@@ -75,15 +75,14 @@ account::~account()
 //* @def:
 bool account::newAccount(const string &username, const string &password)
 {
-    if(newProfile(username, password))
+    if (newProfile(username, password))
         return true;
     else
-        return false; 
-
+        return false;
 }
 
 //** wipe() */
-//* @def: 
+//* @def:
 bool account::deleteAccount(const string &username)
 {
     //! @note: need to add wipe feature for keychain
@@ -113,7 +112,7 @@ bool account::switchAccount(const string &username)
 
         else //* profile found
         {
-            this->saveProfile();                //* @note: save current profile
+            this->saveProfile();         //* @note: save current profile
             this->profileLoad(username); //* @note: load designated profile
         }
     }
@@ -152,4 +151,19 @@ void account::addKey()
 bool account::deleteKey()
 {
     return false;
+}
+
+//** printKey() */
+bool account::printKey(const string &keyname)
+{
+    if (keyname == _none)
+    {
+        //! @note: prompt for keyname
+    }
+    else if (this->searchKey(keyname))
+    {
+        cout << getKey(keyname) << endl;
+        return true;
+    }
+    return false; 
 }
