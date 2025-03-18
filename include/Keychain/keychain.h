@@ -11,6 +11,7 @@ private:
   unsigned int cKeys; //! cKeys
   keynode *cHead;     //! cHead
   keynode *cTail;     //! cTail
+  string cOwner;      //! cOwner
 
   //^ -[PROTECTED]- ^
 protected:
@@ -18,8 +19,8 @@ protected:
   unsigned int getKeys(); //^ getKeys()
 
   //^ <HELPERS>
-  void keyNew(const key &nKey);                   //^ 1. keyNew()
-  bool keyDelete(const key &nKey);                //^ 2. keyDelete()
+  bool keyNew(const key &nKey);                   //^ 1. keyNew()
+  bool keyDelete();                               //^ 2. keyDelete()
   bool keySearch(const string &keyident = _none); //^ 3. keySearch()
   bool keyPrint();                                //^ 4. keyPrint()
   bool isEmpty();                                 //^ 5. isEmpty()
@@ -33,14 +34,14 @@ public:
   ~keychain();
 
   //* <FUNCTIONS>
-  bool newKey(const string &keyname = _none, const string &username = _none,
-              const string &email = _none, const string &password = _none); //* 1. newKey()
-  bool deleteKey(const string &target);                                     //* 2. deleteKey()
-  bool searchKey();                                                         //* 3. searchKey()
-  bool printKey();                                                          //* 4. printKey()
-  void printKeychain();                                                     //* 5. printKeychain()
-  bool loadKeychain();                                                      //* 6. loadKeychain()
-  bool saveKeychain();                                                      //* 7. saveKeychain()
+  bool newKeychain(const string &owner);  //* 1. newKeychain()
+  bool newKey(const key &nKey);           //* 2. newKey()
+  bool deleteKey();                       //* 3. deleteKey()
+  bool searchKey(const string &keyident); //* 4. searchKey()
+  bool printKey();                        //* 5. printKey()
+  void printKeychain();                   //* 6. printKeychain()
+  bool loadKeychain();                    //* 7. loadKeychain()
+  bool saveKeychain();                    //* 8. saveKeychain()
 
   //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<

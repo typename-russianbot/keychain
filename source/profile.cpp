@@ -16,13 +16,13 @@ const string profile::getPassword()
     //^ @note: prompt for password input
     cout << "Password: ";
     cin >> input;
-    ValidatePassword(input);
+    ValidateInput(input);
     cout << endl;
 
     //^ @note: prompt for password verification
     cout << "Re-enter Password: ";
     cin >> verification;
-    ValidatePassword(verification);
+    ValidateInput(verification);
     cout << endl;
 
     ShowTerminal();
@@ -36,69 +36,74 @@ const string profile::getPassword()
 //^ <SETTERS> ^// @protected
 void profile::setUsername(const string &username)
 {
-    if (username == _none)
+    if (username == _none) //* @note: prompt for username if none is given
     {
         string input;
-        cout << "Username: ";
-        cin >> input;
 
-        if (ValidatePassword(input))
-            cout << "password added" << endl;
-        else
+        do
         {
-            cout << "failed to add " << endl;
-        }
-
-        while (!ValidatePassword(input))
-        {
-            cout << "Username: " << endl;
+            cout << "Username: ";
             cin >> input;
-            ValidatePassword(input);
-        }
+        } while (!ValidateInput(input));
 
-        cout << endl;
-
-        if (input == _none)
-        {
-            cUsername = _none;
-            cout << "username is empty" << endl;
-        }
-        else
-        {
-            cUsername = input;
-        }
+        cUsername = input;
+        return;
     }
-    else
-    {
+    else //* @note: set username to parameter
         this->cUsername = username;
-    }
 }
-void profile::setPassword()
+void profile::setPassword(const string &password)
 {
-    string input, verification;
+    if (password == _none)
+    {
+        char retry;
+        string input, verification;
 
-    HideTerminal();
+        HideTerminal();
 
-    cout << "Password: ";
-    cin >> input;
+        while (retry != 'n')
+        {
+            do //* get password
+            {
+                cout << "Password: ";
+                cin >> input;
+            } while (!ValidateInput(input));
 
-    ValidatePassword(input);
-    cout << endl;
+            cout << endl;
 
-    cout << "Re-enter Password: ";
-    cin >> verification;
-    ValidatePassword(verification);
-    cout << endl;
+            do //* get verification
+            {
+                cout << "Re-enter Password: ";
+                cin >> verification;
+            } while (!ValidateInput(verification));
+
+            cout << endl;
+
+            if (input == verification) //* @note: verify passkey inputs
+            {
+                ShowTerminal();
+                this->cPassword = input;
+                return;
+            }
+
+            else
+            {
+                do
+                {
+                    cout << "<ERROR>: Password Mismatch Detected" << endl
+                         << "Re-attempt? [y/n]: ";
+
+                    cin >> retry;
+                    cout << endl;
+
+                } while (!ValidateInput(retry));
+            }
+        }
+    }
 
     ShowTerminal();
-
-    if (input == verification)
-        this->cPassword = input;
-    else
-    {
-        cout << "<ERROR>: password not set" << endl;
-        this->cPassword = _none;
-    }
+    cout << "<PASSWORD>: none" << endl;
+    cPassword = _none;
 }
 
 //^ <HELPERS> ^// @protected
@@ -108,8 +113,15 @@ void profile::setPassword()
 bool profile::profileNew(const string &username, const string &password)
 {
     if (username == _none && password == _none) //! no data, cancel profile creation
-        return false;
+    {
+        setUsername();
+        setPassword();
 
+        if (cPassword == _none)
+            cAccess = permitted;
+        else
+            cAccess = restricted;
+    }
     else if (username != _none) //* username param accepted
     {
         cAccess = restricted;
@@ -215,14 +227,18 @@ bool profile::profileAccess()
         //! mismatch encountered
         while (true)
         {
-            cout << "| Remaining Attempts: " << attempts << " |" << endl
-                 << "Re-enter Passkey? [y/n]: ";
-            cin >> input;
-            input = tolower(input);
+            do
+            {
+                cout << "| Remaining Attempts: " << attempts << " |" << endl
+                     << "Re-enter Passkey? [y/n]: ";
 
-            if (input == 'n') //! exit function when equal to 'n'
+                cin >> input;
+
+            } while (!ValidateInput(input));
+
+            if (input == 'n')
                 return false;
-            else if (input == 'y') //* break free of loop when valid
+            else
                 break;
         }
 
@@ -297,6 +313,11 @@ profile::profile(const string &username, const string &password)
     {
         setUsername();
         setPassword();
+
+        if (cPassword == _none)
+            cAccess = permitted;
+        else
+            cAccess = restricted;
     }
     else if (username != _none) //* @elseif: username is not empty
     {
@@ -333,7 +354,7 @@ bool profile::newProfile(const string &username, const string &password)
 }
 
 //** 2. deleteProfile() */
-//* @def:
+//* @def: searches for the target, then removes it if found in the data fiel
 bool profile::deleteProfile(const string &target)
 {
     if (!searchProfile(target)) //! search for target in file before removal

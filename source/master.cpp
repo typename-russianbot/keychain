@@ -35,67 +35,73 @@ void ShowTerminal()
 }
 
 //** ValidateInput() */
-//* @param: char
-void ValidateInput(char &input)
+//* @def: prompts user for
+bool ValidateInput(char &input)
 {
-    while (input != 'y' && input != 'Y' && input != 'n' && input != 'N')
+    if (input != 'y' && input != 'Y' && input != 'n' && input != 'N')
     {
-        cout << "Request Permission? [y/n]: ";
-        cin >> input;
+        return false;
     }
-    cout << endl;
+
+    return true;
 }
 
-
-//** ValidateUsername() */
-//* @def: 
-
-
-//** ValidatePassword() */
-//* @def: 
-bool ValidatePassword(string &password)
+//** ValidateInput() */
+//* @def: forbidden characters - \ / : * ? " < > |
+bool ValidateInput(string &input)
 {
-    bool flag = true; 
-
-    if(password == "")
-        password = _none; 
+    bool flag = true;
 
     //! detect for illegal characters
-    for (char character : password)
+    for (char character : input)
     {
         switch (character)
         {
         case ' ':
-            cout << "<ERROR>: use '-' or '_'" << endl;
-            flag = false; 
+            flag = false;
             break;
-
         case ',':
-            cout << "<ERROR>: illegal character detected" << endl;
-            flag = false; 
+            flag = false;
             break;
-
-        case ';': 
-            cout << "<ERROR>: " << endl; 
-            flag = false; 
-            break; 
-
-        case '~': 
-            flag = false; 
-            break; 
-        
-        case '*': 
-            flag = false; 
-            break; 
-
-        case '`': 
-            break; 
+        case '\'':
+            flag = false;
+            break;
+        case '/':
+            flag = false;
+            break;
+        case ':':
+            flag = false;
+            break;
+        case '*':
+            flag = false;
+            break;
+        case '?':
+            flag = false;
+            break;
+        case '"':
+            flag = false;
+            break;
+        case '<':
+            flag = false;
+            break;
+        case '>':
+            flag = false;
+            break;
+        case '|':
+            flag = false;
+            break;
         }
-
-
     }
 
-    return true; //* input valid
+    if (flag == false)
+    {
+        cout << "<ERROR> - Illegal character detected -" << endl
+             << "Illegal Characters: ' ' , ',' , \\ , / , : , * , ? , \" , < , > , |" << endl;
+
+        input = _none;
+    }
+
+    return flag;
 }
 
 //** ValidateFile() */

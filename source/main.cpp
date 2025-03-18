@@ -8,16 +8,24 @@ void keychain_testing(void)
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
+  keychain myKeychain;
+
+  key k1("github"), k2("google"), k3("chatgpt");
+
+  myKeychain.newKey(k1);
+  myKeychain.newKey(k2);
+  myKeychain.newKey(k3); 
+
+  if (myKeychain.searchKey(k1.getKeyname()) && myKeychain.searchKey(k2.getKeyname()) && myKeychain.searchKey(k3.getKeyname()))
+    cout << "Test Passed" << endl; 
+
   //? @note: profile prototype block
-  profile myProfile;
+  // profile myProfile;
 
-  cout << myProfile << endl; 
+  // cout << myProfile << endl;
 
-
-  if (myProfile.accessProfile())
-    cout << "success" << endl;
-  else
-    cout << "failure" << endl;
+  // if(myProfile.accessProfile())
+  //   cout << "great!" << endl;
 
   //! @note: account prototype block
   // account myAccount("mjh2001", "password"); //* base password

@@ -16,7 +16,7 @@
 using namespace std;
 #define _on true               //^ _on
 #define _off false             //^ _off
-#define _none "<none>"         //^ _none
+#define _none "none"         //^ _none
 #define _clear system("clear") //^ _clear
 #define _censor "**********"   //^ _censor
 
@@ -50,8 +50,8 @@ enum lock
 void HideTerminal(void); //* HideTerminal() @param: void
 void ShowTerminal(void); //* ShowTerminal() @param: void
 
-void ValidateInput(char &input);   //* ValidateInput() @param: char
-bool ValidatePassword(string &input); //* ValidateInput() @param: string
+bool ValidateInput(char &input);   //* ValidateInput() @param: char
+bool ValidateInput(string &input); //* ValidateInput() @param: string
 
 bool ValidateFile(ifstream &readfile);  //* ValidateFile() @param: ifstream
 bool ValidateFile(ofstream &writefile); //* ValidateFile() @param: ofstream

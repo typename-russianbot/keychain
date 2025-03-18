@@ -6,7 +6,7 @@
 //^ @protected
 
 //^^ unlock() ^/
-bool account::unlock()
+bool account::unlock() 
 {
     if (this->cLock == unlocked) //* already unlocked
         return true;
@@ -53,6 +53,7 @@ account::account(const string &username, const string &password) : cLock(locked)
 {
     if (username == _none && password == _none) //! both username & password are empty
     {
+        newProfile(); 
     }
     else
     {
@@ -74,7 +75,11 @@ account::~account()
 //* @def:
 bool account::newAccount(const string &username, const string &password)
 {
-    return false;
+    if(newProfile(username, password))
+        return true;
+    else
+        return false; 
+
 }
 
 //** wipe() */

@@ -19,7 +19,7 @@ protected:
 
     //^ <SETTERS>
     void setUsername(const string &username = _none); //^ setUsername()
-    void setPassword();                               //^ setPassword()
+    void setPassword(const string& password = _none);                               //^ setPassword()
 
     //^ <HELPERS>
     bool profileNew(const string &username = _none, const string &password = _none); //^ 1. profileNew()

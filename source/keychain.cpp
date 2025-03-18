@@ -13,18 +13,21 @@ unsigned int keychain::getKeys()
 //^ <HELPERS> ^// @protected
 
 //^^ 1. keyNew() ^/
-void keychain::keyNew(const key &nKey)
+bool keychain::keyNew(const key &nKey)
 {
-    keynode *newNode = new keynode(nKey); //* allocate space for a new node
+    keynode *newNode = new keynode(nKey); //* @note: allocate space for a new node
+    bool flag = false; 
 
-    if (cHead == nullptr && cTail == nullptr) //! 1. if both, start & end are empty, store key in start & keep end nullptr
+    if (cHead == nullptr && cTail == nullptr) //* @note: set both, cHead & cTail to newNode
     {
         cHead = newNode;
         cTail = newNode;
         cHead->setNext(cTail);
         cHead->setPrev(cTail);
+
+        flag = true; 
     }
-    else if (cHead != nullptr && cTail == cHead) //! 2. if a startings node exists, but end is empty, store key in end node
+    else if (cHead != nullptr && cTail == cHead) //* @note: cHead is occupied, store in cTail
     {
         cTail = newNode;
 
@@ -32,8 +35,10 @@ void keychain::keyNew(const key &nKey)
         cHead->setNext(cTail);
         cTail->setNext(cHead);
         cTail->setPrev(cHead);
+
+        flag = true; 
     }
-    else //! 3. if both start & end are occupied, store key between start & end, then link all keys
+    else //* @note: both, cHead & cTail are occupied, link the newNode to cHead & cTail, then set newNode as cTail
     {
         //* set next & prev to head & tail respectively
         newNode->setNext(cHead);
@@ -43,39 +48,51 @@ void keychain::keyNew(const key &nKey)
         cHead->setPrev(newNode);
 
         cTail = newNode;
+
+        flag = true; 
     }
 
-    this->cKeys++; //* update the number of keys in this chain
+    this->cKeys++; //* @note: iterate the number of keys stored on this chain
+
+    return flag; 
 }
 
 //^^ 2. keyDelete() ^/
-bool keychain::keyDelete(const key &nKey)
+bool keychain::keyDelete()
 {
-    if (isEmpty()) //! nothing to remove
+    if (isEmpty()) //! @note: keychain is empty
         return false;
 
     return true;
 }
 
 //^^ 3. keySearch() ^/
+//^ @def: takes 'keyident' & compares it to all the keynames of each key on the current chain
 bool keychain::keySearch(const string &keyident)
 {
-    if (isEmpty()) //! nothing to lookup
+    if (isEmpty()) //! @note: keychain is empty
         return false;
 
-    //! request keychain permissions
-
-    if (keyident == _none)
+    if (keyident == _none) //! @note: no keyident specified
         return false;
-    else
-    {
-        //? search thru chain
-        //? 1. by keyname
-        //? 2. by email
-        //? 3. by username
 
+    keynode *copy = this->cHead; //* @note: copy keychain's head node
+
+    if (copy->getKey().getKeyname() == keyident) //* @note: keyident is in the head node
         return true;
+
+    else //* @note: if keyident was not in cHead, begin to compare to all other elements
+        copy = copy->getNext();
+
+    while (copy != cHead)
+    {
+        if (copy->getKey().getKeyname() == keyident)
+            return true;
+
+        copy = copy->getNext(); 
     }
+
+    return false;
 }
 
 //^^ 4. isEmpty() ^/
@@ -106,36 +123,44 @@ keychain::~keychain()
 
 //* <FUNCTIONS> *// @public
 
-//** 1. newKey() */
-//* @def: creates a key w/ the passed in parameters
-bool keychain::newKey(const string &keyname, const string &username, const string &email, const string &password)
+//** newKeychain() */
+bool keychain::newKeychain(const string &owner)
 {
-    key nKey(keyname, username, email, password); //? create a key object with passed in strings
-
-    if (keyname == _none && username == _none && email == _none && password == _none) //! do not add an empty key
+    if (owner == _none)
         return false;
-
-    else //* add key
+    else
     {
-        this->keyNew(nKey);
-        return true;
+        cOwner = owner;
+        cKeys = 0;
+        cHead = nullptr;
+        cTail = nullptr;
     }
+    return false;
+}
 
-    return false; //! unknown error
+bool keychain::newKey(const key &nKey)
+{
+    if (keyNew(nKey))
+        return true; 
+    
+    return false; 
 }
 
 //**TODO: 2. deleteKey() */
 //* def:
-bool keychain::deleteKey(const string &target)
+bool keychain::deleteKey()
 {
     return false;
 }
 
 //**TODO: 3. searchKey() */
 //* @def:
-bool keychain::searchKey()
+bool keychain::searchKey(const string& keyident)
 {
-    return false;
+    if(keySearch(keyident))
+        return true; 
+
+    return false; 
 }
 
 //** 5. printKeychain() */

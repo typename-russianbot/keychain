@@ -14,9 +14,11 @@ private:
     //^ -[PROTECTED]- ^
 protected:
     //^ <HELPERS>
+
     bool unlock();   //^ unlock()
     bool relock();   //^ relock()
     bool isLocked(); //^ isLocked()
+
 
     //* -[PUBLIC]- *
 public:
