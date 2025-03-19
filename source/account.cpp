@@ -72,10 +72,10 @@ account::~account()
 //* <FUNCTIONS> *// @public
 
 //** create() */
-//* @def:
+//* @def: calls new 
 bool account::newAccount(const string &username, const string &password)
 {
-    if (newProfile(username, password))
+    if (newProfile(username, password) && newKeychain(username))
         return true;
     else
         return false;
@@ -92,7 +92,6 @@ bool account::deleteAccount(const string &username)
     {
         //* @note: overwrite current data in username & password
         this->setUsername(_none);
-        // this->setPassword(); @note: use setPassword in account
         return true;
     }
 

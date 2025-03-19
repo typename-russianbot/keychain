@@ -2,17 +2,38 @@
 
 //^ -[PROTECTED]- ^// @protectedsection
 
+//^ <SETTERS> ^// @protected
+
+//^ @def: takes the username param, then creates a file w/ the same name
+bool keychain::setSaveFile(const string &username)
+{
+    cSaveFile = "data/keychains/" + username + ".txt";
+
+    ofstream newSaveFile(cSaveFile);
+
+    if (ValidateFile(newSaveFile))
+        newSaveFile.close();
+    else
+        return false;
+
+    return true;
+}
+
 //^ <GETTERS> ^// @protected
 
+//^^ getKeys() ^/
 //^ @def: returns the number of keys found on this chain
-unsigned int keychain::getKeys()
+const unsigned int keychain::getKeys()
 {
     return cKeys;
 }
 
-key keychain::getKey(const string &keyident)
+//^^ getKey() ^/
+//^ @def: returns the key specified by 'keyident'
+const key keychain::getKey(const string &keyident)
 {
     key nKey;
+
     if (isEmpty()) //! @note: empty, return blank key
         return nKey;
 
@@ -36,6 +57,13 @@ key keychain::getKey(const string &keyident)
     }
 
     return nKey; //! @note: return empty key if not found
+}
+
+//^^ getSaveFile() ^/
+//^ @def: returns the savefile for this keychain
+const string keychain::getSaveFile()
+{
+    return cSaveFile;
 }
 
 //^ <HELPERS> ^// @protected
@@ -91,7 +119,7 @@ bool keychain::keyDelete(const string &keyident)
     if (isEmpty()) //! @note: keychain is empty
         return false;
 
-    if (keyident == _none)
+    if (keyident == _none) //! @note: no key identifier specified
         return false;
 
     //* @note: only one element in the keychain exists
@@ -166,7 +194,39 @@ bool keychain::keySearch(const string &keyident)
     return false;
 }
 
-//^^ 4. isEmpty() ^/
+//^^ 4. keychainLoad() ^/
+bool keychain::keychainLoad()
+{
+    if (!loadKeychain())
+        return false;
+
+    return true;
+}
+
+//^^ 5. keychainSave() ^/
+bool keychain::keychainSave()
+{
+    if (!saveKeychain())
+        return false;
+
+    return true;
+}
+
+//^^ 6. savefileDelete() ^/
+//^ @def: removes the
+bool keychain::savefileDelete()
+{
+    if (remove(cSaveFile.c_str()) == 0)
+    {
+        cSaveFile = _none;
+        return true;
+    }
+
+    return false;
+}
+
+//^^ 7. isEmpty() ^/
+//^ @def: returns true if keychain is empty
 bool keychain::isEmpty()
 {
     if (cHead == nullptr && cTail == nullptr) //* keychain empty
@@ -178,9 +238,10 @@ bool keychain::isEmpty()
 //* -[PUBLIC]- *// @publicsection
 
 //* <CONSTRUCTOR> *// @public
-keychain::keychain(const string &password)
+keychain::keychain(const string &username)
     : cKeys(0), cHead(nullptr), cTail(nullptr)
 {
+    setSaveFile(username);
 }
 
 //* <DESTRUCTOR> *// @public
@@ -189,23 +250,44 @@ keychain::~keychain()
     if (_debugger)
         cout << "destroying keychain" << endl;
 
-    this->cHead = this->cTail = nullptr;
+    if (isEmpty()) //* @note: keychain is empty
+        return;
+
+    keynode *temp = cHead;
+    keynode *next = nullptr;
+
+    do
+    {
+        next = temp->getNext();
+        delete temp;
+        temp = next;
+    } while (temp != cHead);
+
+    cHead = cTail = nullptr;
 }
 
 //* <FUNCTIONS> *// @public
 
 //** 1. newKeychain() */
-bool keychain::newKeychain(const string &owner)
+bool keychain::newKeychain(const string &username)
 {
-    if (owner == _none)
+    if (username == _none)
         return false;
-    else
-    {
-        cOwner = owner;
-        cKeys = 0;
-        cHead = nullptr;
-        cTail = nullptr;
-    }
+
+    cKeys = 0;
+    cHead = nullptr;
+    cTail = nullptr;
+    setSaveFile(username);
+
+    return false;
+}
+
+//** 2. deleteKeychain() */
+bool keychain::deleteKeychain()
+{
+    if (this->savefileDelete())
+        return true;
+
     return false;
 }
 
@@ -258,6 +340,38 @@ bool keychain::printKey(const string &keyident)
 void keychain::printKeychain()
 {
     cout << *this << endl;
+}
+
+//** 6. loadKeychain() */
+bool keychain::loadKeychain()
+{
+    ifstream readfile(cSaveFile);
+
+    if (!ValidateFile(readfile))
+        return false;
+
+    return false;
+}
+
+//** 7. saveKeychain() */
+bool keychain::saveKeychain()
+{
+    ofstream writefile(cSaveFile);
+
+    if (!ValidateFile(writefile))
+        return false;
+
+    writefile << cHead->getKey().getKeyname() << "," << cHead->getKey().getUsername() << "," << cHead->getKey().getEmail() << "," << cHead->getKey().getPassword() << endl;
+
+    keynode *copy = cHead->getNext();
+
+    while (copy != cHead)
+    {
+        writefile << copy->getKey().getKeyname() << "," << cHead->getKey().getUsername() << "," << cHead->getKey().getEmail() << "," << cHead->getKey().getPassword() << endl;
+        copy = copy->getNext();
+    }
+
+    return true;
 }
 
 //* <OVERLOADS> *// @public

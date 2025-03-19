@@ -8,29 +8,19 @@ void keychain_testing(void)
   cout << "| -Keychain- | -Testing- |" << endl
        << endl;
 
-  keychain myKeychain;
+  keychain myKeychain("mjh2001");
 
   key k1("github"), k2("google"), k3("chatgpt"), k4("yahoo.com");
 
-  
   myKeychain.newKey(k1);
   myKeychain.newKey(k2);
   myKeychain.newKey(k3);
-  myKeychain.newKey(k4); 
-
-  myKeychain.printKeychain(); 
-
-  
-  myKeychain.deleteKey("yahoo.com"); 
-  myKeychain.deleteKey("github"); 
-  myKeychain.deleteKey("google"); 
-
-  myKeychain.deleteKey("chatgpt"); 
-
-
-
+  myKeychain.newKey(k4);
 
   myKeychain.printKeychain();
+  if(myKeychain.saveKeychain())
+    cout << "keychain saved!" << endl; 
+
 }
 
 // && <keychain_usage>

@@ -3,24 +3,25 @@
 #pragma once
 
 //!! <DEPENDENCIES>
-#include <iostream>  //! iostream
-#include <fstream>   //! fstream
-#include <sstream>   //! sstream
-#include <cctype>    //! cctype
-#include <string.h>  //! string.h
-#include <unistd.h>  //! unistd.h
-#include <getopt.h>  //! getopt.h
-#include <termios.h> //! termios.h
+#include <iostream>   //! iostream
+#include <fstream>    //! fstream
+#include <sstream>    //! sstream
+#include <filesystem> //! filesystem
+#include <cctype>     //! cctype
+#include <string.h>   //! string.h
+#include <unistd.h>   //! unistd.h
+#include <getopt.h>   //! getopt.h
+#include <termios.h>  //! termios.h
 
 //^^ <MACROS>
 using namespace std;
 #define _on true               //^ _on
 #define _off false             //^ _off
-#define _none "none"         //^ _none
+#define _none "none"           //^ _none
 #define _clear system("clear") //^ _clear
 #define _censor "**********"   //^ _censor
 
-//^^ <ENUMS> 
+//^^ <ENUMS>
 
 //^^ @enum: <INTEGRITY> ^/
 enum integrity
@@ -33,14 +34,14 @@ enum integrity
 };
 
 //^^ @enum: <CLEARANCE> ^/
-enum clearance 
+enum clearance
 {
   restricted, //& 1. <restricted>    -- access restricted
   permitted   //& 2. <permitted>     -- access permitted
 };
 
 //^^ @enum: <LOCK> ^/
-enum lock 
+enum lock
 {
   locked,  //& 1. <locked>
   unlocked //& 2. <unlocked>

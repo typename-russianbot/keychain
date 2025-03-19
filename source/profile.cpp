@@ -281,24 +281,23 @@ bool profile::profileLoad(const string &target)
 
         //! target not found
         readfile.close();
-        return false;
     }
+
+    return false;
 }
 
 //^ 6. profileSave() ^/
 //^ @def: writes the currently stored profile attributes to profiles.txt
 bool profile::profileSave()
 {
-    ofstream writefile("data/profiles.txt", std::ios::app); //^ load profiles.txt for write & set write mode to append
+    ofstream writefile("data/profiles.txt", std::ios::app);
 
-    if (!ValidateFile(writefile)) //! file failed to load
+    if (!ValidateFile(writefile)) //! @note: file failed to load
         return false;
 
-    else //* file validated
-    {
-        writefile << this->cUsername << "," << this->cPassword << endl; //* write to file
-        writefile.close();
-    }
+    //* @note: file validated
+    writefile << this->cUsername << "," << this->cPassword << endl; //* @note: write profile data to savefile
+    writefile.close();
 
     return true;
 }
