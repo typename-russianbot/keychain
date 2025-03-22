@@ -1,52 +1,35 @@
 //? | @author: Matthew H. | @github: typename-russianbot | ?
-
 #include "../include/Account/account.h"
 
 // ^^ <keychain_testing>
 void keychain_testing(void)
 {
-  cout << "| -Keychain- | -Testing- |" << endl
-       << endl;
+  cout << "| -Keychain- | -Testing- |" << endl;
 
-  keychain myKeychain("mjh2001");
+  profile p;
+  cout << p << endl;
 
-  key k1("github"), k2("google"), k3("chatgpt"), k4("yahoo.com");
+  p.printProfile();
 
-  myKeychain.newKey(k1);
-  myKeychain.newKey(k2);
-  myKeychain.newKey(k3);
-  myKeychain.newKey(k4);
+  if (p.loadProfile("matthew"))
+    cout << "<SUCCESS> - profile loaded" << endl;
 
-  myKeychain.printKeychain();
-  if(myKeychain.saveKeychain())
-    cout << "keychain saved!" << endl; 
+  cout << p << endl;
 
+  if (p.accessProfile())
+    cout << "<SUCCESS> - profile accessed" << endl;
+
+  cout << p << endl;
+
+  if (p.restrictProfile())
+    cout << "<SUCCESS> - profile restricted" << endl;
+
+  cout << p << endl;
 }
 
 // && <keychain_usage>
 void keychain_usage(void)
 {
-  //** -FLAG LIST-
-  //^ -h || displays all program flags & their purpose
-  //* -d || activates debugger
-  //! -a || adds a new key to the chain
-  //& -r: || removes a specified key from the chain
-  //? -p: || prints a specified key to the command line
-  //~ -t || enter testing bench
-
-  cout << "| -Keychain- | -Usage- |" << endl
-       << endl
-       << "| Program Flags: |" << endl
-       << "\t-h | HELP -- " << endl
-       << "\t-p | PROFILE INTERFACE --" << endl
-       << "\t-t | TESTING INTERFACE --" << endl
-       << "\t-h | description" << endl;
-
-  //* concept flags:
-  //* 1. -c : create a new account
-  //* 2. -r : remove a pre-existing account
-  //* 3. -p : print an account's keychain
-  //* 4. -
 }
 
 // ~~ <main program>

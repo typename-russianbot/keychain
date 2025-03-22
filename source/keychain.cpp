@@ -7,7 +7,7 @@
 //^ @def: takes the username param, then creates a file w/ the same name
 bool keychain::setSaveFile(const string &username)
 {
-    cSaveFile = "data/keychains/" + username + ".txt";
+    cSaveFile = "data/keychains/ff.txt";
 
     ofstream newSaveFile(cSaveFile);
 
@@ -214,7 +214,7 @@ bool keychain::keychainSave()
 
 //^^ 6. savefileDelete() ^/
 //^ @def: removes the
-bool keychain::savefileDelete()
+bool keychain::savefileDelete(const string &file)
 {
     if (remove(cSaveFile.c_str()) == 0)
     {
@@ -241,7 +241,6 @@ bool keychain::isEmpty()
 keychain::keychain(const string &username)
     : cKeys(0), cHead(nullptr), cTail(nullptr)
 {
-    setSaveFile(username);
 }
 
 //* <DESTRUCTOR> *// @public
@@ -267,29 +266,6 @@ keychain::~keychain()
 }
 
 //* <FUNCTIONS> *// @public
-
-//** 1. newKeychain() */
-bool keychain::newKeychain(const string &username)
-{
-    if (username == _none)
-        return false;
-
-    cKeys = 0;
-    cHead = nullptr;
-    cTail = nullptr;
-    setSaveFile(username);
-
-    return false;
-}
-
-//** 2. deleteKeychain() */
-bool keychain::deleteKeychain()
-{
-    if (this->savefileDelete())
-        return true;
-
-    return false;
-}
 
 //** 2. newKey() */
 bool keychain::newKey(const key &nKey)
@@ -356,6 +332,8 @@ bool keychain::loadKeychain()
 //** 7. saveKeychain() */
 bool keychain::saveKeychain()
 {
+    setSaveFile(cSaveFile);
+
     ofstream writefile(cSaveFile);
 
     if (!ValidateFile(writefile))
@@ -373,6 +351,11 @@ bool keychain::saveKeychain()
 
     return true;
 }
+
+bool keychain::deleteKeychain()
+{
+    return false; 
+} 
 
 //* <OVERLOADS> *// @public
 ostream &operator<<(ostream &out, const keychain &keychain)

@@ -16,7 +16,6 @@ TARGET = keychain #?? target executable
 
 #&& 1. all - create all object & executable files
 all:  $(TARGET) 
-	clear
 
 #&& 2. clean - remove object files & executables
 clean: 

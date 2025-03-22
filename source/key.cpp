@@ -1,79 +1,9 @@
 #include "../include/Keychain/key.h"
 
-//^ -[PROTECTED]- ^// @protectedsection
-
-//^^ ^/
-void key::inputKeyname(istream &in, key &object)
-{
-  cout << "Keyname: ";
-  getline(in, object.cKeyname);
-
-  while (!ValidateInput(object.cKeyname))
-  {
-    cout << "Keyname: ";
-    getline(in, object.cKeyname);
-  }
-}
-
-//^^ ^/
-void key::inputUsername(istream &in, key &object)
-{
-  cout << "Username: ";
-  getline(in, object.cUsername);
-
-  while (!ValidateInput(object.cUsername))
-  {
-    cout << "Username: ";
-    getline(in, object.cUsername);
-  }
-}
-
-//^^ inputEmail() ^/
-void key::inputEmail(istream &in, key &object)
-{
-  cout << "Email: ";
-  getline(in, object.cEmail);
-
-  while (!ValidateInput(object.cEmail))
-  {
-    cout << "Email: ";
-    getline(in, object.cEmail);
-  }
-}
-
-//^^ inputPassword() ^/
-void key::inputPassword(istream &in, key &object)
-{
-  cout << "Password: ";
-
-  HideTerminal(); 
-
-  getline(in, object.cPassword);
-  cout << endl; 
-
-  while (!ValidateInput(object.cPassword))
-  {
-    ShowTerminal(); 
-    cout << "Password: ";
-
-    HideTerminal();
-    getline(in, object.cPassword);
-    cout << endl; 
-  }
-
-  ShowTerminal(); 
-}
-
-//* -[PUBLIC]- *// @publicsection
-
-//* <CONSTRUCTOR>
-key::key(string destination, string username, string email, string password, integrity integrity) : cKeyname(destination),
-                                                                                                    cUsername(username), cEmail(email), cPassword(password), cKeyintegrity(integrity)
+//* <RESOURCE MANAGERS>
+key::key(string destination, string username, string email, string password, integrity integrity) : cKeyname(destination), cUsername(username), cEmail(email), cPassword(password), cKeyintegrity(integrity)
 {
 }
-
-//* <DESTRUCTOR>
-//* @public
 key::~key()
 {
   if (_debugger == _on)
@@ -81,7 +11,6 @@ key::~key()
 }
 
 //* <SETTERS>
-//* @public
 void key::setKeyname(const string &nKeyname)
 {
   this->cKeyname = nKeyname;
@@ -104,7 +33,6 @@ void key::setKeyintegrity(const integrity &nIntegrity)
 }
 
 //* <GETTERS>
-//* @public
 const string key::getKeyname(void) { return this->cKeyname; }
 const string key::getUsername(void) { return this->cUsername; }
 const string key::getEmail(void) { return this->cEmail; }
@@ -112,21 +40,76 @@ const string key::getPassword(void) { return this->cPassword; }
 const integrity key::getKeyintegrity(void) { return this->cKeyintegrity; }
 
 //* <OVERLOADS>
-//* @public
-
-//** operator>> */
 istream &operator>>(istream &in, key &key)
 {
+  char retry;
+  string verification, password;
 
-  key.inputKeyname(in, key);
-  key.inputUsername(in, key); 
-  key.inputEmail(in, key); 
-  key.inputPassword(in, key);
+  //* @note: grab keyname
+  do
+  {
+    cout << "Keyname: ";
+    in >> key.cKeyname;
+  } while (!ValidateInput(key.cKeyname));
+
+  //* @note: grab username
+  do
+  {
+    cout << "Username: ";
+    in >> key.cUsername;
+  } while (!ValidateInput(key.cUsername));
+
+  //* @note: grab email
+  do
+  {
+    cout << "Email: ";
+    in >> key.cEmail;
+  } while (!ValidateInput(key.cEmail));
+
+  //* @note: grab password (same method as setPassword in profile)
+
+  HideTerminal();
+
+  while (retry != 'n')
+  {
+    do
+    {
+      cout << "Password: ";
+      in >> password;
+    } while (!ValidateInput(password));
+
+    cout << endl;
+
+    do
+    {
+      cout << "Re-enter Password: ";
+      cin >> verification;
+    } while (!ValidateInput(verification));
+
+    if (password == verification)
+    {
+      ShowTerminal();
+      key.cPassword = password;
+      return in;
+    }
+
+    else
+    {
+      do
+      {
+        cout << "<ERROR>: Password Mismatch Detected" << endl
+             << "Re-attempt? [y/n]: ";
+
+        cin >> retry;
+        cout << endl;
+      } while (!ValidateInput(retry));
+    }
+  }
+
+  ShowTerminal();
 
   return in;
 }
-
-//** operator<< */
 ostream &operator<<(ostream &output, const key &object)
 {
   output << "<" << object.cKeyname << ">" << endl
@@ -137,8 +120,6 @@ ostream &operator<<(ostream &output, const key &object)
 
   return output;
 }
-
-//** operator= */
 key &key::operator=(const key &object)
 {
   this->cKeyname = object.cKeyname;

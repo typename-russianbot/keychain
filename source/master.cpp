@@ -95,8 +95,7 @@ bool ValidateInput(string &input)
 
     if (flag == false)
     {
-        cout << "<ERROR> - Illegal character detected -" << endl
-             << "Illegal Characters: ' ' , ',' , \\ , / , : , * , ? , \" , < , > , |" << endl;
+        cout << "<ERROR> - Illegal character detected" << endl; 
 
         input = _none;
     }
@@ -160,7 +159,7 @@ ostream &operator<<(ostream &out, const clearance &object)
         break;
 
     case 1:
-        out << "<Granted>";
+        out << "<Unrestricted>";
         break;
     }
 

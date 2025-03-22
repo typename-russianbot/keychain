@@ -14,23 +14,20 @@ private:
 
   //* -[PUBLIC]- *
 public:
-  //* -constructor-
+  //* <RESOURCE MANAGERS>
   keynode(const key &nKey);
-
-  //* -destructor-
   ~keynode(void);
 
-  //* -getters-
+  //* <SETTERS>
+  void setKey(const key &nKey);
+  void setNext(keynode *nNode);
+  void setPrev(keynode *nNode);
+  
+  //* <GETTERS>
   key getKey(void);
   keynode *getNext(void);
   keynode *getPrev(void);
 
-  //* -setters-
-  void setKey(const key &nKey);
-  void setStart(keynode *nStart);
-  void setNext(keynode *nNode);
-  void setPrev(keynode *nNode);
-
-  //* -overloads-
+  //* <OVERLOADS>
   friend ostream &operator<<(ostream &out, const keynode *keynode); //* operator<<
 };

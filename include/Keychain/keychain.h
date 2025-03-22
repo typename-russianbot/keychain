@@ -24,33 +24,31 @@ protected:
   const string getSaveFile();                       //^ getSaveFile()
 
   //^ <HELPERS>
-  bool keyNew(const key &nKey);           //^ 1. keyNew()
-  bool keyDelete(const string &keyident); //^ 2. keyDelete()
-  bool keySearch(const string &keyident); //^ 3. keySearch()
-  bool keychainLoad();                    //^ 5. keychainLoad()
-  bool keychainSave();                    //^ 6. keychainSave()
-  bool savefileDelete();                  //^ 7. savefileDelete()
-  bool isEmpty();                         //^ 8. isEmpty()
+  bool keyNew(const key &nKey);                    //^ 1. keyNew()
+  bool keyDelete(const string &keyident);          //^ 2. keyDelete()
+  bool keySearch(const string &keyident);          //^ 3. keySearch()
+  bool keychainLoad();                             //^ 5. keychainLoad()
+  bool keychainSave();                             //^ 6. keychainSave()
+  bool savefileDelete(const string &file = _none); //^ 7. savefileDelete()
+  bool isEmpty();                                  //^ 8. isEmpty()
 
   //* -[PUBLIC]- *
 public:
-  //* <CONSTRUCTOR>
+  //* <RESOURCE MANAGERS *//
   keychain(const string &username = _none);
-
-  //* <DESTRUCTOR>
   ~keychain();
 
-  //* <FUNCTIONS>
-  bool newKeychain(const string &owner);          //* 1. newKeychain()
-  bool deleteKeychain();                          //* 2. deleteKeychain()
-  bool newKey(const key &nKey);                   //* 3. newKey()
-  bool deleteKey(const string &keyident = _none); //* 4. deleteKey()
-  bool searchKey(const string &keyident = _none); //* 5. searchKey()
-  bool printKey(const string &keyident);          //* 6. printKey()
-  void printKeychain();                           //* 7. printKeychain()
-  bool loadKeychain();                            //* 8. loadKeychain() @note: needs implementing
-  bool saveKeychain();                            //* 9. saveKeychain() @note: needs implementation
+  //* <FUNCTIONS> *//
+  bool newKey(const key &nKey);                   //* 1. newKey()
+  bool deleteKey(const string &keyident = _none); //* 2. deleteKey()
+  bool searchKey(const string &keyident = _none); //* 3. searchKey()
+  bool printKey(const string &keyident);          //* 4. printKey()
+  void printKeychain();                           //* 5. printKeychain()
 
-  //* <OVERLOADS>
+  bool loadKeychain();   //* 6. loadKeychain() | @note: implementation required
+  bool saveKeychain();   //* 7. saveKeychain() 
+  bool deleteKeychain(); //* 8. deleteKeychain() | @note: implementation required
+
+  //* <OVERLOADS> *//
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<
 };

@@ -2,51 +2,49 @@
 
 #pragma once
 #include "../master.h"
-//& -[CLASS: profile]- &
+
 class profile
 {
     //! -[PRIVATE]- !
 private:
-    string cUsername;  //! cUsername
-    string cPassword;  //! cPassword
-    clearance cAccess; //! cAccess
+    string cUsername;  //! cUsername | @def: profile owner
+    string cPassword;  //! cPassword | @def: profile password
+    clearance cAccess; //! cAccess   | @def: profile restrictions
 
     //^ -[PROTECTED]- ^
 protected:
     //^ <GETTERS>
     const string getUsername(); //^ getUsername()
     const string getPassword(); //^ getPassword()
+    bool getClearance();        //^ getClearance()
 
     //^ <SETTERS>
     void setUsername(const string &username = _none); //^ setUsername()
-    void setPassword(const string& password = _none);                               //^ setPassword()
+    void setPassword(const string &password = _none); //^ setPassword()
+    void setClearance(const clearance &access);       //^ setClearance()
 
     //^ <HELPERS>
-    bool profileNew(const string &username = _none, const string &password = _none); //^ 1. profileNew()
-    bool profileDelete(const string &target);                                        //^ 2. profileDelete()
-    bool profileSearch(const string &target);                                        //^ 3. profileSearch()
-    bool profileAccess();                                                            //^ 4. profileAccess()
-    bool profileLoad(const string &username);                                        //^ 5. profileLoad()
-    bool profileSave();                                                              //^ 6. profileSave()
+    bool search_profile(const string &target); //^ search_profile()
+    bool load_profile(const string &username); //^ load_profile()
+    bool save_profile();                       //^ save_profile()
+    bool delete_profile(const string &target); //^ delete_profile()
 
     //* -[PUBLIC]- *
 public:
-    //* <CONSTRUCTOR>
-    profile(const string &username = _none, const string &password = _none);
+    //* <RESOURCE MANAGERS> *//
+    profile(const string &username = _none, const string &password = _none); //* profile()
+    ~profile();                                                              //* ~profile()
 
-    //* <DESTRUCTOR>
-    ~profile();
+    //* <FUNCTIONS> *//
+    bool searchProfile(const string &target = _none); //* searchProfile()
+    bool accessProfile();                             //* accessProfile()
+    bool restrictProfile();                           //* restrictProfile()
+    void printProfile();                              //* printProfile()
 
-    //* <FUNCTIONS>
-    bool newProfile(const string &username = _none, const string &password = _none); //* 1. newProfile()
-    bool deleteProfile(const string &target = _none);                                //* 2. deleteProfile()
-    bool searchProfile(const string &target = _none);                                //* 3. searchProfile()
-    bool accessProfile();                                                            //* 4. accessProfile()
-    void printProfile();                                                             //* 5. printProfile()
-    bool loadProfile(const string &target = _none);                                  //* 6. loadProfile()
-    bool saveProfile();                                                              //* 7. saveProfile()
+    bool loadProfile(const string &target = _none);   //* loadProfile()
+    bool saveProfile();                               //* saveProfile()
+    bool deleteProfile(const string &target = _none); //* deleteProfile()
 
-    //* <OVERLOADS>
+    //* <OVERLOADS> *//s
     friend ostream &operator<<(ostream &out, const profile &profile); //* operator<<
-    friend istream &operator>>(istream &in, const profile &profile);  //* operator>>
 };

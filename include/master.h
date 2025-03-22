@@ -36,8 +36,8 @@ enum integrity
 //^^ @enum: <CLEARANCE> ^/
 enum clearance
 {
-  restricted, //& 1. <restricted>    -- access restricted
-  permitted   //& 2. <permitted>     -- access permitted
+  restricted,  //& 1. <restricted>    -- access restricted
+  unrestricted //& 2. <unrestricted>     -- access permitted
 };
 
 //^^ @enum: <LOCK> ^/
@@ -58,9 +58,9 @@ bool ValidateFile(ifstream &readfile);  //* ValidateFile() @param: ifstream
 bool ValidateFile(ofstream &writefile); //* ValidateFile() @param: ofstream
 
 //^^ <GLOBAL OVERLOADS>
-ostream &operator<<(ostream &output, const integrity &object); //^ -operator<< | @enum=INTEGRITY
-ostream &operator<<(ostream &out, const clearance &object);    //^ -operator<< | @enum=CLEARANCE
-ostream &operator<<(ostream &out, const lock &object);         //^ -operator<< | @enum=LOCK
+ostream &operator<<(ostream &out, const integrity &object); //^ -operator<< | @enum=INTEGRITY
+ostream &operator<<(ostream &out, const clearance &object); //^ -operator<< | @enum=CLEARANCE
+ostream &operator<<(ostream &out, const lock &object);      //^ -operator<< | @enum=LOCK
 
 //?? <GLOBAL VARIABLES>
 extern bool _debugger; //? -DEBUGGER

@@ -2,38 +2,85 @@
 
 //^ -[PROTECTED]- ^
 
-//^ <GETTERS> //^ @protected
+//^ [---GETTERS---] ^//
+
+//^ getUsername() | @def:
 const string profile::getUsername()
 {
     return this->cUsername;
 }
+//^ getPassword() | @def:
 const string profile::getPassword()
 {
-    string input, verification;
+    if (cAccess == restricted)
+    {
+        string input, verification; //* @var:
 
-    HideTerminal();
+        HideTerminal();
 
-    //^ @note: prompt for password input
-    cout << "Password: ";
-    cin >> input;
-    ValidateInput(input);
-    cout << endl;
+        //^ @note: prompt for password input
+        cout << "Password: ";
+        cin >> input;
+        ValidateInput(input);
+        cout << endl;
 
-    //^ @note: prompt for password verification
-    cout << "Re-enter Password: ";
-    cin >> verification;
-    ValidateInput(verification);
-    cout << endl;
+        //^ @note: prompt for password verification
+        cout << "Re-enter Password: ";
+        cin >> verification;
+        ValidateInput(verification);
+        cout << endl;
 
-    ShowTerminal();
+        ShowTerminal();
 
-    if (input == verification) //* return input if it matches
-        return input;
-    else //! if input mis-match, return _none
-        return _none;
+        if (input == verification && input == cPassword) //* input & verification match
+            return input;
+        else //! mismatch,
+            return _none;
+    }
+    else
+        return cPassword;
+}
+//^ getClearance() | @def:
+bool profile::getClearance()
+{
+    if (cAccess == unrestricted) //* @note: check if access is restricted
+        return true;
+
+    char input;       //* @var:
+    int attempts = 3; //* @var:
+
+    while (input != 'n' && attempts > 0)
+    {
+        if (getPassword() == cPassword) //* @note: password match
+        {
+            return true;
+        }
+
+        while (true) //! @note: continue until passwords match or attempts reaches zero...
+        {
+            do
+            {
+                cout << "| Remaining Attempts: " << attempts << " |" << endl
+                     << "Re-enter Passkey? [y/n]: ";
+
+                cin >> input;
+
+            } while (!ValidateInput(input));
+
+            if (input == 'n') //! @note: user cancelled operation
+                return false;
+            else
+                break;
+        }
+        attempts--;
+    }
+
+    return false;
 }
 
-//^ <SETTERS> ^// @protected
+//^ [---SETTERS---]
+
+//^ setUsername() | @def:
 void profile::setUsername(const string &username)
 {
     if (username == _none) //* @note: prompt for username if none is given
@@ -52,129 +99,62 @@ void profile::setUsername(const string &username)
     else //* @note: set username to parameter
         this->cUsername = username;
 }
+//^ setPassword() | @def:
 void profile::setPassword(const string &password)
 {
-    if (password == _none)
+    char retry;
+    string input, verification;
+
+    HideTerminal();
+
+    //* @note:
+    while (retry != 'n')
     {
-        char retry;
-        string input, verification;
-
-        HideTerminal();
-
-        while (retry != 'n')
+        do
         {
-            do //* get password
+            cout << "Password: ";
+            cin >> input;
+        } while (!ValidateInput(input));
+        cout << endl;
+
+        do
+        {
+            cout << "Re-enter Password: ";
+            cin >> verification;
+        } while (!ValidateInput(verification));
+        cout << endl;
+
+        if (input == verification)
+        {
+            ShowTerminal();
+            cPassword = input;
+            return;
+        }
+        else
+        {
+            do
             {
-                cout << "Password: ";
-                cin >> input;
-            } while (!ValidateInput(input));
-
-            cout << endl;
-
-            do //* get verification
-            {
-                cout << "Re-enter Password: ";
-                cin >> verification;
-            } while (!ValidateInput(verification));
-
-            cout << endl;
-
-            if (input == verification) //* @note: verify passkey inputs
-            {
-                ShowTerminal();
-                this->cPassword = input;
-                return;
-            }
-
-            else
-            {
-                do
-                {
-                    cout << "<ERROR>: Password Mismatch Detected" << endl
-                         << "Re-attempt? [y/n]: ";
-
-                    cin >> retry;
-                    cout << endl;
-
-                } while (!ValidateInput(retry));
-            }
+                cout << "<ERROR>: Password Mismatch Detected" << endl
+                     << "Re-attempt? [y/n]: ";
+                cin >> retry;
+                cout << endl;
+            } while (!ValidateInput(retry));
         }
     }
 
     ShowTerminal();
-    cout << "<PASSWORD>: none" << endl;
     cPassword = _none;
 }
-
-//^ <HELPERS> ^// @protected
-
-//^ 1. profileNew() ^/
-//^ @def:
-bool profile::profileNew(const string &username, const string &password)
+//^ setClearance() | @def:
+void profile::setClearance(const clearance &access)
 {
-    if (username == _none && password == _none) //! no data, cancel profile creation
-    {
-        setUsername();
-        setPassword();
-
-        if (cPassword == _none)
-            cAccess = permitted;
-        else
-            cAccess = restricted;
-    }
-    else if (username != _none) //* username param accepted
-    {
-        cAccess = restricted;
-
-        if (password == _none)
-            cAccess = permitted;
-
-        this->cUsername = username;
-        this->cPassword = password;
-
-        return true;
-    }
-
-    return false;
+    cAccess = access;
 }
 
-//^ 2. profileDelete() ^/
-//^ @def:
-bool profile::profileDelete(const string &target)
-{
-    //* create readfile obj
-    ifstream readfile("data/profiles.txt");
-    ofstream tempfile("temp.txt");
+//^ [---HELPERS---] ^//
 
-    if (!ValidateFile(readfile)) //! file load failure
-        return false;
-
-    else //* file validated
-    {
-        string line;
-
-        //^ get each line from profiles.txt, except the target line
-        while (getline(readfile, line))
-        {
-            if (line.find(target) == string::npos) //* write all lines that aren't target to temp.txt
-                tempfile << line << endl;
-        }
-    }
-
-    //^ close opened files
-    readfile.close();
-    tempfile.close();
-
-    //^ update profiles.txt to temp.txt
-    deleteProfile("data/profiles.txt");
-    rename("temp.txt", "data/profiles.txt");
-
-    return true;
-}
-
-//^ 3. profileSearch() ^/
-//^ @def:
-bool profile::profileSearch(const string &target)
+//^^ search_profile() ^/
+bool profile::search_profile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
 
@@ -207,50 +187,8 @@ bool profile::profileSearch(const string &target)
         return false;
     }
 }
-
-//^^ 4. profileAccess() ^/
-//^ @def:
-bool profile::profileAccess()
-{
-    char input;
-    int attempts = 3;
-
-    while (input != 'n' && attempts >= 0) //? continue loop until exited or passkey attempts has reached 0
-    {
-        //* match
-        if (getPassword() == cPassword)
-        {
-            cAccess = permitted;
-            return true;
-        }
-
-        //! mismatch encountered
-        while (true)
-        {
-            do
-            {
-                cout << "| Remaining Attempts: " << attempts << " |" << endl
-                     << "Re-enter Passkey? [y/n]: ";
-
-                cin >> input;
-
-            } while (!ValidateInput(input));
-
-            if (input == 'n')
-                return false;
-            else
-                break;
-        }
-
-        attempts--;
-    }
-
-    return false;
-}
-
-//^ 5. profileLoad() ^/
-//^ @def: compares the target string to all other usernames in profiles.txt
-bool profile::profileLoad(const string &target)
+//^^ load_profile() ^/
+bool profile::load_profile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
 
@@ -285,10 +223,8 @@ bool profile::profileLoad(const string &target)
 
     return false;
 }
-
-//^ 6. profileSave() ^/
-//^ @def: writes the currently stored profile attributes to profiles.txt
-bool profile::profileSave()
+//^^ save_profile() ^/
+bool profile::save_profile()
 {
     ofstream writefile("data/profiles.txt", std::ios::app);
 
@@ -301,120 +237,128 @@ bool profile::profileSave()
 
     return true;
 }
-
-//* -[PUBLIC]- *// @publicsection
-
-//* <CONSTRUCTOR> *// @public
-profile::profile(const string &username, const string &password)
+//^^ delete_profile() ^/
+bool profile::delete_profile(const string &target)
 {
+    //* @var:
+    ifstream readfile("data/profiles.txt");
+    ofstream tempfile("temp.txt");
 
-    if (username == _none && password == _none) //* @if: both username & password are _none
+    if (!ValidateFile(readfile)) //! file load failure
+        return false;
+
+    else //* file validated
     {
-        setUsername();
-        setPassword();
+        string line;
 
-        if (cPassword == _none)
-            cAccess = permitted;
-        else
-            cAccess = restricted;
+        //^ get each line from profiles.txt, except the target line
+        while (getline(readfile, line))
+        {
+            if (line.find(target) == string::npos) //* write all lines that aren't target to temp.txt
+                tempfile << line << endl;
+        }
     }
-    else if (username != _none) //* @elseif: username is not empty
-    {
-        if (password == _none) //* un-restrict profile permissions
-            cAccess = permitted;
 
-        else //! restrict profile permissions
-            cAccess = restricted;
+    //^ close opened files
+    readfile.close();
+    tempfile.close();
 
-        newProfile(username, password);
-    }
-    else
-    {
-        cout << "blank profile created" << endl;
-        newProfile(username, password);
-    }
+    //^ update profiles.txt to temp.txt
+    deleteProfile("data/profiles.txt");
+    rename("temp.txt", "data/profiles.txt");
+
+    return true;
 }
 
-//* <DESTRUCTOR> *// @public
+//* [---RESOURCE MANAGERS---] *//
+profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password)
+{
+    if (cPassword == _none)
+        cAccess = unrestricted;
+    else
+        cAccess = restricted;
+}
 profile::~profile()
 {
 }
 
-//* <FUNCTIONS> *// @public
+//* [---FUNCTIONS---] *//
 
-//** 1. newProfile() */
-//* @def: takes the passed in username & password
-bool profile::newProfile(const string &username, const string &password)
-{
-    if (profileNew(username, password)) //* profile created
-        return true;
-
-    return false; //! profile creation failed
-}
-
-//** 2. deleteProfile() */
-//* @def: searches for the target, then removes it if found in the data fiel
-bool profile::deleteProfile(const string &target)
-{
-    if (!searchProfile(target)) //! search for target in file before removal
-        return false;
-
-    if (profileDelete(target)) //* profile removed
-        return true;
-
-    return false; //! profile removal failed
-}
-
-//** 3. searchProfile() */
-//* @def: takes the target string & compares it to all usernames in profiles.txt
+//** searchProfile() */
 bool profile::searchProfile(const string &target)
 {
-    if (profileSearch(target)) //* profile found
+    if (search_profile(target)) //* @note: target found
         return true;
 
-    return false; //! profile search failed
+    return false; //! @note: target wasn't found
 }
-
-//** 4. accessProfile() */
+//** accessProfile() */
 bool profile::accessProfile()
 {
-    if (profileAccess())
+    if (getClearance())
+    {
+        cAccess = unrestricted;
         return true;
-    else
-        return false;
-}
+    }
 
-//** 5. printProfile() */
-//* @def:
+    return false;
+}
+//** restrictProfile() */
+bool profile::restrictProfile()
+{
+    if (getClearance())
+    {
+        cAccess = restricted;
+        return true;
+    }
+
+    return false;
+}
+//** printProfile() */
 void profile::printProfile()
 {
     cout << *this;
 }
 
-//** 6. loadProfile() */
-//* @def: first, searches for the profile before attempting to load. If found, load profile. Otherwise, return false
+//** loadProfile()  */
 bool profile::loadProfile(const string &target)
 {
-    if (profileSearch(target)) //* target was found, load data
+    if (search_profile(target) && load_profile(target))
     {
-        profileLoad(target);
+        if (cPassword == _none)
+            cAccess = unrestricted;
+        else
+            cAccess = restricted;
+
+        cout << cPassword << endl;
         return true;
     }
 
     return false; //! target not found
 }
-
-//** 7. saveProfile() */
-//* @def: saves the current username & password attributes to profiles.txt
+//** saveProfile() */
 bool profile::saveProfile()
 {
-    if (profileSave()) //* target saved to profiles.txt
+    if (save_profile()) //* target saved to profiles.txt
         return true;
 
     return false; //! target failed to save
 }
+//** deleteProfile() */
+bool profile::deleteProfile(const string &target)
+{
+    if (searchProfile(target) && delete_profile(target))
+    {
+        cUsername = _none;
+        cPassword = _none;
+        cAccess = unrestricted;
+        return true;
+    }
 
-//* <OVERLOADS> *// @public
+    return false; //! profile removal failed
+}
+
+//* <OVERLOADS> *//
 ostream &operator<<(ostream &out, const profile &profile)
 {
     if (profile.cAccess != restricted)
