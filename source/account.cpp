@@ -32,7 +32,7 @@ void account::details()
 }
 
 //** add() */
-//* @def:
+//* @def: adds a new key onto the chain
 void account::add()
 {
     key newKey; //* @note: create a new key object
@@ -41,5 +41,5 @@ void account::add()
 
     system("clear");
 
-    this->keyNew(newKey); //* @note: add the key
+    this->new_key(newKey); //* @note: add the key
 }

@@ -1,30 +1,58 @@
 //? | @author: Matthew H. | @github: typename-russianbot | ?
+
 #include "../include/Account/account.h"
+// void xorEncryptDecrypt(const std::string &filename, const std::string &key)
+// {
+//   std::ifstream inFile(filename, std::ios::binary);
+//   if (!inFile)
+//   {
+//     std::cerr << "Error opening file: " << filename << std::endl;
+//     return;
+//   }
+
+//   std::string data((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+//   inFile.close();
+
+//   // XOR encryption/decryption
+//   for (size_t i = 0; i < data.size(); ++i)
+//   {
+//     data[i] ^= key[i % key.length()];
+//   }
+
+//   std::ofstream outFile(filename, std::ios::binary);
+//   if (!outFile)
+//   {
+//     std::cerr << "Error writing to file: " << filename << std::endl;
+//     return;
+//   }
+
+//   outFile.write(data.c_str(), data.size());
+//   outFile.close();
+// }
 
 // ^^ <keychain_testing>
 void keychain_testing(void)
 {
   cout << "| -Keychain- | -Testing- |" << endl;
 
-  profile p;
-  cout << p << endl;
+  string username = "jimothy";
 
-  p.printProfile();
+  keychain k(username);
 
-  if (p.loadProfile("matthew"))
-    cout << "<SUCCESS> - profile loaded" << endl;
+  if (k.loadKeychain("jimothy"))
+    cout << "keychain data loaded" << endl;
 
-  cout << p << endl;
+  k.printKeychain();
 
-  if (p.accessProfile())
-    cout << "<SUCCESS> - profile accessed" << endl;
+  if (k.saveKeychain())
+    cout << "keychain saved" << endl;
 
-  cout << p << endl;
+  if(k.deleteKeychain())
+    cout << "keychain deleted" << endl; 
 
-  if (p.restrictProfile())
-    cout << "<SUCCESS> - profile restricted" << endl;
-
-  cout << p << endl;
+  //! @note: encryption code
+  // xorEncryptDecrypt(filename, key);
+  // std::cout << "File encrypted/decrypted successfully!" << std::endl;
 }
 
 // && <keychain_usage>

@@ -8,46 +8,46 @@ class keychain
 {
   //! -[PRIVATE]- !
 private:
-  unsigned int cKeys; //! cKeys
-  keynode *cHead;     //! cHead
-  keynode *cTail;     //! cTail
-  string cSaveFile;   //! cSaveFile || if cSaveFile = _none, don't do certain operations
+  string cUsername;   //! cUsername | @def: owner of keychain
+  keynode *cHead;     //! cHead     | @def: start of keychain
+  keynode *cTail;     //! cTail     | @def: end of keychain
+  unsigned int cKeys; //! cKeys     | @def: # of keys on this chain
 
-  //^ -[PROTECTED]- ^
+  //^ -[PROTECTED]- ^//
 protected:
-  //^ <SETTERS>
-  bool setSaveFile(const string &username); //^ setSaveFile()
-
   //^ <GETTERS>
   const unsigned int getKeys();                     //^ getKeys()
   const key getKey(const string &keyident = _none); //^ getKey()
-  const string getSaveFile();                       //^ getSaveFile()
+  const string getUsername();                       //^ getUsername()
+
+  //^ <SETTERS>
 
   //^ <HELPERS>
-  bool keyNew(const key &nKey);                    //^ 1. keyNew()
-  bool keyDelete(const string &keyident);          //^ 2. keyDelete()
-  bool keySearch(const string &keyident);          //^ 3. keySearch()
-  bool keychainLoad();                             //^ 5. keychainLoad()
-  bool keychainSave();                             //^ 6. keychainSave()
-  bool savefileDelete(const string &file = _none); //^ 7. savefileDelete()
-  bool isEmpty();                                  //^ 8. isEmpty()
+  bool new_key(const key &nKey);           //^ new_key()
+  bool delete_key(const string &keyident); //^ delete_key()
+  bool search_key(const string &keyident); //^ search_key()
+  bool is_empty();                         //^ is_empty()
 
-  //* -[PUBLIC]- *
+  bool load_keychain(const string &target);   //^ load_keychain()
+  bool save_keychain();                       //^ save_keychain()
+  bool delete_keychain(const string &target); //^ delete_keychain()
+
+  //* -[PUBLIC]- *//
 public:
-  //* <RESOURCE MANAGERS *//
-  keychain(const string &username = _none);
-  ~keychain();
+  //* <RESOURCE MANAGERS> *//
+  keychain(const string &username = _none); //* keychain()
+  ~keychain();                              //* ~keychain()
 
   //* <FUNCTIONS> *//
-  bool newKey(const key &nKey);                   //* 1. newKey()
-  bool deleteKey(const string &keyident = _none); //* 2. deleteKey()
-  bool searchKey(const string &keyident = _none); //* 3. searchKey()
-  bool printKey(const string &keyident);          //* 4. printKey()
-  void printKeychain();                           //* 5. printKeychain()
+  bool newKey(const key &nKey);                   //* newKey()
+  bool deleteKey(const string &keyident = _none); //* deleteKey()
+  bool searchKey(const string &keyident = _none); //* searchKey()
+  bool printKey(const string &keyident);          //* printKey()
 
-  bool loadKeychain();   //* 6. loadKeychain() | @note: implementation required
-  bool saveKeychain();   //* 7. saveKeychain() 
-  bool deleteKeychain(); //* 8. deleteKeychain() | @note: implementation required
+  void printKeychain();                              //* printKeychain()
+  bool loadKeychain(const string &target = _none);   //* loadKeychain() | @note: implementation required
+  bool saveKeychain();                               //* saveKeychain()
+  bool deleteKeychain(const string &target = _none); //* deleteKeychain()
 
   //* <OVERLOADS> *//
   friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<

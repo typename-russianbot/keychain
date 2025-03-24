@@ -1,7 +1,5 @@
 #include "../include/Profile/profile.h"
 
-//^ -[PROTECTED]- ^
-
 //^ [---GETTERS---] ^//
 
 //^ getUsername() | @def:
@@ -40,7 +38,8 @@ const string profile::getPassword()
     else
         return cPassword;
 }
-//^ getClearance() | @def:
+//^ getClearance()
+//^ @def:
 bool profile::getClearance()
 {
     if (cAccess == unrestricted) //* @note: check if access is restricted
@@ -78,7 +77,7 @@ bool profile::getClearance()
     return false;
 }
 
-//^ [---SETTERS---]
+//^ [---SETTERS---] ^//
 
 //^ setUsername() | @def:
 void profile::setUsername(const string &username)
@@ -99,7 +98,8 @@ void profile::setUsername(const string &username)
     else //* @note: set username to parameter
         this->cUsername = username;
 }
-//^ setPassword() | @def:
+//^ setPassword()
+//^ @def:
 void profile::setPassword(const string &password)
 {
     char retry;
@@ -154,6 +154,7 @@ void profile::setClearance(const clearance &access)
 //^ [---HELPERS---] ^//
 
 //^^ search_profile() ^/
+//^ @def:
 bool profile::search_profile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
@@ -187,43 +188,44 @@ bool profile::search_profile(const string &target)
         return false;
     }
 }
+
 //^^ load_profile() ^/
+//^ @def:
 bool profile::load_profile(const string &target)
 {
     ifstream readfile("data/profiles.txt");
 
-    if (!ValidateFile(readfile)) //! file failed to load
+    if (!ValidateFile(readfile) || !search_profile(target)) //! file failed to load
         return false;
 
-    else //* file validated
+    string line;
+
+    while (getline(readfile, line))
     {
-        string line;
+        size_t commaPos = line.find(',');
 
-        while (getline(readfile, line))
+        //? validate commaPos
+        if (commaPos != string::npos)
         {
-            size_t commaPos = line.find(',');
-
-            //? validate commaPos
-            if (commaPos != string::npos)
+            if (line.substr(0, commaPos) == target) //* target found
             {
-                if (line.substr(0, commaPos) == target) //* target found
-                {
-                    this->cUsername = line.substr(0, commaPos);
-                    this->cPassword = line.substr(commaPos + 1);
+                this->cUsername = line.substr(0, commaPos);
+                this->cPassword = line.substr(commaPos + 1);
 
-                    readfile.close();
-                    return true;
-                }
+                readfile.close();
+                return true;
             }
         }
-
-        //! target not found
-        readfile.close();
     }
+
+    //! target not found
+    readfile.close();
 
     return false;
 }
+
 //^^ save_profile() ^/
+//^ @def:
 bool profile::save_profile()
 {
     ofstream writefile("data/profiles.txt", std::ios::app);
@@ -237,7 +239,9 @@ bool profile::save_profile()
 
     return true;
 }
+
 //^^ delete_profile() ^/
+//^ @def: re-writes all the file contents except the target
 bool profile::delete_profile(const string &target)
 {
     //* @var:
@@ -273,9 +277,11 @@ bool profile::delete_profile(const string &target)
 //* [---RESOURCE MANAGERS---] *//
 profile::profile(const string &username, const string &password) : cUsername(username), cPassword(password)
 {
-    if (cPassword == _none)
+
+    if (cPassword == _none) //* @note: no access restrictions
         cAccess = unrestricted;
-    else
+
+    else //! @note: restrict access
         cAccess = restricted;
 }
 profile::~profile()
@@ -290,7 +296,7 @@ bool profile::searchProfile(const string &target)
     if (search_profile(target)) //* @note: target found
         return true;
 
-    return false; //! @note: target wasn't found
+    return false; //! @note: not found
 }
 //** accessProfile() */
 bool profile::accessProfile()
@@ -321,6 +327,7 @@ void profile::printProfile()
 }
 
 //** loadProfile()  */
+//* @def: loads profile data specified by the 'target' from 'profiles.txt'
 bool profile::loadProfile(const string &target)
 {
     if (search_profile(target) && load_profile(target))
@@ -330,21 +337,24 @@ bool profile::loadProfile(const string &target)
         else
             cAccess = restricted;
 
-        cout << cPassword << endl;
         return true;
     }
 
     return false; //! target not found
 }
+
 //** saveProfile() */
+//* @def: saves the current username & password to 'profiles.txt'
 bool profile::saveProfile()
 {
-    if (save_profile()) //* target saved to profiles.txt
+    if (!search_profile(getUsername()) && save_profile()) //* target saved
         return true;
 
-    return false; //! target failed to save
+    return false; //! target didn't save
 }
+
 //** deleteProfile() */
+//* @def: re-writes 'profile.txt' with all profiles except the profile specified by 'target'
 bool profile::deleteProfile(const string &target)
 {
     if (searchProfile(target) && delete_profile(target))

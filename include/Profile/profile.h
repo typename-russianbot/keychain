@@ -5,13 +5,13 @@
 
 class profile
 {
-    //! -[PRIVATE]- !
+    //! -[PRIVATE]- !//
 private:
     string cUsername;  //! cUsername | @def: profile owner
     string cPassword;  //! cPassword | @def: profile password
     clearance cAccess; //! cAccess   | @def: profile restrictions
 
-    //^ -[PROTECTED]- ^
+    //^ -[PROTECTED]- ^//
 protected:
     //^ <GETTERS>
     const string getUsername(); //^ getUsername()
@@ -25,11 +25,11 @@ protected:
 
     //^ <HELPERS>
     bool search_profile(const string &target); //^ search_profile()
-    bool load_profile(const string &username); //^ load_profile()
+    bool load_profile(const string &target);   //^ load_profile()
     bool save_profile();                       //^ save_profile()
     bool delete_profile(const string &target); //^ delete_profile()
 
-    //* -[PUBLIC]- *
+    //* -[PUBLIC]- *//
 public:
     //* <RESOURCE MANAGERS> *//
     profile(const string &username = _none, const string &password = _none); //* profile()
