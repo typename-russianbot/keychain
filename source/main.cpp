@@ -10,8 +10,8 @@
 //     return;
 //   }
 
-//   std::string data((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
-//   inFile.close();
+//   std::string data((std::istreambuf_iterator<char>(inFile)),
+//   std::istreambuf_iterator<char>()); inFile.close();
 
 //   // XOR encryption/decryption
 //   for (size_t i = 0; i < data.size(); ++i)
@@ -31,24 +31,14 @@
 // }
 
 // ^^ <keychain_testing>
-void keychain_testing(void)
-{
+void keychain_testing(void) {
   cout << "| -Keychain- | -Testing- |" << endl;
 
   string username = "jimothy";
 
-  keychain k(username);
+  account a("jimothy"); 
 
-  if (k.loadKeychain("jimothy"))
-    cout << "keychain data loaded" << endl;
-
-  k.printKeychain();
-
-  if (k.saveKeychain())
-    cout << "keychain saved" << endl;
-
-  if(k.deleteKeychain())
-    cout << "keychain deleted" << endl; 
+  a.details(); 
 
   //! @note: encryption code
   // xorEncryptDecrypt(filename, key);
@@ -56,21 +46,16 @@ void keychain_testing(void)
 }
 
 // && <keychain_usage>
-void keychain_usage(void)
-{
-}
+void keychain_usage(void) {}
 
 // ~~ <main program>
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   //?? -PROGRAM VARIABLES-
   int flags;
 
   //** -FLAG PARSER-
-  while ((flags = getopt(argc, argv, "hdar:p:t")) != -1)
-  {
-    switch (flags)
-    {
+  while ((flags = getopt(argc, argv, "hdar:p:t")) != -1) {
+    switch (flags) {
       //^^ 1. <HELP>
     case 'h':
       keychain_usage();

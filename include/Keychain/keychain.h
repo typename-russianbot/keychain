@@ -4,11 +4,10 @@
 #include "keynode.h"
 
 //? -[CLASS: Keychain]- ?
-class keychain
-{
+class keychain {
   //! -[PRIVATE]- !
 private:
-  string cUsername;   //! cUsername | @def: owner of keychain
+  string cOwner;      //! cUsername | @def: owner of keychain
   keynode *cHead;     //! cHead     | @def: start of keychain
   keynode *cTail;     //! cTail     | @def: end of keychain
   unsigned int cKeys; //! cKeys     | @def: # of keys on this chain
@@ -18,9 +17,10 @@ protected:
   //^ <GETTERS>
   const unsigned int getKeys();                     //^ getKeys()
   const key getKey(const string &keyident = _none); //^ getKey()
-  const string getUsername();                       //^ getUsername()
+  const string getOwner();                          //^ getUsername()
 
   //^ <SETTERS>
+  void setOwner(const string &owner);
 
   //^ <HELPERS>
   bool new_key(const key &nKey);           //^ new_key()
@@ -35,8 +35,8 @@ protected:
   //* -[PUBLIC]- *//
 public:
   //* <RESOURCE MANAGERS> *//
-  keychain(const string &username = _none); //* keychain()
-  ~keychain();                              //* ~keychain()
+  keychain(const string &owner = _none); //* keychain()
+  ~keychain();                           //* ~keychain()
 
   //* <FUNCTIONS> *//
   bool newKey(const key &nKey);                   //* newKey()
@@ -44,11 +44,14 @@ public:
   bool searchKey(const string &keyident = _none); //* searchKey()
   bool printKey(const string &keyident);          //* printKey()
 
-  void printKeychain();                              //* printKeychain()
-  bool loadKeychain(const string &target = _none);   //* loadKeychain() | @note: implementation required
-  bool saveKeychain();                               //* saveKeychain()
+  void printKeychain(); //* printKeychain()
+  bool
+  loadKeychain(const string &target =
+                   _none); //* loadKeychain() | @note: implementation required
+  bool saveKeychain();     //* saveKeychain()
   bool deleteKeychain(const string &target = _none); //* deleteKeychain()
 
   //* <OVERLOADS> *//
-  friend ostream &operator<<(ostream &out, const keychain &keychain); //* operator<<
+  friend ostream &operator<<(ostream &out,
+                             const keychain &keychain); //* operator<<
 };

@@ -3,43 +3,41 @@
 //* -[PUBLIC]- *// @publicsection
 
 //* <CONSTRUCTOR> *//
-account::account(const string &username)
-{
+account::account(const string &username, const string &password) {
+  setUsername(username);
+  setOwner(username);
+  setPassword(password);
 }
 
 //* <DESTRUCTOR> *//
-account::~account()
-{
-}
+account::~account() {}
 
 //* <FUNCTIONS> *//
 
 //** details() */
 //* @def:
-void account::details()
-{
-    cout << "|--Account---------------|" << endl
-         << endl;
+void account::details() {
+  cout << "|--Account---------------|" << endl << endl;
 
-    cout << " - Account: " << endl; //* @note: display current account state
+  cout << " - Account: " << endl; //* @note: display current account state
 
-    this->printProfile(); //* @note: print profile data
+  this->printProfile(); //* @note: print profile data
 
-    cout << " - Keys Found: " << getKeys() << endl //* @note: display the number of keys on this account
-         << endl;
+  cout << " - Keys Found: " << getKeys()
+       << endl //* @note: display the number of keys on this account
+       << endl;
 
-    cout << "|------------------------|" << endl;
+  cout << "|------------------------|" << endl;
 }
 
 //** add() */
 //* @def: adds a new key onto the chain
-void account::add()
-{
-    key newKey; //* @note: create a new key object
+void account::addKey() {
+  key newKey; //* @note: create a new key object
 
-    cin >> newKey; //* @note: get data for new key
+  cin >> newKey; //* @note: get data for new key
 
-    system("clear");
+  system("clear");
 
-    this->new_key(newKey); //* @note: add the key
+  this->new_key(newKey); //* @note: add the key
 }
