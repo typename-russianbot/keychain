@@ -33,7 +33,18 @@ const key keychain::get_key(const string &target) {
 
 const string keychain::get_owner() { return cOwner; }
 
-void keychain::set_owner(const string &owner) { this->cOwner = owner; }
+void keychain::set_owner(const string &owner) {
+  this->cOwner = owner;
+
+  string oldSavefile = "data/keychains/" + owner + ".txt";
+  cout << oldSavefile << endl; 
+  remove(oldSavefile.c_str());
+
+  string nSavefile = "data/keychains/" + this->cOwner + ".txt";
+
+  ofstream writefile(nSavefile);
+  writefile.close(); 
+}
 
 //^ [---HELPERS---] ^//
 
@@ -173,13 +184,14 @@ bool keychain::is_empty() {
 //^ @def:
 bool keychain::load_keychain(const string &target) {
   string savefile;
-
-  if (target == _none)
-    savefile = "data/keychains/" + this->cOwner + ".txt";
-  else {
-    savefile = "data/keychains/" + target + ".txt";
-    set_owner(target);
+  if(target == _none){
+    cout << "returning false" << endl; 
+    return false; 
   }
+  savefile = "data/keychains/" + target + ".txt"; 
+  set_owner(target); 
+
+  cout << "in load : " << savefile << endl; 
 
   ifstream readfile(savefile);
 
@@ -190,6 +202,7 @@ bool keychain::load_keychain(const string &target) {
 
   while (getline(readfile, line)) {
     stringstream currentline(line);
+    
     string keyname, username, email, password;
 
     if (getline(currentline, keyname, ',') &&
@@ -198,6 +211,11 @@ bool keychain::load_keychain(const string &target) {
         getline(currentline, password, ',')) {
       key filekey(keyname, username, email, password);
       newKey(filekey);
+
+      cout << filekey << endl; 
+    }
+    else{
+      cout << "false" << endl; 
     }
   }
 
@@ -210,7 +228,7 @@ bool keychain::load_keychain(const string &target) {
 bool keychain::save_keychain() {
   string savefile = "data/keychains/" + this->cOwner + ".txt";
 
-  ofstream writefile(savefile);
+  ofstream writefile(savefile, ios::app);
 
   if (!ValidateFile(writefile)) //! @note: file failed to open
   {
@@ -276,7 +294,9 @@ bool keychain::delete_keychain(const string &target) {
 //* [---RESOURCE MANAGERS---] *//
 
 keychain::keychain(const string &owner)
-    : cOwner(owner), cHead(nullptr), cTail(nullptr), cKeys(0) {}
+    : cOwner(owner), cHead(nullptr), cTail(nullptr), cKeys(0) {
+ 
+}
 keychain::~keychain() {
   if (_debugger)
     cout << "destroying keychain" << endl;

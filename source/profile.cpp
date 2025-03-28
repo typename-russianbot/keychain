@@ -1,16 +1,15 @@
 #include "../include/Profile/profile.h"
 
-//^ [---MUTATORS---] ^//
+//^ || <MUTATORS> ||
 const string profile::get_username() { return this->cUsername; }
+void profile::set_username(const string &username) { cUsername = username; }
+
 const string profile::get_password() {
   if (cAccess == restricted)
     return _censor;
 
   return cPassword;
 }
-const clearance profile::get_clearance() { return cAccess; }
-
-void profile::set_username(const string &username) { cUsername = username; }
 void profile::set_password(const string &password) {
   if (password == _none) {
     cAccess = unrestricted;
@@ -20,9 +19,11 @@ void profile::set_password(const string &password) {
     cPassword = password;
   }
 }
+
+const clearance profile::get_clearance() { return cAccess; }
 void profile::set_clearance(const clearance &access) { cAccess = access; }
 
-//^ [---HELPERS---] ^//
+//^ || <HELPERS> ||
 
 //^^ search_profile()
 //^ @def: search for the target profile username in profiles.txt
@@ -54,6 +55,57 @@ bool profile::search_profile(const string &target) {
     readfile.close();
     return false;
   }
+}
+
+//^^ request_access()
+//^ @def:
+bool profile::request_access() {
+  char retry;
+  int attempts = 3; //* max attempts for access requests | @note: add
+
+  string input, verification;
+
+  while (retry != 'n' && attempts >= 0) {
+
+    HideTerminal(); //* @note: hides terminal input
+
+    //* get password
+    do {
+      cout << "Password: ";
+      cin >> input;
+    } while (!ValidateInput(input));
+    cout << endl;
+
+    //* get verification
+    do {
+      cout << "Re-enter Password: ";
+      cin >> verification;
+    } while (!ValidateInput(verification));
+    cout << endl;
+
+    ShowTerminal();
+
+    //* passkey & input match verification
+    if (input == verification && verification == cPassword) {
+      return true;
+    } else {
+      do {
+        attempts--;
+
+        if (attempts == -1)
+          return false;
+
+        cout << "| <ERROR> | ATTEMPTS REMAINING - " << attempts + 1 << " | " <<endl
+             << "Re-attempt? [y/n]: ";
+        cin >> retry;
+
+        cout << endl;
+      } while (!ValidateInput(retry));
+    }
+  }
+
+  ShowTerminal();
+  return false;
 }
 
 //^^ load_profile()
@@ -138,15 +190,15 @@ bool profile::delete_profile(const string &target) {
   return true;
 }
 
-//* [---RESOURCE MANAGERS---] *//
+//* || <RESOURCE MANAGERS> || *//
 profile::profile(const string &username, const string &password)
-    : cUsername(username), cPassword(password) {
-}
+    : cUsername(username), cPassword(password) {}
 profile::~profile() {}
 
-//* [---FUNCTIONS---] *//
+//* || <FUNCTIONS> || *//
 
-//** searchProfile() */
+//** searchProfile()
+//* @def: calls helper function 'search_profile'
 bool profile::searchProfile(const string &target) {
   if (search_profile(target)) //* @note: target found
     return true;
@@ -154,27 +206,33 @@ bool profile::searchProfile(const string &target) {
   return false; //! @note: not found
 }
 
-//** accessProfile() */
-//* @def:
+//** accessProfile()
+//* @def: if get_clearance() returns true, free up access, otherwise lock access
 bool profile::accessProfile() {
-  if (get_clearance()) {
+  if (request_access()) {
     cAccess = unrestricted;
     return true;
   }
 
+  cAccess = restricted;
   return false;
 }
-//** restrictProfile() */
-//* @def:
+
+//** restrictProfile()
+//* @def: checks for access
 bool profile::restrictProfile() {
-  if (get_clearance()) {
+  if (cAccess == restricted)
+    return true;
+  else {
     cAccess = restricted;
     return true;
   }
 
   return false;
 }
-//** printProfile() */
+
+//** printProfile()
+//* @def: displays the current profile contents
 void profile::printProfile() { cout << *this; }
 
 //** loadProfile()  */

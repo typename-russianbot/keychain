@@ -14,15 +14,18 @@ private:
 protected:
   //^ <MUTATORS>
   const string get_username();
-  const string get_password();
-  const clearance get_clearance();
   void set_username(const string &username = _none);
+
+  const string get_password();
   void set_password(const string &password = _none);
+
+  const clearance get_clearance();
   void set_clearance(const clearance &access);
 
   //^ <HELPERS>
   bool search_profile(const string &target); //^ search_profile()
   bool request_access();                     //^ request_access()
+
   bool save_profile();                       //^ save_profile()
   bool load_profile(const string &target);   //^ load_profile()
   bool delete_profile(const string &target); //^ delete_profile()

@@ -1,3 +1,0 @@
-github,none,none,none
-yahoo,none,none,none
-gmail,none,none,none

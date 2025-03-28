@@ -30,16 +30,33 @@
 //   outFile.close();
 // }
 
-// ^^ <keychain_testing>
-void keychain_testing(void) {
-  cout << "| -Keychain- | -Testing- |" << endl;
-
+//^^ <account_testing>
+void account_testing(void) {
+  cout << "| -Account- | -Testing- |" << endl;
   string username = "jimothy";
   string password = "abcdefghi";
 
-  account a(username, password);
+  account a;
 
-  a.info();
+  a.loadAccount("jimothy"); 
+
+  a.info(); 
+
+}
+
+//^^ <profile_testing>
+void profile_testing(void) {
+  cout << "| -Profile | -Testing- |" << endl;
+  string username = "jimothy";
+  string password = "abcdefghi";
+  profile p(username, password);
+
+  p.printProfile();
+}
+
+//^^ <keychain_testing>
+void keychain_testing(void) {
+  cout << "| -Keychain- | -Testing- |" << endl;
 
   //! @note: encryption code
   // xorEncryptDecrypt(filename, key);
@@ -67,7 +84,9 @@ int main(int argc, char *argv[]) {
       if (_debugger)
         cout << "flag=TESTING" << endl;
 
-      keychain_testing();
+      // keychain_testing();
+      // profile_testing();
+      account_testing();
       break;
 
     //** 7. <DEFAULT> ||
