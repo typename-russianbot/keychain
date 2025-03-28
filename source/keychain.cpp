@@ -3,30 +3,26 @@
 //^ [---GETTERS---] ^//
 //^^ getKeys() ^/
 //^ @def: returns the number of keys found on this chain
-const unsigned int keychain::getKeys() { return cKeys; }
+const unsigned int keychain::get_keys() { return cKeys; }
 
 //^^ getKey() ^/
-//^ @def: returns the key specified by 'keyident'
-const key keychain::getKey(const string &keyident) {
+//^ @def: returns the key specified by
+const key keychain::get_key(const string &target) {
   key nKey;
 
-  if (is_empty()) //! @note: empty, return blank key
-    return nKey;
-
-  if (!search_key(keyident)) //! @note: keysearch failed to find keyident,
-                             //! return blank key
+  if (is_empty() || !search_key(target)) //! @note: empty, return blank key
     return nKey;
 
   keynode *copy = this->cHead;
 
-  if (copy->getKey().getKeyname() == keyident)
+  if (copy->getKey().getKeyname() == target)
     return copy->getKey();
 
   else
     copy = copy->getNext();
 
   while (copy != cHead) {
-    if (copy->getKey().getKeyname() == keyident)
+    if (copy->getKey().getKeyname() == target)
       return copy->getKey();
 
     copy = copy->getNext();
@@ -35,15 +31,9 @@ const key keychain::getKey(const string &keyident) {
   return nKey; //! @note: return empty key if not found
 }
 
-//^^ getUsername() ^/
-const string keychain::getOwner() { return cOwner; }
+const string keychain::get_owner() { return cOwner; }
 
-//^ [-------------] ^//
-
-//^ [---SETTERS---] ^//
-void keychain::setOwner(const string &owner) { this->cOwner = owner; }
-
-//^ [-------------] ^//
+void keychain::set_owner(const string &owner) { this->cOwner = owner; }
 
 //^ [---HELPERS---] ^//
 
@@ -188,7 +178,7 @@ bool keychain::load_keychain(const string &target) {
     savefile = "data/keychains/" + this->cOwner + ".txt";
   else {
     savefile = "data/keychains/" + target + ".txt";
-    setOwner(target); 
+    set_owner(target);
   }
 
   ifstream readfile(savefile);
@@ -341,7 +331,7 @@ bool keychain::printKey(const string &keyident) {
   if (!searchKey(keyident) || is_empty())
     return false;
 
-  cout << getKey(keyident) << endl;
+  cout << get_key(keyident) << endl;
   return true;
 }
 

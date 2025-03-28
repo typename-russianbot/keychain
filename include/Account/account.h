@@ -4,6 +4,11 @@
 #include "../Keychain/keychain.h"
 #include "../Profile/profile.h"
 
+//** @notes:
+//*
+//*
+//* */
+
 //? -[CLASS: Account]- ?
 class account : public profile, public keychain {
   //^ -[PROTECTED]- ^//
@@ -13,19 +18,19 @@ protected:
   //* -[PUBLIC]- *//
 public:
   //* <RESOURCE MANAGERS> *//
-  account(const string &username = _none, const string& password = _none);
+  account(const string &username = _none, const string &password = _none);
   ~account();
 
   //* <FUNCTIONS> *//
-  bool swap(const string &username = _none);    //* swap()
-  void details();                               //* details()
-  void addKey();                                //* addKey()
-  bool deleteKey();                             //* deleteKey()
-  bool printKey(const string &keyname = _none); //* printKey()
+  bool swap(const string &target = _none);      //* swap()
+  void info();                                  //* info()
+  bool addKey();                                //* addKey()
+  bool deleteKey(const string &target = _none); //* deleteKey()
+  bool printKey(const string &target = _none);  //* printKey()
 
-  bool loadAccount();   //* loadAccount()
-  bool saveAccount();   //* saveAccount()
-  bool deleteAccount(); //* deleteAccount()
+  bool saveAccount();                               //* saveAccount()
+  bool loadAccount(const string &target = _none);   //* loadAccount()
+  bool deleteAccount(const string &target = _none); //* deleteAccount()
 
   //* <OVERLOADS> *//
   friend ostream &operator<<(ostream &out,

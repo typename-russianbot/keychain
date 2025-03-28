@@ -35,10 +35,11 @@ void keychain_testing(void) {
   cout << "| -Keychain- | -Testing- |" << endl;
 
   string username = "jimothy";
+  string password = "abcdefghi";
 
-  account a("jimothy"); 
+  account a(username, password);
 
-  a.details(); 
+  a.info();
 
   //! @note: encryption code
   // xorEncryptDecrypt(filename, key);

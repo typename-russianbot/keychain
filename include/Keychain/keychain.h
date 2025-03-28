@@ -14,22 +14,20 @@ private:
 
   //^ -[PROTECTED]- ^//
 protected:
-  //^ <GETTERS>
-  const unsigned int getKeys();                     //^ getKeys()
-  const key getKey(const string &keyident = _none); //^ getKey()
-  const string getOwner();                          //^ getUsername()
-
-  //^ <SETTERS>
-  void setOwner(const string &owner);
+  //^ <MUTATORS>
+  const unsigned int get_keys();                   //^ get_keys()
+  const key get_key(const string &target); //^ get_key()
+  const string get_owner();                        //^ get_owner
+  void set_owner(const string &target);    //^ set_owner()
 
   //^ <HELPERS>
-  bool new_key(const key &nKey);           //^ new_key()
-  bool delete_key(const string &keyident); //^ delete_key()
-  bool search_key(const string &keyident); //^ search_key()
-  bool is_empty();                         //^ is_empty()
+  bool new_key(const key &nKey);         //^ new_key()
+  bool delete_key(const string &target); //^ delete_key()
+  bool search_key(const string &target); //^ search_key()
+  bool is_empty();                       //^ is_empty()
 
-  bool load_keychain(const string &target);   //^ load_keychain()
   bool save_keychain();                       //^ save_keychain()
+  bool load_keychain(const string &target);   //^ load_keychain()
   bool delete_keychain(const string &target); //^ delete_keychain()
 
   //* -[PUBLIC]- *//
@@ -39,16 +37,14 @@ public:
   ~keychain();                           //* ~keychain()
 
   //* <FUNCTIONS> *//
-  bool newKey(const key &nKey);                   //* newKey()
-  bool deleteKey(const string &keyident = _none); //* deleteKey()
-  bool searchKey(const string &keyident = _none); //* searchKey()
-  bool printKey(const string &keyident);          //* printKey()
+  bool newKey(const key &nKey);                 //* newKey()
+  bool deleteKey(const string &target = _none); //* deleteKey()
+  bool searchKey(const string &target = _none); //* searchKey()
+  bool printKey(const string &target = _none);  //* printKey()
+  void printKeychain();                         //* printKeychain()
 
-  void printKeychain(); //* printKeychain()
-  bool
-  loadKeychain(const string &target =
-                   _none); //* loadKeychain() | @note: implementation required
-  bool saveKeychain();     //* saveKeychain()
+  bool saveKeychain();                               //* saveKeychain()
+  bool loadKeychain(const string &target = _none);   //* loadKeychain()
   bool deleteKeychain(const string &target = _none); //* deleteKeychain()
 
   //* <OVERLOADS> *//
