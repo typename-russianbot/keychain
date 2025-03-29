@@ -15,9 +15,9 @@ private:
   //^ -[PROTECTED]- ^//
 protected:
   //^ <MUTATORS>
-  const unsigned int get_keys();                   //^ get_keys()
+  const unsigned int get_keys();           //^ get_keys()
   const key get_key(const string &target); //^ get_key()
-  const string get_owner();                        //^ get_owner
+  const string get_owner();                //^ get_owner
   void set_owner(const string &target);    //^ set_owner()
 
   //^ <HELPERS>

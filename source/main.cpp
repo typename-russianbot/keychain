@@ -58,6 +58,21 @@ void profile_testing(void) {
 void keychain_testing(void) {
   cout << "| -Keychain- | -Testing- |" << endl;
 
+  keychain k("jimmy"); 
+
+  key k1("github"), k2("yahoo"), k3("newegg"), k4("ebay"), k5("best-buy"); 
+
+  k.newKey(k1); 
+  k.newKey(k2); 
+  k.newKey(k3); 
+  k.newKey(k4); 
+  k.newKey(k5); 
+
+  k.printKeychain(); 
+
+  k.saveKeychain(); 
+
+
   //! @note: encryption code
   // xorEncryptDecrypt(filename, key);
   // std::cout << "File encrypted/decrypted successfully!" << std::endl;
@@ -84,9 +99,9 @@ int main(int argc, char *argv[]) {
       if (_debugger)
         cout << "flag=TESTING" << endl;
 
-      // keychain_testing();
+      keychain_testing();
       // profile_testing();
-      account_testing();
+      // account_testing();
       break;
 
     //** 7. <DEFAULT> ||

@@ -1,12 +1,11 @@
 #include "../include/Keychain/keychain.h"
 
-//^ [---GETTERS---] ^//
-//^^ getKeys() ^/
-//^ @def: returns the number of keys found on this chain
+//^ <MUTATORS> ^//
+
+//^^ get_keys() | @def: returns the number of keys on this chain
 const unsigned int keychain::get_keys() { return cKeys; }
 
-//^^ getKey() ^/
-//^ @def: returns the key specified by
+//^^ get_key() | @def: returns the key specified by
 const key keychain::get_key(const string &target) {
   key nKey;
 
@@ -31,41 +30,42 @@ const key keychain::get_key(const string &target) {
   return nKey; //! @note: return empty key if not found
 }
 
+//^^ get_owner() | @def: returns owner of the keychain
 const string keychain::get_owner() { return cOwner; }
 
+//^^ set_owner() | @def: sets the owner of the keychain to 'owner'
 void keychain::set_owner(const string &owner) {
   this->cOwner = owner;
 
   string oldSavefile = "data/keychains/" + owner + ".txt";
-  cout << oldSavefile << endl; 
   remove(oldSavefile.c_str());
 
-  string nSavefile = "data/keychains/" + this->cOwner + ".txt";
+  string new_savefile = "data/keychains/" + this->cOwner + ".txt";
 
-  ofstream writefile(nSavefile);
-  writefile.close(); 
+  ofstream writefile(new_savefile);
+  writefile.close();
 }
 
-//^ [---HELPERS---] ^//
+//^ <HELPERS> ^//
 
-//^^ new_key() ^/
-//^ @def: adds 'nKey' onto the chain
+//^^ new_key() | @def: adds 'nKey' onto the chain
 bool keychain::new_key(const key &nKey) {
-  keynode *newNode = new keynode(nKey); //* @note: allocate space for a new node
+
+  keynode *newNode = new keynode(nKey);
   bool flag = false;
 
-  if (cHead == nullptr &&
-      cTail == nullptr) //* @note: set both, cHead & cTail to newNode
-  {
+  if (cHead == nullptr && cTail == nullptr) {
+    //* @note: set both, cHead & cTail to newNode
+
     cHead = newNode;
     cTail = newNode;
     cHead->setNext(cTail);
     cHead->setPrev(cTail);
 
     flag = true;
-  } else if (cHead != nullptr &&
-             cTail == cHead) //* @note: cHead is occupied, store in cTail
-  {
+
+  } else if (cHead != nullptr && cTail == cHead) {
+    //* @note: cHead is occupied, store in cTail
     cTail = newNode;
 
     cHead->setPrev(cTail);
@@ -74,13 +74,11 @@ bool keychain::new_key(const key &nKey) {
     cTail->setPrev(cHead);
 
     flag = true;
-  } else //* @note: both, cHead & cTail are occupied, link the newNode to cHead
-         //& cTail, then set newNode as cTail
-  {
-    //* set next & prev to head & tail respectively
+
+  } else {
+    //* @note: both, cHead & cTail are occupied, link the newNode to cHead
     newNode->setNext(cHead);
     newNode->setPrev(cTail);
-
     cTail->setNext(newNode);
     cHead->setPrev(newNode);
 
@@ -90,18 +88,12 @@ bool keychain::new_key(const key &nKey) {
   }
 
   this->cKeys++; //* @note: iterate the number of keys stored on this chain
-
   return flag;
 }
 
-//^^ delete_key() ^/
+//^^ delete_key()
 //^ @def: deletes a key object (if found) from the chain
 bool keychain::delete_key(const string &keyident) {
-  if (is_empty()) //! @note: keychain is empty
-    return false;
-
-  if (keyident == _none) //! @note: no key identifier specified
-    return false;
 
   //* @note: only one element in the keychain exists
   if (cHead == cTail && cHead->getKey().getKeyname() == keyident) {
@@ -142,7 +134,7 @@ bool keychain::delete_key(const string &keyident) {
   return false;
 }
 
-//^^ search_key() ^/
+//^^ search_key()
 //^ @def: returns true if 'keyident' matches a 'keyname' on the chain
 bool keychain::search_key(const string &keyident) {
   if (is_empty()) //! @note: keychain is empty
@@ -171,27 +163,20 @@ bool keychain::search_key(const string &keyident) {
   return false;
 }
 
-//^^ is_empty() ^/
-//^ @def: returns true if empty, false otherwise
+//^^ is_empty() | @def: returns true if empty, false otherwise
 bool keychain::is_empty() {
-  if (cHead == nullptr && cTail == nullptr) //* keychain empty
+  if (cHead == nullptr && cTail == nullptr)
     return true;
 
-  return false; //! keychain not empty
+  return false;
 }
 
-//^^ load_keychain() ^/
-//^ @def:
+//^^ load_keychain() | @def: loads keychain data from
+//'data/keychains/target.txt'
 bool keychain::load_keychain(const string &target) {
-  string savefile;
-  if(target == _none){
-    cout << "returning false" << endl; 
-    return false; 
-  }
-  savefile = "data/keychains/" + target + ".txt"; 
-  set_owner(target); 
 
-  cout << "in load : " << savefile << endl; 
+  string savefile{"data/keychains/" + target + ".txt"};
+  set_owner(target);
 
   ifstream readfile(savefile);
 
@@ -201,21 +186,23 @@ bool keychain::load_keychain(const string &target) {
   string line;
 
   while (getline(readfile, line)) {
+
     stringstream currentline(line);
-    
     string keyname, username, email, password;
 
     if (getline(currentline, keyname, ',') &&
         getline(currentline, username, ',') &&
         getline(currentline, email, ',') &&
         getline(currentline, password, ',')) {
+      //* @note: all data from file was loaded for this line
+
       key filekey(keyname, username, email, password);
+      cout << filekey << endl;
+
       newKey(filekey);
 
-      cout << filekey << endl; 
-    }
-    else{
-      cout << "false" << endl; 
+    } else {
+      cout << "false" << endl;
     }
   }
 
@@ -223,29 +210,14 @@ bool keychain::load_keychain(const string &target) {
   return true;
 }
 
-//^^ save_keychain() ^/
-//^ @def:
+//^^ save_keychain() | @def: creates the savefile for
 bool keychain::save_keychain() {
   string savefile = "data/keychains/" + this->cOwner + ".txt";
 
   ofstream writefile(savefile, ios::app);
 
   if (!ValidateFile(writefile)) //! @note: file failed to open
-  {
-    if (_debugger)
-      cout << "file opening failure" << endl;
-
     return false;
-  }
-
-  //* @note: keychain is empty, nothing to save
-  if (is_empty()) {
-    if (_debugger)
-      cout << "keychain empty; nothing to save" << endl;
-
-    writefile.close(); //* @note: close file
-    return true;
-  }
 
   writefile << cHead->getKey().getKeyname() << ","
             << cHead->getKey().getUsername() << ","
@@ -267,15 +239,12 @@ bool keychain::save_keychain() {
   return true;
 }
 
-//^^ delete_keychain() ^//
-//^ @def:
+//^^ delete_keychain() | @def: wipes the target file in 'data/keychains'
 bool keychain::delete_keychain(const string &target) {
+
   string savefile;
 
-  if (target == _none)
-    savefile = "data/keychains/" + this->cOwner + ".txt";
-  else
-    savefile = "data/keychains/" + target + ".txt";
+  savefile = "data/keychains/" + target + ".txt";
 
   ifstream file(savefile);
 
@@ -294,9 +263,7 @@ bool keychain::delete_keychain(const string &target) {
 //* [---RESOURCE MANAGERS---] *//
 
 keychain::keychain(const string &owner)
-    : cOwner(owner), cHead(nullptr), cTail(nullptr), cKeys(0) {
- 
-}
+    : cOwner(owner), cHead(nullptr), cTail(nullptr), cKeys(0) {}
 keychain::~keychain() {
   if (_debugger)
     cout << "destroying keychain" << endl;
@@ -316,8 +283,6 @@ keychain::~keychain() {
   cHead = cTail = nullptr;
 }
 
-//* [-----------------------] *//
-
 //* [---FUNCTIONS---] *//
 
 //** newKey() */
@@ -330,60 +295,77 @@ bool keychain::newKey(const key &nKey) {
 }
 //** deleteKey() */
 //* @def:
-bool keychain::deleteKey(const string &keyident) {
-  if (delete_key(keyident) && !is_empty())
+bool keychain::deleteKey(const string &target) {
+
+  if (target == _none || is_empty())
+    return false;
+
+  else if (delete_key(target))
     return true;
 
   return false;
 }
 //** searchKey() */
 //* @def:
-bool keychain::searchKey(const string &keyident) {
-  if (search_key(keyident))
+bool keychain::searchKey(const string &target) {
+
+  if (target == _none || is_empty())
+    return false;
+
+  else if (search_key(target))
     return true;
 
   return false;
 }
-//** printKey() */
-bool keychain::printKey(const string &keyident) {
-  //! @note: test to ensure working
+//** printKey() | @def:
+bool keychain::printKey(const string &target) {
 
-  if (!searchKey(keyident) || is_empty())
+  //! @note: test to ensure working
+  if (!searchKey(target) || is_empty())
     return false;
 
-  cout << get_key(keyident) << endl;
+  cout << get_key(target) << endl;
   return true;
 }
 
-//** printKeychain() */
+//** printKeychain() | @def: prints all keys in the chain
 void keychain::printKeychain() { cout << *this << endl; }
 
-//** loadKeychain() */
+//** loadKeychain() |
 bool keychain::loadKeychain(const string &target) {
-  if (load_keychain(target))
+  if (target != _none && load_keychain(target))
     return true;
 
   return false;
 }
-//** saveKeychain() */
+
+//** saveKeychain() | @def:
 bool keychain::saveKeychain() {
-  if (save_keychain())
+
+  //! @note: don't save empty keychain
+  if (is_empty())
+    return false;
+
+  else if (save_keychain())
     return true;
 
   return false;
 }
-//** deleteKeychain() */
+
+//** deleteKeychain() | @def:
 bool keychain::deleteKeychain(const string &target) {
-  if (delete_keychain(target))
+
+  //! @note: if empty or no target, do not delete
+  if (target == _none || is_empty())
+    return false;
+
+  else if (delete_keychain(target))
     return true;
 
   return false;
 }
 
-//* [---------------] *//
-
-//* [---OVERLOADS---] *//
-
+//** operator<<()
 ostream &operator<<(ostream &out, const keychain &keychain) {
   keynode *copy = keychain.cHead;
 
@@ -406,5 +388,3 @@ ostream &operator<<(ostream &out, const keychain &keychain) {
 
   return out;
 }
-
-//* [---------------] *//

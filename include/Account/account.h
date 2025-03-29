@@ -22,9 +22,9 @@ public:
   ~account();
 
   //* <FUNCTIONS> *//
-  bool swap(const string &target = _none);      //* swap()
-  void info();                                  //* info()
-  
+  bool swap(const string &target = _none); //* swap()
+  void info();                             //* info()
+
   bool addKey();                                //* addKey()
   bool deleteKey(const string &target = _none); //* deleteKey()
   bool printKey(const string &target = _none);  //* printKey()
