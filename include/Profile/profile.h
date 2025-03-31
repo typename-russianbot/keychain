@@ -13,14 +13,14 @@ private:
   //^ -[PROTECTED]- ^//
 protected:
   //^ <MUTATORS>
-  const string get_username();
-  void set_username(const string &username = _none);
+  const string get_username();                       //^ get_username()
+  void set_username(const string &username = _none); //^ set_username()
 
-  const string get_password();
-  void set_password(const string &password = _none);
+  const string get_password();                       //^ get_password()
+  void set_password(const string &password = _none); //^ set_password()
 
-  const clearance get_clearance();
-  void set_clearance(const clearance &access);
+  const clearance get_clearance();             //^ get_clearance()
+  void set_clearance(const clearance &access); //^ set_clearance()
 
   //^ <HELPERS>
   bool search_profile(const string &target); //^ search_profile()

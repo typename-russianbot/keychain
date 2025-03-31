@@ -1,0 +1,5 @@
+github,none,none,none
+yahoo,none,none,none
+newegg,none,none,none
+ebay,none,none,none
+best-buy,none,none,none

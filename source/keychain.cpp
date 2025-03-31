@@ -34,17 +34,7 @@ const key keychain::get_key(const string &target) {
 const string keychain::get_owner() { return cOwner; }
 
 //^^ set_owner() | @def: sets the owner of the keychain to 'owner'
-void keychain::set_owner(const string &owner) {
-  this->cOwner = owner;
-
-  string oldSavefile = "data/keychains/" + owner + ".txt";
-  remove(oldSavefile.c_str());
-
-  string new_savefile = "data/keychains/" + this->cOwner + ".txt";
-
-  ofstream writefile(new_savefile);
-  writefile.close();
-}
+void keychain::set_owner(const string &owner) { this->cOwner = owner; }
 
 //^ <HELPERS> ^//
 
@@ -172,16 +162,16 @@ bool keychain::is_empty() {
 }
 
 //^^ load_keychain() | @def: loads keychain data from
-//'data/keychains/target.txt'
 bool keychain::load_keychain(const string &target) {
 
-  string savefile{"data/keychains/" + target + ".txt"};
-  set_owner(target);
+  string savefile = "data/keychains/" + target + ".txt";
 
   ifstream readfile(savefile);
 
-  if (!ValidateFile(readfile))
+  if (!ValidateFile(readfile)) {
+    cerr << "file opening failure" << endl;
     return false;
+  }
 
   string line;
 
@@ -192,17 +182,11 @@ bool keychain::load_keychain(const string &target) {
 
     if (getline(currentline, keyname, ',') &&
         getline(currentline, username, ',') &&
-        getline(currentline, email, ',') &&
-        getline(currentline, password, ',')) {
-      //* @note: all data from file was loaded for this line
+        getline(currentline, email, ',') && getline(currentline, password)) {
 
       key filekey(keyname, username, email, password);
-      cout << filekey << endl;
 
       newKey(filekey);
-
-    } else {
-      cout << "false" << endl;
     }
   }
 
@@ -214,7 +198,7 @@ bool keychain::load_keychain(const string &target) {
 bool keychain::save_keychain() {
   string savefile = "data/keychains/" + this->cOwner + ".txt";
 
-  ofstream writefile(savefile, ios::app);
+  ofstream writefile(savefile);
 
   if (!ValidateFile(writefile)) //! @note: file failed to open
     return false;
@@ -241,7 +225,6 @@ bool keychain::save_keychain() {
 
 //^^ delete_keychain() | @def: wipes the target file in 'data/keychains'
 bool keychain::delete_keychain(const string &target) {
-
   string savefile;
 
   savefile = "data/keychains/" + target + ".txt";
@@ -285,16 +268,15 @@ keychain::~keychain() {
 
 //* [---FUNCTIONS---] *//
 
-//** newKey() */
-//* @def:
+//** newKey() | @def:
 bool keychain::newKey(const key &nKey) {
   if (new_key(nKey))
     return true;
 
   return false;
 }
-//** deleteKey() */
-//* @def:
+
+//** deleteKey() | @def:
 bool keychain::deleteKey(const string &target) {
 
   if (target == _none || is_empty())
@@ -305,8 +287,8 @@ bool keychain::deleteKey(const string &target) {
 
   return false;
 }
-//** searchKey() */
-//* @def:
+
+//** searchKey() | @def:
 bool keychain::searchKey(const string &target) {
 
   if (target == _none || is_empty())
@@ -317,6 +299,7 @@ bool keychain::searchKey(const string &target) {
 
   return false;
 }
+
 //** printKey() | @def:
 bool keychain::printKey(const string &target) {
 
@@ -331,7 +314,7 @@ bool keychain::printKey(const string &target) {
 //** printKeychain() | @def: prints all keys in the chain
 void keychain::printKeychain() { cout << *this << endl; }
 
-//** loadKeychain() |
+//** loadKeychain() | @def: 
 bool keychain::loadKeychain(const string &target) {
   if (target != _none && load_keychain(target))
     return true;

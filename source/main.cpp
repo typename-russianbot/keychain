@@ -1,6 +1,7 @@
 //? | @author: Matthew H. | @github: typename-russianbot | ?
 
 #include "../include/Account/account.h"
+#include <ostream>
 // void xorEncryptDecrypt(const std::string &filename, const std::string &key)
 // {
 //   std::ifstream inFile(filename, std::ios::binary);
@@ -38,73 +39,92 @@ void account_testing(void) {
 
   account a;
 
-  a.loadAccount("jimothy"); 
+  a.loadAccount("jimothy");
 
-  a.info(); 
-
-}
-
-//^^ <profile_testing>
-void profile_testing(void) {
-  cout << "| -Profile | -Testing- |" << endl;
-  string username = "jimothy";
-  string password = "abcdefghi";
-  profile p(username, password);
-
-  p.printProfile();
+  a.info();
 }
 
 //^^ <keychain_testing>
 void keychain_testing(void) {
   cout << "| -Keychain- | -Testing- |" << endl;
 
-  keychain k("jimmy"); 
+  keychain k("jimm");
+  if (k.loadKeychain("jimm"))
+    cout << "loaded" << endl;
 
-  key k1("github"), k2("yahoo"), k3("newegg"), k4("ebay"), k5("best-buy"); 
+  k.printKeychain();
 
-  k.newKey(k1); 
-  k.newKey(k2); 
-  k.newKey(k3); 
-  k.newKey(k4); 
-  k.newKey(k5); 
-
-  k.printKeychain(); 
-
-  k.saveKeychain(); 
-
+  k.searchKey("github");
 
   //! @note: encryption code
   // xorEncryptDecrypt(filename, key);
   // std::cout << "File encrypted/decrypted successfully!" << std::endl;
 }
 
-// && <keychain_usage>
-void keychain_usage(void) {}
+//&& keychain_usage() | @def: displays the usage of keychain
+void keychain_usage(void) {
+  cout << "Usage:" << endl
+       << "./keychain" << endl
+       << "\t   [-v | --version] " << endl
+       << "\t   [-h | --help]" << endl
+       << "\t   [-l | --load <username>]" << endl
+       << "\t   [-i | --info <username>]" << endl
+       << "\t   [-a | --add]" << endl
+       << "\t   [-r | --remove <keyname>]" << endl
+       << "\t   [-p | --print <keyname>]" << endl
+       << "\t   [-P | --print-keychain]" << endl
+       << "\t   [-t | --test]" << endl << endl; 
 
-// ~~ <main program>
+  cout << "Commands: " << endl
+       << "\tadd\tadds a new key to the current chain" << endl
+       << "\trm\tremoves the specified key" << endl
+       << "\tmv\tswitches to another keychain account" << endl;
+}
+
+//&* main() | @def: main driver for keychain
 int main(int argc, char *argv[]) {
-  //?? -PROGRAM VARIABLES-
   int flags;
 
-  //** -FLAG PARSER-
-  while ((flags = getopt(argc, argv, "hdar:p:t")) != -1) {
+  //** @note: FLAG HANDLING
+  while ((flags = getopt(argc, argv, "vhl:i:ar:p:Pt")) != -1) {
+
     switch (flags) {
-      //^^ 1. <HELP>
+
+    case 'v':
+      cout << "<version - 0.0.1>" << endl;
+      break;
+
     case 'h':
       keychain_usage();
       break;
 
-    //~~ 6. <TESTING> ||
-    case 't':
-      if (_debugger)
-        cout << "flag=TESTING" << endl;
-
-      keychain_testing();
-      // profile_testing();
-      // account_testing();
+    case 'l':
+      cout << "<load>" << endl;
       break;
 
-    //** 7. <DEFAULT> ||
+    case 'i':
+      cout << "<info>" << endl;
+      break;
+
+    case 'a':
+      cout << "<add>" << endl;
+      break;
+
+    case 'r':
+      cout << "<remove>" << endl;
+      break;
+
+    case 'p':
+      cout << "<print 'keyname'>" << endl;
+      break;
+
+    case 'P':
+      cout << "<print keychain>" << endl;
+      break;
+    case 't':
+      account_testing();
+      break;
+
     default:
       keychain_usage();
       break;
