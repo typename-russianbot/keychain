@@ -19,25 +19,12 @@ account::~account() {}
 
 //* <FUNCTIONS> *//
 
-//** swap() */
-//* @def:
-bool account::swap(const string &target) {
-  if (target != _none && searchProfile(target)) {
-    loadProfile(target);
-    return true;
-  }
-
-  return false;
-}
-
-//** info() */
-//* @def: gets the current profile (cUsername, cPassword, cAccess) & keychain (#
-// of keys)
-//* data currently stored
+//** info() |
 void account::info() {
   cout << "|--Account Info---------------|" << endl << endl;
 
-  cout << " - Account: " << endl; //* @note: display current account state
+  cout << " - Account: " << get_clearance()
+       << endl; //* @note: display current account state
 
   this->printProfile(); //* @note: print profile data
 
@@ -46,6 +33,41 @@ void account::info() {
        << endl;
 
   cout << "|-----------------------------|" << endl;
+}
+
+//** save()
+bool account::save() {
+  if (saveProfile() && saveKeychain())
+    return true;
+
+  return false;
+}
+
+//** swap()
+bool account::swap(const string &target) {
+  if (target != _none && search_profile(target)) {
+    set_owner(target);
+    loadProfile(target);
+    loadKeychain(target);
+    return true;
+  }
+
+  return false;
+}
+
+//** wipe()
+bool account::wipe(const string &target) {
+  if (target != _none && (search_profile(target))) {
+    delete_profile(target);
+    delete_keychain(target);
+    return true;
+  } else if (target == _none && search_profile(get_username())) {
+    delete_profile(get_username());
+    delete_keychain(get_username());
+    return true;
+  }
+
+  return false;
 }
 
 //** addKey() */
@@ -63,7 +85,6 @@ bool account::addKey() {
 }
 
 //** deleteKey() */
-//* @def:
 bool account::deleteKey(const string &target) {
 
   if (target != _none && searchProfile(target)) {
@@ -75,45 +96,9 @@ bool account::deleteKey(const string &target) {
 }
 
 //** printKey() */
-//* @def: if the target is found in search & != to _none,
-//* because the target cannot be _none
 bool account::printKey(const string &target) {
   if (target != _none && searchKey(target)) {
     printKey(target);
-    return true;
-  }
-
-  return false;
-}
-
-//** saveAccount()
-bool account::saveAccount() {
-  if (this->save_profile() && save_keychain())
-    return true;
-
-  return false;
-}
-
-//** loadAccount()
-bool account::loadAccount(const string &target) {
-  if (target != _none && search_profile(target)) {
-    load_profile(target);
-    load_keychain(target);
-    return true;
-  }
-
-  return false;
-}
-
-//** deleteAccount()
-bool account::deleteAccount(const string &target) {
-  if (target != _none && (search_profile(target))) {
-    delete_profile(target);
-    delete_keychain(target);
-    return true;
-  } else if (target == _none && search_profile(get_username())) {
-    delete_profile(get_username());
-    delete_keychain(get_username());
     return true;
   }
 

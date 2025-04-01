@@ -22,16 +22,15 @@ public:
   ~account();
 
   //* <FUNCTIONS> *//
-  bool swap(const string &target = _none); //* swap()
+
   void info();                             //* info()
+  bool save();                             //* save()
+  bool swap(const string &target = _none); //* swap()
+  bool wipe(const string &target = _none); //* wipe()
 
   bool addKey();                                //* addKey()
   bool deleteKey(const string &target = _none); //* deleteKey()
   bool printKey(const string &target = _none);  //* printKey()
-
-  bool saveAccount();                               //* saveAccount()
-  bool loadAccount(const string &target = _none);   //* loadAccount()
-  bool deleteAccount(const string &target = _none); //* deleteAccount()
 
   //* <OVERLOADS> *//
   friend ostream &operator<<(ostream &out,

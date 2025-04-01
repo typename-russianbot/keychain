@@ -95,7 +95,8 @@ bool profile::request_access() {
         if (attempts == -1)
           return false;
 
-        cout << "| <ERROR> | ATTEMPTS REMAINING - " << attempts + 1 << " | " <<endl
+        cout << "| <ERROR> | ATTEMPTS REMAINING - " << attempts + 1 << " | "
+             << endl
              << "Re-attempt? [y/n]: ";
         cin >> retry;
 
@@ -112,7 +113,7 @@ bool profile::request_access() {
 //^ @def: load the target profile data from profiles.txt
 bool profile::load_profile(const string &target) {
   ifstream readfile("data/profiles.txt");
-
+  
   if (!ValidateFile(readfile) ||
       !search_profile(target)) //! file failed to load
     return false;
@@ -137,7 +138,6 @@ bool profile::load_profile(const string &target) {
 
   //! target not found
   readfile.close();
-
   return false;
 }
 
@@ -238,7 +238,9 @@ void profile::printProfile() { cout << *this; }
 //** loadProfile()  */
 //* @def: loads profile data specified by the 'target' from 'profiles.txt'
 bool profile::loadProfile(const string &target) {
-  if (search_profile(target) && load_profile(target)) {
+  if (search_profile(target)) {
+    load_profile(target);
+
     if (cPassword == _none)
       cAccess = unrestricted;
     else
@@ -253,10 +255,12 @@ bool profile::loadProfile(const string &target) {
 //** saveProfile() */
 //* @def: saves the current username & password to 'profiles.txt'
 bool profile::saveProfile() {
-  if (!search_profile(get_username()) && save_profile()) //* target saved
+  if (searchProfile(get_username()))
+    return false;
+  else if (save_profile())
     return true;
 
-  return false; //! target didn't save
+  return false;
 }
 
 //** deleteProfile() */

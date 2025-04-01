@@ -34,31 +34,17 @@
 //^^ <account_testing>
 void account_testing(void) {
   cout << "| -Account- | -Testing- |" << endl;
-  string username = "jimothy";
-  string password = "abcdefghi";
 
+  //& -TEST LIST-
+  //& 1. test save
+  //& 2. test wipe
+  //& 3. test
   account a;
 
-  a.loadAccount("jimothy");
+  a.swap("jimm");
 
   a.info();
-}
-
-//^^ <keychain_testing>
-void keychain_testing(void) {
-  cout << "| -Keychain- | -Testing- |" << endl;
-
-  keychain k("jimm");
-  if (k.loadKeychain("jimm"))
-    cout << "loaded" << endl;
-
-  k.printKeychain();
-
-  k.searchKey("github");
-
-  //! @note: encryption code
-  // xorEncryptDecrypt(filename, key);
-  // std::cout << "File encrypted/decrypted successfully!" << std::endl;
+  a.save();
 }
 
 //&& keychain_usage() | @def: displays the usage of keychain
@@ -73,7 +59,8 @@ void keychain_usage(void) {
        << "\t   [-r | --remove <keyname>]" << endl
        << "\t   [-p | --print <keyname>]" << endl
        << "\t   [-P | --print-keychain]" << endl
-       << "\t   [-t | --test]" << endl << endl; 
+       << "\t   [-t | --test]" << endl
+       << endl;
 
   cout << "Commands: " << endl
        << "\tadd\tadds a new key to the current chain" << endl
