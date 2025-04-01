@@ -39,12 +39,8 @@ void account_testing(void) {
   //& 1. test save
   //& 2. test wipe
   //& 3. test
-  account a;
-
-  a.swap("jimm");
-
-  a.info();
-  a.save();
+  account a("matthew", "hong"); 
+  a.save(); 
 }
 
 //&& keychain_usage() | @def: displays the usage of keychain

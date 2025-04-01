@@ -255,7 +255,7 @@ bool profile::loadProfile(const string &target) {
 //** saveProfile() */
 //* @def: saves the current username & password to 'profiles.txt'
 bool profile::saveProfile() {
-  if (searchProfile(get_username()))
+  if (searchProfile(get_username()) || get_username() == _none)
     return false;
   else if (save_profile())
     return true;
