@@ -70,22 +70,21 @@ bool account::wipe(const string &target) {
   return false;
 }
 
-//** addKey() */
-//* @def: prompts the user for key data, then adds key onto the chain
-bool account::addKey() {
-  key newKey;
-  cin >> newKey;
+//** keyadd()
+bool account::keyadd() {
+  key nKey;
+  cin >> nKey;
 
-  system("clear");
+  cout << nKey << endl; 
 
-  if (new_key(newKey)) //* @return: true if add succeeded
+  if (newKey(nKey)) //* @return: true if add succeeded
     return true;
 
   return false; //! @return: false if add failed
 }
 
-//** deleteKey() */
-bool account::deleteKey(const string &target) {
+//** keyremove()
+bool account::keyremove(const string &target) {
 
   if (target != _none && searchProfile(target)) {
     delete_key(target);
@@ -95,10 +94,11 @@ bool account::deleteKey(const string &target) {
   return false;
 }
 
-//** printKey() */
-bool account::printKey(const string &target) {
+//** keyinfo()
+bool account::keyinfo(const string &target) {
+
   if (target != _none && searchKey(target)) {
-    printKey(target);
+    printKey(target); 
     return true;
   }
 

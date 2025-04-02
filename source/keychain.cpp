@@ -200,8 +200,11 @@ bool keychain::save_keychain() {
 
   ofstream writefile(savefile);
 
-  if (!ValidateFile(writefile)) //! @note: file failed to open
+  if (!ValidateFile(writefile)) //! @note: file failed to ope
+  {
+    cerr << "file opening failure" << endl;
     return false;
+  }
 
   writefile << cHead->getKey().getKeyname() << ","
             << cHead->getKey().getUsername() << ","
@@ -212,9 +215,9 @@ bool keychain::save_keychain() {
 
   while (copy != cHead) {
     writefile << copy->getKey().getKeyname() << ","
-              << cHead->getKey().getUsername() << ","
-              << cHead->getKey().getEmail() << ","
-              << cHead->getKey().getPassword() << endl;
+              << copy->getKey().getUsername() << ","
+              << copy->getKey().getEmail() << ","
+              << copy->getKey().getPassword() << endl;
     copy = copy->getNext();
   }
 
@@ -314,7 +317,7 @@ bool keychain::printKey(const string &target) {
 //** printKeychain() | @def: prints all keys in the chain
 void keychain::printKeychain() { cout << *this << endl; }
 
-//** loadKeychain() | @def: 
+//** loadKeychain() | @def:
 bool keychain::loadKeychain(const string &target) {
   if (target != _none && load_keychain(target))
     return true;
@@ -326,8 +329,11 @@ bool keychain::loadKeychain(const string &target) {
 bool keychain::saveKeychain() {
 
   //! @note: don't save empty keychain
-  if (is_empty())
+  if (is_empty()) {
+    cerr << "keychain empty" << endl;
     return false;
+
+  }
 
   else if (save_keychain())
     return true;

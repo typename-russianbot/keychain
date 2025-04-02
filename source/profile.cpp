@@ -113,7 +113,7 @@ bool profile::request_access() {
 //^ @def: load the target profile data from profiles.txt
 bool profile::load_profile(const string &target) {
   ifstream readfile("data/profiles.txt");
-  
+
   if (!ValidateFile(readfile) ||
       !search_profile(target)) //! file failed to load
     return false;
@@ -255,9 +255,12 @@ bool profile::loadProfile(const string &target) {
 //** saveProfile() */
 //* @def: saves the current username & password to 'profiles.txt'
 bool profile::saveProfile() {
-  if (searchProfile(get_username()) || get_username() == _none)
+
+  if (get_username() == _none) //! no username/password
     return false;
-  else if (save_profile())
+  else if (searchProfile(get_username())) //* username already saved
+    return true;
+  else if (save_profile()) //* save profile
     return true;
 
   return false;

@@ -39,8 +39,18 @@ void account_testing(void) {
   //& 1. test save
   //& 2. test wipe
   //& 3. test
-  account a("matthew", "hong"); 
-  a.save(); 
+  account a("matthew", "hong");
+  a.swap("jimm"); 
+  a.keyadd();
+
+  a.printKeychain(); 
+  a.saveKeychain(); 
+  a.info();
+
+  if (a.save())
+    cout << "account saved" << endl;
+  else
+  cout << "save failure" << endl;
 }
 
 //&& keychain_usage() | @def: displays the usage of keychain

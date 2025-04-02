@@ -11,11 +11,6 @@
 
 //? -[CLASS: Account]- ?
 class account : public profile, public keychain {
-  //^ -[PROTECTED]- ^//
-protected:
-  //^ @def: put any helpers here if any are needed
-
-  //* -[PUBLIC]- *//
 public:
   //* <RESOURCE MANAGERS> *//
   account(const string &username = _none, const string &password = _none);
@@ -28,9 +23,9 @@ public:
   bool swap(const string &target = _none); //* swap()
   bool wipe(const string &target = _none); //* wipe()
 
-  bool addKey();                                //* addKey()
-  bool deleteKey(const string &target = _none); //* deleteKey()
-  bool printKey(const string &target = _none);  //* printKey()
+  bool keyadd();                                //* keyadd()
+  bool keyremove(const string &target = _none); //* keyremove()
+  bool keyinfo(const string &target = _none);   //* keyinfo()
 
   //* <OVERLOADS> *//
   friend ostream &operator<<(ostream &out,
