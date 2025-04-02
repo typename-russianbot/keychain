@@ -1,4 +1,5 @@
 #include "../include/Account/account.h"
+#include <iostream>
 
 //* -[PUBLIC]- *// @publicsection
 
@@ -19,7 +20,7 @@ account::~account() {}
 
 //* <FUNCTIONS> *//
 
-//** info() |
+//** info() | @def:
 void account::info() {
   cout << "|--Account Info---------------|" << endl << endl;
 
@@ -35,7 +36,7 @@ void account::info() {
   cout << "|-----------------------------|" << endl;
 }
 
-//** save()
+//** save() | @def:
 bool account::save() {
   if (saveProfile() && saveKeychain())
     return true;
@@ -43,9 +44,16 @@ bool account::save() {
   return false;
 }
 
-//** swap()
-bool account::swap(const string &target) {
-  if (target != _none && search_profile(target)) {
+//** load() | @def: loads the target account
+bool account::load(const string &target) {
+  //! @def: no target specified
+  if (target == _none) {
+    cerr << "<error>: no target specified" << endl;
+    return false;
+  }
+
+  //? @def: target found, load info
+  else if (search_profile(target)) {
     set_owner(target);
     loadProfile(target);
     loadKeychain(target);
@@ -55,38 +63,63 @@ bool account::swap(const string &target) {
   return false;
 }
 
-//** wipe()
+//** wipe() | @def: wipes the target account
 bool account::wipe(const string &target) {
+
+  //? @def: search for 'target'
   if (target != _none && (search_profile(target))) {
     delete_profile(target);
     delete_keychain(target);
     return true;
-  } else if (target == _none && search_profile(get_username())) {
+  }
+
+  //? @def: no 'target' specified, search for currently loaded username
+  else if (target == _none && search_profile(get_username())) {
     delete_profile(get_username());
     delete_keychain(get_username());
     return true;
   }
 
+  //! @def: target profile not found
+  else {
+    cerr << "<error>: target profile not found" << endl;
+    return false;
+  }
+
   return false;
 }
 
-//** keyadd()
+//** keyadd() | @def: prompts user for new key info
 bool account::keyadd() {
   key nKey;
+
+  //? @def: input prompt
   cin >> nKey;
 
-  cout << nKey << endl; 
-
-  if (newKey(nKey)) //* @return: true if add succeeded
+  //? @def: return true if key added
+  if (newKey(nKey))
     return true;
 
-  return false; //! @return: false if add failed
+  //! @def: failed adding key
+  else {
+    cerr << "<error>: failed adding key" << endl;
+    return false;
+  }
+
+  return false;
 }
 
-//** keyremove()
+//** keyremove() | @def: deletes the target key
 bool account::keyremove(const string &target) {
 
-  if (target != _none && searchProfile(target)) {
+  //! @def: no searchkey input
+  if (target == _none) {
+    cerr << "<error>: no searchkey input" << endl;
+    return false;
+  }
+
+  //? @def: target was found
+  else if (searchKey(target)) {
     delete_key(target);
     return true;
   }
@@ -94,11 +127,18 @@ bool account::keyremove(const string &target) {
   return false;
 }
 
-//** keyinfo()
+//** keyinfo() | @def: displays the target key
 bool account::keyinfo(const string &target) {
 
-  if (target != _none && searchKey(target)) {
-    printKey(target); 
+  //! @def: no searchkey input
+  if (target == _none) {
+    cerr << "<error>: no searchkey input" << endl;
+    return false;
+  }
+
+  //? @def: target was found
+  else if (searchKey(target)) {
+    printKey(target);
     return true;
   }
 

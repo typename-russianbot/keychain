@@ -68,9 +68,9 @@ istream &operator>>(istream &in, key &key) {
 
     if (password == verification) {
       ShowTerminal();
+      _clear; 
       key.cPassword = password;
-
-      cout << key << endl;
+      
       return in;
     }
 
@@ -86,7 +86,7 @@ istream &operator>>(istream &in, key &key) {
   }
 
   ShowTerminal();
-  cout << key << endl;
+  _clear;
 
   return in;
 }

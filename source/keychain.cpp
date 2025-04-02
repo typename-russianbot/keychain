@@ -317,25 +317,39 @@ bool keychain::printKey(const string &target) {
 //** printKeychain() | @def: prints all keys in the chain
 void keychain::printKeychain() { cout << *this << endl; }
 
-//** loadKeychain() | @def:
+//** loadKeychain() | @def: loads target keychain
 bool keychain::loadKeychain(const string &target) {
-  if (target != _none && load_keychain(target))
+
+  //! @def: no target specified
+  if (target == _none) {
+    cerr << "<error>: no target specified" << endl;
+    return false;
+  }
+
+  //? @def: keychain loaded
+  else if (load_keychain(target))
     return true;
 
   return false;
 }
 
-//** saveKeychain() | @def:
+//** saveKeychain() | @def: saves keychain to 'owner'.txt
 bool keychain::saveKeychain() {
 
-  //! @note: don't save empty keychain
-  if (is_empty()) {
-    cerr << "keychain empty" << endl;
+  //! @def: failed saving keychain
+  if (!save_keychain()) {
+    cerr << "<error>: failed saving keychain" << endl;
     return false;
-
   }
 
-  else if (save_keychain())
+  //? @def: keychain is empty
+  else if (is_empty()) {
+    cerr << "<error>: keychain empty" << endl;
+    return false;
+  }
+  
+  //? @def: keychain saved
+  else
     return true;
 
   return false;
@@ -344,10 +358,13 @@ bool keychain::saveKeychain() {
 //** deleteKeychain() | @def:
 bool keychain::deleteKeychain(const string &target) {
 
-  //! @note: if empty or no target, do not delete
-  if (target == _none || is_empty())
+  //! @def: no target specified
+  if (target == _none) {
+    cerr << "<error>: no target specified" << endl;
     return false;
+  }
 
+  //? @def: keychain deleted
   else if (delete_keychain(target))
     return true;
 
@@ -358,12 +375,15 @@ bool keychain::deleteKeychain(const string &target) {
 ostream &operator<<(ostream &out, const keychain &keychain) {
   keynode *copy = keychain.cHead;
 
-  if (!copy) //! keychain is empty
+  //? @def: keychain is empty
+  if (!copy)
     out << "| Keys on Record: 0 |" << endl;
 
-  else //* display keychain
-  {
-    out << "| Keys on Record: " << keychain.cKeys << " |" << endl
+  //? @def: loop until all keychain elements are dipslayed
+  else {
+    out << "|-------------------------------------|" << endl
+        << endl
+        << "Keys on Record: " << keychain.cKeys << endl
         << endl
         << copy->getKey() << endl;
 
@@ -373,6 +393,8 @@ ostream &operator<<(ostream &out, const keychain &keychain) {
       out << copy->getKey() << endl;
       copy = copy->getNext();
     }
+
+    out << "|-------------------------------------|" << endl;
   }
 
   return out;

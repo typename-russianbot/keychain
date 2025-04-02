@@ -20,8 +20,9 @@ public:
 
   void info();                             //* info()
   bool save();                             //* save()
-  bool swap(const string &target = _none); //* swap()
+  bool load(const string &target = _none); //* swap()
   bool wipe(const string &target = _none); //* wipe()
+  bool clean(const string &target = _none);
 
   bool keyadd();                                //* keyadd()
   bool keyremove(const string &target = _none); //* keyremove()

@@ -40,80 +40,85 @@ void account_testing(void) {
   //& 2. test wipe
   //& 3. test
   account a("matthew", "hong");
-  a.swap("jimm"); 
-  a.keyadd();
+  a.load("jimm");
+  a.keyinfo("github");
 
-  a.printKeychain(); 
-  a.saveKeychain(); 
   a.info();
 
   if (a.save())
     cout << "account saved" << endl;
   else
-  cout << "save failure" << endl;
+    cout << "save failure" << endl;
 }
 
 //&& keychain_usage() | @def: displays the usage of keychain
 void keychain_usage(void) {
-  cout << "Usage:" << endl
-       << "./keychain" << endl
-       << "\t   [-v | --version] " << endl
-       << "\t   [-h | --help]" << endl
-       << "\t   [-l | --load <username>]" << endl
-       << "\t   [-i | --info <username>]" << endl
-       << "\t   [-a | --add]" << endl
-       << "\t   [-r | --remove <keyname>]" << endl
-       << "\t   [-p | --print <keyname>]" << endl
-       << "\t   [-P | --print-keychain]" << endl
-       << "\t   [-t | --test]" << endl
-       << endl;
+  _clear;
 
-  cout << "Commands: " << endl
-       << "\tadd\tadds a new key to the current chain" << endl
-       << "\trm\tremoves the specified key" << endl
-       << "\tmv\tswitches to another keychain account" << endl;
+  cout
+      << "|--Keychain---------------------------------------------------------|"
+      << endl
+      << endl
+      << " -Usage:" << endl
+      << "\t./keychain [-v | --version] , [-h | --help] ," << endl
+      << "\t\t   [-i <username> | --init] , [-t | --test]" << endl
+      << endl;
+
+  cout
+      << " -Commands: " << endl
+      << "\tadd\tadds a new key to the current chain" << endl
+      << "\trm\tremoves the specified key" << endl
+      << "\tmv\tswitches to another keychain account" << endl
+      << endl
+      << "|-------------------------------------------------------------------|"
+      << endl;
 }
 
-//&* main() | @def: main driver for keychain
+//&& keychain_swap() | @def:
+void keychain_swap();
+
+//&* main() | @def: driver for keychain
 int main(int argc, char *argv[]) {
-  int flags;
+
+  //? @note: program variables
+  account mAccount;
+  keychain m;
+  m.loadKeychain("jimm");
+  int mFlags;
+  string mUsername;
 
   //** @note: FLAG HANDLING
-  while ((flags = getopt(argc, argv, "vhl:i:ar:p:Pt")) != -1) {
+  while ((mFlags = getopt(argc, argv, "vhi:t")) != -1) {
 
-    switch (flags) {
+    switch (mFlags) {
 
     case 'v':
-      cout << "<version - 0.0.1>" << endl;
+      _clear;
+      cout << "Bitchain || <version - 0.0.1>" << endl;
       break;
 
     case 'h':
       keychain_usage();
       break;
 
-    case 'l':
-      cout << "<load>" << endl;
-      break;
-
     case 'i':
-      cout << "<info>" << endl;
+      mUsername = optarg;
+
+      if (mAccount.load(mUsername))
+        cout << "loading: <success>" << endl;
+      else
+        cout << "loading: <failure>" << endl;
+
+      mAccount.info();
+
+      mAccount.keyadd();
+
+      mAccount.info();
+
+      mAccount.save();
+
       break;
 
-    case 'a':
-      cout << "<add>" << endl;
-      break;
-
-    case 'r':
-      cout << "<remove>" << endl;
-      break;
-
-    case 'p':
-      cout << "<print 'keyname'>" << endl;
-      break;
-
-    case 'P':
-      cout << "<print keychain>" << endl;
-      break;
     case 't':
       account_testing();
       break;
