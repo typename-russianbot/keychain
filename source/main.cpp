@@ -71,53 +71,6 @@ void _usage(void) {
       << endl;
 }
 
-//&& _init() | @def:
-void _init() {
-  // //?
-  // account newAccount;
-  // string username, password, verification;
-  // char input;
-
-  // //* @def: get username
-  // do {
-  //   cout << "Username: ";
-  //   cin >> username;
-  // } while (!ValidateInput(username));
-
-  // cout << username << endl;
-  // do {
-  //   //* @def: get password
-  //   do {
-  //     // ShowTerminal();
-  //     cout << "Password: ";
-  //     // HideTerminal();
-  //     cin >> password;
-  //   } while (!ValidateInput(password));
-
-  //   //* @def: get verification:
-  //   do {
-  //     cout << "Re-enter Password: ";
-  //     cin >> verification;
-  //   } while (!ValidateInput(verification));
-
-  //   //! password mismatch:
-  //   if (password != verification) {
-  //     cout << "<error>: mismatch detected" << endl;
-
-  //     do {
-  //       cout << "Re-attempt? [y/n]: ";
-  //       cin >> input;
-  //     } while (!ValidateInput(input));
-  //   }
-
-  //   //* password == verification
-  //   else {
-  //     newAccount = new account(username, password);
-  //     newAccount.save();
-  //   }
-  // } while (!ValidateInput(input));
-}
-
 //&& _load() | @def:
 void _load();
 
@@ -127,36 +80,63 @@ int main(int argc, char *argv[]) {
   //? @note: program variables
   account Account;
   int Flags;
-  string Username;
+  string Username = _none;
 
   //** @note: FLAG HANDLING
-  while ((Flags = getopt(argc, argv, "vhil:t")) != -1) {
+  while ((Flags = getopt(argc, argv, "vhl:iat")) != -1) {
 
     switch (Flags) {
-
+      //^ --version
     case 'v':
-      _clear;
       cout << "Bitchain || <version - 0.0.1>" << endl;
       break;
 
+      //^ --help
     case 'h':
       _usage();
       break;
 
-    case 'i':
-      _init();
+    case 'n':
+      cout << "<under construction>" << endl << endl;
+      _usage();
       break;
 
+      //^ --load
     case 'l':
       Username = optarg;
 
+      //? @def: loading successful
       if (Account.load(Username))
-        cout << "Loading status: <success>" << endl;
-      else
-        cout << "Loading status: <failure>" << endl;
+        cout << "loading: <success>" << endl << endl;
+
+      //! @def: loading failure
+      else {
+        cerr << "loading: <failed>" << endl << endl;
+        exit(1);
+      }
 
       break;
 
+      //^ --info
+    case 'i':
+      Account.info();
+      break;
+
+      //^ --add
+    case 'a':
+      if (Account.keyadd() && Account.save()) {
+        cout << "keyadd: <success>" << endl << endl;
+        Account.info();
+      }
+
+      //! @def: keyadd failure
+      else {
+        cout << "keyadd: <failed>" << endl << endl;
+        Account.info();
+      }
+      break;
+
+      //^ --test
     case 't':
       account_testing();
       break;
