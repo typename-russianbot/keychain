@@ -22,6 +22,7 @@ account::~account() {}
 
 //** info() | @def:
 void account::info() {
+  HideTerminal(); 
   cout << "|--Account Info---------------|" << endl << endl;
 
   cout << " - Account: " << get_clearance()

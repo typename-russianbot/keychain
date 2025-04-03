@@ -35,10 +35,6 @@
 void account_testing(void) {
   cout << "| -Account- | -Testing- |" << endl;
 
-  //& -TEST LIST-
-  //& 1. test save
-  //& 2. test wipe
-  //& 3. test
   account a("matthew", "hong");
   a.load("jimm");
   a.keyinfo("github");
@@ -51,8 +47,8 @@ void account_testing(void) {
     cout << "save failure" << endl;
 }
 
-//&& keychain_usage() | @def: displays the usage of keychain
-void keychain_usage(void) {
+//&& _usage() | @def: displays the usage of keychain
+void _usage(void) {
   _clear;
 
   cout
@@ -61,8 +57,8 @@ void keychain_usage(void) {
       << endl
       << " -Usage:" << endl
       << "\t./keychain [-v | --version] , [-h | --help] ," << endl
-      << "\t\t   [-i <username> | --init] , [-t | --test]" << endl
-      << endl;
+      << "\t\t   [-i | --init] , [-t | --test] , " << endl
+      << "\t\t   [-l <username> | --load]" << endl;
 
   cout
       << " -Commands: " << endl
@@ -71,26 +67,72 @@ void keychain_usage(void) {
       << "\tmv\tswitches to another keychain account" << endl
       << endl
       << "|-------------------------------------------------------------------|"
+      << endl
       << endl;
 }
 
-//&& keychain_swap() | @def:
-void keychain_swap();
+//&& _init() | @def:
+void _init() {
+  // //?
+  // account newAccount;
+  // string username, password, verification;
+  // char input;
+
+  // //* @def: get username
+  // do {
+  //   cout << "Username: ";
+  //   cin >> username;
+  // } while (!ValidateInput(username));
+
+  // cout << username << endl;
+  // do {
+  //   //* @def: get password
+  //   do {
+  //     // ShowTerminal();
+  //     cout << "Password: ";
+  //     // HideTerminal();
+  //     cin >> password;
+  //   } while (!ValidateInput(password));
+
+  //   //* @def: get verification:
+  //   do {
+  //     cout << "Re-enter Password: ";
+  //     cin >> verification;
+  //   } while (!ValidateInput(verification));
+
+  //   //! password mismatch:
+  //   if (password != verification) {
+  //     cout << "<error>: mismatch detected" << endl;
+
+  //     do {
+  //       cout << "Re-attempt? [y/n]: ";
+  //       cin >> input;
+  //     } while (!ValidateInput(input));
+  //   }
+
+  //   //* password == verification
+  //   else {
+  //     newAccount = new account(username, password);
+  //     newAccount.save();
+  //   }
+  // } while (!ValidateInput(input));
+}
+
+//&& _load() | @def:
+void _load();
 
 //&* main() | @def: driver for keychain
 int main(int argc, char *argv[]) {
 
   //? @note: program variables
-  account mAccount;
-  keychain m;
-  m.loadKeychain("jimm");
-  int mFlags;
-  string mUsername;
+  account Account;
+  int Flags;
+  string Username;
 
   //** @note: FLAG HANDLING
-  while ((mFlags = getopt(argc, argv, "vhi:t")) != -1) {
+  while ((Flags = getopt(argc, argv, "vhil:t")) != -1) {
 
-    switch (mFlags) {
+    switch (Flags) {
 
     case 'v':
       _clear;
@@ -98,24 +140,20 @@ int main(int argc, char *argv[]) {
       break;
 
     case 'h':
-      keychain_usage();
+      _usage();
       break;
 
     case 'i':
-      mUsername = optarg;
+      _init();
+      break;
 
-      if (mAccount.load(mUsername))
-        cout << "loading: <success>" << endl;
+    case 'l':
+      Username = optarg;
+
+      if (Account.load(Username))
+        cout << "Loading status: <success>" << endl;
       else
-        cout << "loading: <failure>" << endl;
-
-      mAccount.info();
-
-      mAccount.keyadd();
-
-      mAccount.info();
-
-      mAccount.save();
+        cout << "Loading status: <failure>" << endl;
 
       break;
 
@@ -124,7 +162,7 @@ int main(int argc, char *argv[]) {
       break;
 
     default:
-      keychain_usage();
+      _usage();
       break;
     }
   }

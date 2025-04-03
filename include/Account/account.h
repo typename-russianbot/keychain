@@ -17,12 +17,13 @@ public:
   ~account();
 
   //* <FUNCTIONS> *//
-
+  bool init();
   void info();                             //* info()
   bool save();                             //* save()
-  bool load(const string &target = _none); //* swap()
+  bool load(const string &target = _none); //* load()
   bool wipe(const string &target = _none); //* wipe()
-  bool clean(const string &target = _none);
+
+  bool clean(const string &target = _none); //* clean()
 
   bool keyadd();                                //* keyadd()
   bool keyremove(const string &target = _none); //* keyremove()
