@@ -39,8 +39,8 @@ public:
 
   //* <FUNCTIONS> *//
   bool searchProfile(const string &target = _none); //* searchProfile()
-  bool accessProfile();                             //* accessProfile()
-  bool restrictProfile();                           //* restrictProfile()
+  bool getAccess();                                 //* getAccess()
+  bool setRestricted();                             //* setRestricted()
   void printProfile();                              //* printProfile()
 
   bool saveProfile();                               //* saveProfile()

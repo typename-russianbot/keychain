@@ -206,9 +206,9 @@ bool profile::searchProfile(const string &target) {
   return false; //! @note: not found
 }
 
-//** accessProfile()
+//** getAccess()
 //* @def: if get_clearance() returns true, free up access, otherwise lock access
-bool profile::accessProfile() {
+bool profile::getAccess() {
   if (request_access()) {
     cAccess = unrestricted;
     return true;
@@ -218,9 +218,9 @@ bool profile::accessProfile() {
   return false;
 }
 
-//** restrictProfile()
+//** setRestricted()
 //* @def: checks for access
-bool profile::restrictProfile() {
+bool profile::setRestricted() {
   if (cAccess == restricted)
     return true;
   else {
