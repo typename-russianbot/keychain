@@ -47,7 +47,7 @@ void account_testing(void) {
     cout << "save failure" << endl;
 }
 
-//&& _usage() | @def: displays the usage of keychain
+//&* _usage() | @def: displays the usage of keychain
 void _usage(void) {
   _clear;
 
@@ -56,23 +56,31 @@ void _usage(void) {
       << endl
       << endl
       << " -Usage:" << endl
-      << "\t./keychain [-v | --version] , [-h | --help] ," << endl
-      << "\t\t   [-i | --init] , [-t | --test] , " << endl
-      << "\t\t   [-l <username> | --load]" << endl;
+      << "\t./keychain [-v | version] , [-h | help] ," << endl
+      << "\t\t   [-l <username> | load account]" << endl
+      << endl;
 
   cout
       << " -Commands: " << endl
-      << "\tadd\tadds a new key to the current chain" << endl
-      << "\trm\tremoves the specified key" << endl
-      << "\tmv\tswitches to another keychain account" << endl
-      << endl
+      << "\t[ -i ]\t{ displays loaded account information }" << endl
+      << "\t[ -p ]\t{ prints all keys on the loaded account }" << endl
+      << "\t[ -a ]\t{ adds a new key to the loaded account }" << endl
+      << "\t[ -r ]\t{ removes specified key from the loaded account }" << endl
       << "|-------------------------------------------------------------------|"
       << endl
       << endl;
 }
 
-//&& _load() | @def:
-void _load();
+//&* _verify() | @def: checks if the Username in driver is '_none' or not
+bool _verify(const string &username) {
+  if (username == _none) {
+    cerr << "username: <none specified>" << endl << endl;
+    exit(1);
+    return false;
+  }
+
+  return true;
+}
 
 //&* main() | @def: driver for keychain
 int main(int argc, char *argv[]) {
@@ -82,30 +90,31 @@ int main(int argc, char *argv[]) {
   int Flags;
   string Username = _none;
 
-  //** @note: FLAG HANDLING
-  while ((Flags = getopt(argc, argv, "vhl:iat")) != -1) {
+  while ((Flags = getopt(argc, argv, "v h n l: i p f: a r: ")) != -1) {
 
+    //&* @def: Parse flags
     switch (Flags) {
+
       //^ --version
     case 'v':
-      cout << "Bitchain || <version - 0.0.1>" << endl;
+      cout << "{ Bitchain || <version - 0.2.1> }" << endl;
       break;
 
       //^ --help
     case 'h':
-      _usage();
+      _usage(); //? @def: jump to program usage
       break;
 
+      //^ --new
     case 'n':
       cout << "<under construction>" << endl << endl;
-      _usage();
       break;
 
       //^ --load
     case 'l':
       Username = optarg;
 
-      //? @def: loading successful
+      //? @def: loaded successfully
       if (Account.load(Username))
         cout << "loading: <success>" << endl << endl;
 
@@ -114,16 +123,37 @@ int main(int argc, char *argv[]) {
         cerr << "loading: <failed>" << endl << endl;
         exit(1);
       }
-
       break;
 
       //^ --info
     case 'i':
+      _verify(Username);
+
       Account.info();
+      break;
+
+      //^ --printkeychain
+    case 'p':
+      _verify(Username);
+
+      //&* @def: access granted
+      if (Account.accessProfile()) {
+        _clear;
+        cout << "permissions: <granted>" << endl << endl;
+        Account.printKeychain();
+        Account.restrictProfile();
+      }
+
+      //!! @def: access denied
+      else
+        cerr << "permissions: <denied>" << endl << endl;
       break;
 
       //^ --add
     case 'a':
+      _verify(Username);
+
+      //&*
       if (Account.keyadd() && Account.save()) {
         cout << "keyadd: <success>" << endl << endl;
         Account.info();
