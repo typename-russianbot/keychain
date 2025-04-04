@@ -50,9 +50,9 @@ void _usage(void) {
        << "  [ -n ] || { creates a new account }" << endl
        << "  [ -l <username> ] || { loads designated account }" << endl
        << "  [ -d <username> ] || { deletes designated account }" << endl
-       << "  [ -f <keyname> ]  || { searches designated key }" << endl
+       << "  [ -p <keyname> ]  || { prints designated key }" << endl
        << "  [ -r <keyname> ]  || { removes designated key }" << endl
-       << "  [ -p ] || { prints all keys }" << endl
+       << "  [ -P ] || { prints all keys }" << endl
        << "  [ -a ] || { adds a new key }" << endl
        << endl
        << "|-------------------------------------------------------------------"
@@ -81,13 +81,13 @@ int main(int argc, char *argv[]) {
   string Keyname;
   int Flags;
 
-  while ((Flags = getopt(argc, argv, "v h n l: d: p f: a r: ")) != -1) {
+  while ((Flags = getopt(argc, argv, "v h n l: d: P p: a r: ")) != -1) {
 
     switch (Flags) {
 
       //^ --version
     case 'v':
-      cout << "{ Bitchain || <version - 1.0.1> }" << endl;
+      cout << "{ Bitchain || <version - 1.3> }" << endl;
       break;
 
       //^ --help
@@ -98,10 +98,11 @@ int main(int argc, char *argv[]) {
       //^ --new
     case 'n':
       cout << "<under construction>" << endl << endl;
-      
+
       //? should prompt for username, password
-      //? should then set the username/owner & the password as the current account variables
-      //? save the inputted account data to profiles.txt & create a 'username'.txt file
+      //? should then set the username/owner & the password as the current
+      // account variables ? save the inputted account data to profiles.txt &
+      // create a 'username'.txt file
 
       break;
 
@@ -131,32 +132,32 @@ int main(int argc, char *argv[]) {
       break;
 
       //^ --print-keys
-    case 'p':
+    case 'P':
       _verify(Username);
 
       if (Account.getAccess()) {
         _clear;
-        cout << "permissions: <granted>" << endl << endl;
+        cout << "<success>: access granted" << endl << endl;
         Account.printKeychain();
         Account.setRestricted();
       } else
-        cerr << "permissions: <denied>" << endl << endl;
+        cerr << "<error>: access denied" << endl << endl;
 
       break;
 
-      //^ --find
-    case 'f':
+      //^ --print-key
+    case 'p':
       _verify(Username);
 
       Keyname = optarg;
 
       if (Account.searchKey(Keyname) && Account.getAccess()) {
         _clear;
-        cout << Keyname << ": <found>" << endl << endl;
+        cout << "<success>: " << Keyname << " found" << endl << endl;
         Account.keyinfo(Keyname);
       } else {
         _clear;
-        cout << Keyname << ": <not found>" << endl << endl;
+        cout << "<error>: " << Keyname << " not found" << endl << endl;
       }
 
       break;
@@ -182,11 +183,12 @@ int main(int argc, char *argv[]) {
       Keyname = optarg;
 
       if (Account.searchKey(Keyname) && Account.keyremove(Keyname)) {
-        cout << "deleting key: <success>" << endl << endl;
+        cout << "<success>: deleted key '" << Keyname << "'" << endl << endl;
         Account.info();
         Account.save();
       } else {
-        cout << "deleting key: <failed>" << endl << endl;
+        cout << "<error>: failed to delete key '" << Keyname << "'" << endl
+             << endl;
         Account.info();
       }
 

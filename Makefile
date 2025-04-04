@@ -15,20 +15,14 @@ TARGET = keychain #?? target executable
 #&& | -Makefile Operations- |
 
 #&& 1. all - create all object & executable files
-all:  $(TARGET) 
+all:  $(TARGET) 	
+	clear
 
 #&& 2. clean - remove object files & executables
 clean: 
 	rm -rf $(TARGET) $(BUILD)
+	clear
 
-#&& 3. run - start program
-run: $(TARGET) 
-	./keychain
-
-#&& 4. test - start program w/ test flags
-test: $(TARGET) 
-	./keychain -t -d
-	
 #&& | --------------------- |
 
 #^^ | -Compiling & Linking- |

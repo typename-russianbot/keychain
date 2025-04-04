@@ -33,7 +33,7 @@ void account::info() {
        << endl //* @note: display the number of keys on this account
        << endl;
 
-  cout << "|-----------------------------|" << endl;
+  cout << "|-----------------------------|" << endl << endl; 
 }
 
 //** save() | @def:

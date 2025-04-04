@@ -1,4 +1,1 @@
-github,none,none,none
-yahoo,none,none,none
-newegg,none,none,none
-ebay,none,none,none
+newegg,mjh2001,matthew.hong@wsu.edu,matthew
