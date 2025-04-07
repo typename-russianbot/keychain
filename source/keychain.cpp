@@ -381,7 +381,7 @@ ostream &operator<<(ostream &out, const keychain &keychain) {
 
   //? @def: loop until all keychain elements are dipslayed
   else {
-    out << "|-------------------------------------|" << endl
+    out << "|--------------------------------------------------------------|" << endl
         << endl
         << "Keys on Record: " << keychain.cKeys << endl
         << endl
@@ -394,7 +394,7 @@ ostream &operator<<(ostream &out, const keychain &keychain) {
       copy = copy->getNext();
     }
 
-    out << "|-------------------------------------|" << endl;
+    out << "|--------------------------------------------------------------|" << endl;
   }
 
   return out;

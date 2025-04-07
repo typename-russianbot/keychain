@@ -3,15 +3,15 @@
 #pragma once
 
 //!! <DEPENDENCIES>
-#include <iostream>   //! iostream
-#include <fstream>    //! fstream
-#include <sstream>    //! sstream
-#include <filesystem> //! filesystem
 #include <cctype>     //! cctype
-#include <string.h>   //! string.h
-#include <unistd.h>   //! unistd.h
+#include <filesystem> //! filesystem
+#include <fstream>    //! fstream
 #include <getopt.h>   //! getopt.h
+#include <iostream>   //! iostream
+#include <sstream>    //! sstream
+#include <string.h>   //! string.h
 #include <termios.h>  //! termios.h
+#include <unistd.h>   //! unistd.h
 
 //^^ <MACROS>
 using namespace std;
@@ -24,8 +24,7 @@ using namespace std;
 //^^ <ENUMS>
 
 //^^ @enum: <INTEGRITY> ^/
-enum integrity
-{
+enum integrity {
   none,     //& 1. <none>        -- no password
   poor,     //& 2. <poor>        -- poor password
   weak,     //& 3. <weak>        -- weak password
@@ -34,15 +33,13 @@ enum integrity
 };
 
 //^^ @enum: <CLEARANCE> ^/
-enum clearance
-{
+enum clearance {
   restricted,  //& 1. <restricted>    -- access restricted
   unrestricted //& 2. <unrestricted>     -- access permitted
 };
 
 //^^ @enum: <LOCK> ^/
-enum lock
-{
+enum lock {
   locked,  //& 1. <locked>
   unlocked //& 2. <unlocked>
 };
@@ -57,10 +54,16 @@ bool ValidateInput(string &input); //* ValidateInput() @param: string
 bool ValidateFile(ifstream &readfile);  //* ValidateFile() @param: ifstream
 bool ValidateFile(ofstream &writefile); //* ValidateFile() @param: ofstream
 
+bool ValidateUsername(const string &username);
+void AccountInput(string &username, string &password, string &verification);
+
 //^^ <GLOBAL OVERLOADS>
-ostream &operator<<(ostream &out, const integrity &object); //^ -operator<< | @enum=INTEGRITY
-ostream &operator<<(ostream &out, const clearance &object); //^ -operator<< | @enum=CLEARANCE
-ostream &operator<<(ostream &out, const lock &object);      //^ -operator<< | @enum=LOCK
+ostream &operator<<(ostream &out,
+                    const integrity &object); //^ -operator<< | @enum=INTEGRITY
+ostream &operator<<(ostream &out,
+                    const clearance &object); //^ -operator<< | @enum=CLEARANCE
+ostream &operator<<(ostream &out,
+                    const lock &object); //^ -operator<< | @enum=LOCK
 
 //?? <GLOBAL VARIABLES>
 extern bool _debugger; //? -DEBUGGER

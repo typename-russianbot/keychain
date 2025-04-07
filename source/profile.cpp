@@ -23,6 +23,30 @@ void profile::set_password(const string &password) {
 const clearance profile::get_clearance() { return cAccess; }
 void profile::set_clearance(const clearance &access) { cAccess = access; }
 
+bool profile::get_profiles() {
+  ifstream readfile("data/profiles.txt");
+
+  if (!ValidateFile(readfile))
+    return false;
+
+  string line;
+  int iterator = 0;
+
+  while (getline(readfile, line)) {
+    size_t commaPos = line.find(',');
+
+    //? validate commaPos
+    if (commaPos != string::npos) {
+      cout << iterator + 1 << ". '" << line.substr(0, commaPos) << "'" << endl;
+      iterator++; 
+    }
+  }
+
+  cout << endl << endl;
+
+  return true;
+}
+
 //^ || <HELPERS> ||
 
 //^^ search_profile()
@@ -204,6 +228,15 @@ bool profile::searchProfile(const string &target) {
     return true;
 
   return false; //! @note: not found
+}
+
+//** getProfiles()
+//* @def: displays a list of known usernames in 'profiles.txt'
+bool profile::getProfiles() {
+  if (get_profiles())
+    return true;
+
+  return true;
 }
 
 //** getAccess()

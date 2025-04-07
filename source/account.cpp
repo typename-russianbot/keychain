@@ -21,10 +21,16 @@ account::~account() {}
 //* <FUNCTIONS> *//
 
 //** init() | @def:
-void account::init(const string &username, const string &password) {
-  this->set_username(username);
-  this->set_owner(username);
-  this->set_password(password);
+bool account::init(const string &username, const string &password) {
+  if (username != _none && password != _none) {
+    this->set_username(username);
+    this->set_owner(username);
+    this->set_password(password);
+
+    return true;
+  }
+
+  return false;
 }
 
 //** info() | @def:
@@ -43,11 +49,13 @@ void account::info() {
   cout << "|-----------------------------|" << endl << endl;
 }
 
-//** save() | @def:
+//** save() | @def: saves the current profile/keychain data to respective .txt's
 bool account::save() {
-  if(saveProfile() && is_empty())
-    return true; 
+  //? @def: keychain is empty, save just profile
+  if (saveProfile() && is_empty())
+    return true;
 
+  //? @def: save both profile & keychain contents
   else if (saveProfile() && saveKeychain())
     return true;
 
@@ -59,6 +67,11 @@ bool account::load(const string &target) {
   //! @def: no target specified
   if (target == _none) {
     cerr << "<error>: no target specified" << endl;
+    return false;
+  }
+
+  else if (!search_profile(target)) {
+    cout << "<error>: profile not found" << endl; 
     return false;
   }
 
@@ -79,7 +92,9 @@ bool account::wipe(const string &target) {
   //? @def: search for 'target'
   if (target != _none && (search_profile(target))) {
     delete_profile(target);
-    delete_keychain(target);
+    if (!is_empty())
+      delete_keychain(target);
+
     return true;
   }
 

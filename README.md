@@ -1,7 +1,9 @@
-Password Keychain | by Matthew H.
+Password Keychain | by Matthew J. Hong
 
-| Program Function |
-  - a linked list of keys holding data for websites
+| Program Demo |
+NOTE: create a .mp4 or other video demonstrating program in-use
+
+
 
 | How to Use | 
   - 

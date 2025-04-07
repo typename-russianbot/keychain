@@ -17,7 +17,7 @@ public:
   ~account();
 
   //* <FUNCTIONS> *//
-  void init(const string &username = _none,
+  bool init(const string &username = _none,
             const string &password = _none); //* init()
   void info();                               //* info()
   bool save();                               //* save()

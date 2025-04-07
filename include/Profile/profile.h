@@ -22,6 +22,8 @@ protected:
   const clearance get_clearance();             //^ get_clearance()
   void set_clearance(const clearance &access); //^ set_clearance()
 
+  bool get_profiles(); //^ get_profiles()
+
   //^ <HELPERS>
   bool search_profile(const string &target); //^ search_profile()
   bool request_access();                     //^ request_access()
@@ -39,6 +41,7 @@ public:
 
   //* <FUNCTIONS> *//
   bool searchProfile(const string &target = _none); //* searchProfile()
+  bool getProfiles();                               //* getProfiles()
   bool getAccess();                                 //* getAccess()
   bool setRestricted();                             //* setRestricted()
   void printProfile();                              //* printProfile()

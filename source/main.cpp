@@ -1,8 +1,8 @@
 //? | @author: Matthew H. | @github: typename-russianbot | ?
 
 #include "../include/Account/account.h"
-#include <bits/getopt_core.h>
-#include <ostream>
+// #include <bits/getopt_core.h>
+// #include <ostream>
 // void xorEncryptDecrypt(const std::string &filename, const std::string &key)
 // {
 //   std::ifstream inFile(filename, std::ios::binary);
@@ -32,9 +32,8 @@
 //   outFile.close();
 // }
 
-//&* _usage() | @def: displays the usage of keychain
-void _usage(void) {
-  _clear;
+//&* program_usage() | @def: displays the usage of keychain
+void program_usage(void) {
 
   cout << "|--Keychain---------------------------------------------------------"
           "----------|"
@@ -61,27 +60,12 @@ void _usage(void) {
        << endl;
 }
 
-//&* _verify() | @def: checks if the Username in driver is '_none' or not
-bool _verify(const string &username) {
-
-  if (username == _none) {
-    cerr << "username: <none specified>" << endl << endl;
-    exit(1);
-    return false;
-  }
-
-  return true;
-}
-
 //&* main() | @def: driver for keychain
 int main(int argc, char *argv[]) {
 
   account Account;
-  string Username = _none;
-  string Password = _none;
-  string verify = _none;
-  string Keyname = _none;
-
+  string Username = _none, Password = _none, Verification = _none,
+         Keyname = _none;
   int Flags;
 
   while ((Flags = getopt(argc, argv, "v h n l: d: P p: a r: ")) != -1) {
@@ -90,70 +74,44 @@ int main(int argc, char *argv[]) {
 
       //^ --version
     case 'v':
-      cout << "{ Bitchain || <version - 1.3> }" << endl;
+      cout << "{ Bitchain || <version - 1.5> }" << endl;
       break;
 
       //^ --help
     case 'h':
-      _usage();
+      program_usage();
       break;
 
       //^ --new
     case 'n':
-      cout << "<under construction>" << endl << endl;
-
-      //* null out the username/password vars in-case a prev operation
       Username = _none;
       Password = _none;
+      Verification = _none;
 
-      //* get username
-      do {
-        cout << "Username: ";
-        cin >> Username;
-      } while (!ValidateInput(Username));
+      AccountInput(Username, Password, Verification);
 
-      //* get password
-      do {
-        cout << "Password: ";
-
-        HideTerminal();
-        cin >> Password;
-        ShowTerminal(); 
-      } while (!ValidateInput(Password));
-
-      //* verify
-      do {
-        
-        cout << "Re-enter Password: ";
-
-        HideTerminal();
-        cin >> verify;
-        ShowTerminal(); 
-      } while (!ValidateInput(verify));
-
-      
-      Account.init(Username, Password); 
-
-      if(Account.save())
-        cout << "account created" << endl; 
-      
-      //? should prompt for username, password
-      //? should then set the username/owner & the password as the current
-      // account variables ? save the inputted account data to profiles.txt &
-      // create a 'username'.txt file
-
+      if (Account.init(Username, Password) && Account.save()) {
+        _clear;
+        cout << "<success>: Account " << Username << " created" << endl << endl;
+        Account.info();
+      } else {
+        cout << "<error>: Account " << Username << " not created" << endl
+             << endl;
+      }
       break;
 
       //^ --load
     case 'l':
       Username = optarg;
 
-      if (!Account.load(Username)) {
-        cerr << "<error>: account loading failure" << endl << endl;
-        exit(1);
-      } else {
+      if (Account.load(Username)) {
         cout << "<success>: account loaded" << endl << endl;
         Account.info();
+      } else {
+        cerr << "<error>: account loading failure" << endl << endl;
+        cout << "| -Known Profiles- | " << endl << endl;  
+        Account.getProfiles();
+        exit(1);
       }
 
       break;
@@ -171,7 +129,7 @@ int main(int argc, char *argv[]) {
 
       //^ --print-keys
     case 'P':
-      _verify(Username);
+      ValidateUsername(Username);
 
       if (Account.getAccess()) {
         _clear;
@@ -185,7 +143,7 @@ int main(int argc, char *argv[]) {
 
       //^ --print-key
     case 'p':
-      _verify(Username);
+      ValidateUsername(Username);
 
       Keyname = optarg;
 
@@ -202,7 +160,7 @@ int main(int argc, char *argv[]) {
 
       //^ --add
     case 'a':
-      _verify(Username);
+      ValidateUsername(Username);
 
       if (Account.keyadd() && Account.save()) {
         cout << "<success>: added key" << endl << endl;
@@ -216,7 +174,7 @@ int main(int argc, char *argv[]) {
 
       //^ --remove
     case 'r':
-      _verify(Username);
+      ValidateUsername(Username);
 
       Keyname = optarg;
 
@@ -233,7 +191,7 @@ int main(int argc, char *argv[]) {
       break;
 
     default:
-      _usage();
+      program_usage();
       break;
     }
   }
