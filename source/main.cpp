@@ -78,7 +78,10 @@ int main(int argc, char *argv[]) {
 
   account Account;
   string Username = _none;
-  string Keyname;
+  string Password = _none;
+  string verify = _none;
+  string Keyname = _none;
+
   int Flags;
 
   while ((Flags = getopt(argc, argv, "v h n l: d: P p: a r: ")) != -1) {
@@ -99,6 +102,41 @@ int main(int argc, char *argv[]) {
     case 'n':
       cout << "<under construction>" << endl << endl;
 
+      //* null out the username/password vars in-case a prev operation
+      Username = _none;
+      Password = _none;
+
+      //* get username
+      do {
+        cout << "Username: ";
+        cin >> Username;
+      } while (!ValidateInput(Username));
+
+      //* get password
+      do {
+        cout << "Password: ";
+
+        HideTerminal();
+        cin >> Password;
+        ShowTerminal(); 
+      } while (!ValidateInput(Password));
+
+      //* verify
+      do {
+        
+        cout << "Re-enter Password: ";
+
+        HideTerminal();
+        cin >> verify;
+        ShowTerminal(); 
+      } while (!ValidateInput(verify));
+
+      
+      Account.init(Username, Password); 
+
+      if(Account.save())
+        cout << "account created" << endl; 
+      
       //? should prompt for username, password
       //? should then set the username/owner & the password as the current
       // account variables ? save the inputted account data to profiles.txt &
@@ -167,10 +205,10 @@ int main(int argc, char *argv[]) {
       _verify(Username);
 
       if (Account.keyadd() && Account.save()) {
-        cout << "adding key: <success>" << endl << endl;
+        cout << "<success>: added key" << endl << endl;
         Account.info();
       } else {
-        cout << "adding key: <failed>" << endl << endl;
+        cout << "<error>: key wasn't added" << endl << endl;
         Account.info();
       }
 

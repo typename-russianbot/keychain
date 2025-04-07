@@ -20,6 +20,13 @@ account::~account() {}
 
 //* <FUNCTIONS> *//
 
+//** init() | @def:
+void account::init(const string &username, const string &password) {
+  this->set_username(username);
+  this->set_owner(username);
+  this->set_password(password);
+}
+
 //** info() | @def:
 void account::info() {
   cout << "|--Account Info---------------|" << endl << endl;
@@ -33,12 +40,15 @@ void account::info() {
        << endl //* @note: display the number of keys on this account
        << endl;
 
-  cout << "|-----------------------------|" << endl << endl; 
+  cout << "|-----------------------------|" << endl << endl;
 }
 
 //** save() | @def:
 bool account::save() {
-  if (saveProfile() && saveKeychain())
+  if(saveProfile() && is_empty())
+    return true; 
+
+  else if (saveProfile() && saveKeychain())
     return true;
 
   return false;
